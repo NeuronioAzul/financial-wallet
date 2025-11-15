@@ -1,0 +1,1145 @@
+openapi: 3.0.3
+info:
+  title: Financial Wallet API
+  description: |
+    API REST da carteira financeira digital desenvolvida com Laravel 12 e PostgreSQL 18.
+    
+    ## Autenticação
+    A API utiliza Laravel Sanctum para autenticação. Após o login, você receberá um token Bearer que deve ser incluído no header `Authorization` de todas as requisições protegidas.
+    
+    ## Timezone
+    Todos os timestamps são retornados em America/Sao_Paulo (UTC-3).
+    
+    ## Formato de IDs
+    A API utiliza UUID v7 para todos os identificadores.
+  version: 1.0.0
+  contact:
+    name: Grupo Adriano
+    email: dev@grupoadriano.com
+  license:
+    name: MIT
+
+servers:
+  - url: http://localhost:8000/api
+    description: Ambiente de desenvolvimento local
+  - url: http://localhost:8000/api/v1
+    description: API v1 - Desenvolvimento
+
+tags:
+  - name: Health
+    description: Verificação de saúde da API
+  - name: Authentication
+    description: Registro, login e logout de usuários
+  - name: Profile
+    description: Gerenciamento de perfil do usuário autenticado
+  - name: Addresses
+    description: Gerenciamento de endereços do usuário
+  - name: Documents
+    description: Gerenciamento de documentos do usuário (CPF, RG, CNH, etc)
+  - name: Wallet
+    description: Consulta de carteira e saldo
+  - name: Transactions
+    description: Operações financeiras (depósito, transferência, estorno)
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: Sanctum
+      description: Token de autenticação Laravel Sanctum obtido após login
+
+  schemas:
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "The given data was invalid."
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "01jc9xqm0000000000000001"
+        name:
+          type: string
+          example: "João Silva"
+        email:
+          type: string
+          format: email
+          example: "joao.silva@example.com"
+        document:
+          type: string
+          description: "CPF without formatting (11 digits)"
+          example: "12345678900"
+        phone:
+          type: string
+          description: "Phone without formatting (10-11 digits)"
+          nullable: true
+          example: "11987654321"
+        status:
+          type: string
+          enum: [active, inactive, blocked]
+          example: "active"
+        email_verified_at:
+          type: string
+          format: date-time
+          nullable: true
+          example: "2024-11-15T14:30:00-03:00"
+        created_at:
+          type: string
+          format: date-time
+          example: "2024-11-15T14:30:00-03:00"
+        updated_at:
+          type: string
+          format: date-time
+          example: "2024-11-15T14:30:00-03:00"
+
+    Address:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "01jc9xqm0000000000000002"
+        user_id:
+          type: string
+          format: uuid
+          example: "01jc9xqm0000000000000001"
+        zip_code:
+          type: string
+          description: "ZIP code without formatting (8 digits)"
+          example: "01310100"
+        street:
+          type: string
+          example: "Avenida Paulista"
+        number:
+          type: string
+          example: "1578"
+        complement:
+          type: string
+          nullable: true
+          example: "Apto 42"
+        neighborhood:
+          type: string
+          example: "Bela Vista"
+        city:
+          type: string
+          example: "São Paulo"
+        state:
+          type: string
+          description: "State abbreviation (2 uppercase letters)"
+          example: "SP"
+        country:
+          type: string
+          nullable: true
+          example: "Brasil"
+        is_primary:
+          type: boolean
+          example: true
+        created_at:
+          type: string
+          format: date-time
+          example: "2024-11-15T14:30:00-03:00"
+        updated_at:
+          type: string
+          format: date-time
+          example: "2024-11-15T14:30:00-03:00"
+
+    Document:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "01jc9xqm0000000000000003"
+        user_id:
+          type: string
+          format: uuid
+          example: "01jc9xqm0000000000000001"
+        document_type:
+          type: string
+          enum: [photo, rg_front, rg_back, cnh_front, cnh_back]
+          example: "rg_front"
+        file_path:
+          type: string
+          example: "/storage/documents/rg_front_123456.jpg"
+        file_name:
+          type: string
+          example: "rg_front_123456.jpg"
+        mime_type:
+          type: string
+          example: "image/jpeg"
+        size:
+          type: integer
+          description: "File size in bytes"
+          example: 1024000
+        status:
+          type: string
+          enum: [pending, approved, rejected]
+          example: "pending"
+        rejection_reason:
+          type: string
+          nullable: true
+          example: null
+        verified_at:
+          type: string
+          format: date-time
+          nullable: true
+          example: null
+        verified_by:
+          type: string
+          format: uuid
+          nullable: true
+          example: null
+        created_at:
+          type: string
+          format: date-time
+          example: "2024-11-15T14:30:00-03:00"
+        updated_at:
+          type: string
+          format: date-time
+          example: "2024-11-15T14:30:00-03:00"
+
+    Wallet:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "01jc9xqm0000000000000004"
+        user_id:
+          type: string
+          format: uuid
+          example: "01jc9xqm0000000000000001"
+        balance:
+          type: number
+          format: decimal
+          example: 1250.50
+        status:
+          type: string
+          enum: [active, blocked, inactive]
+          example: "active"
+        last_transaction_at:
+          type: string
+          format: date-time
+          nullable: true
+          example: "2024-11-15T14:30:00-03:00"
+        created_at:
+          type: string
+          format: date-time
+          example: "2024-11-15T14:30:00-03:00"
+        updated_at:
+          type: string
+          format: date-time
+          example: "2024-11-15T14:30:00-03:00"
+
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "01jc9xqm0000000000000005"
+        wallet_id:
+          type: string
+          format: uuid
+          example: "01jc9xqm0000000000000004"
+        type:
+          type: string
+          enum: [deposit, withdraw, transfer_in, transfer_out, reversal]
+          example: "deposit"
+        amount:
+          type: number
+          format: decimal
+          example: 100.00
+        description:
+          type: string
+          nullable: true
+          example: "Depósito via PIX"
+        status:
+          type: string
+          enum: [pending, completed, failed, reversed]
+          example: "completed"
+        recipient_wallet_id:
+          type: string
+          format: uuid
+          nullable: true
+          example: "01jc9xqm0000000000000006"
+        reversal_of_id:
+          type: string
+          format: uuid
+          nullable: true
+          example: null
+        processed_at:
+          type: string
+          format: date-time
+          nullable: true
+          example: "2024-11-15T14:30:00-03:00"
+        created_at:
+          type: string
+          format: date-time
+          example: "2024-11-15T14:30:00-03:00"
+        updated_at:
+          type: string
+          format: date-time
+          example: "2024-11-15T14:30:00-03:00"
+
+paths:
+  /health:
+    get:
+      tags:
+        - Health
+      summary: Verificar saúde da API
+      description: Endpoint para verificar se a API está operacional
+      responses:
+        '200':
+          description: API operacional
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "ok"
+
+  /v1/register:
+    post:
+      tags:
+        - Authentication
+      summary: Registrar novo usuário
+      description: Cria uma nova conta de usuário e retorna um token de autenticação
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - email
+                - password
+                - password_confirmation
+                - document
+              properties:
+                name:
+                  type: string
+                  example: "João Silva"
+                  minLength: 3
+                  maxLength: 255
+                email:
+                  type: string
+                  format: email
+                  example: "joao.silva@example.com"
+                password:
+                  type: string
+                  format: password
+                  description: "Minimum 8 characters, must contain letters and numbers"
+                  example: "Senha@123"
+                  minLength: 8
+                password_confirmation:
+                  type: string
+                  format: password
+                  example: "Senha@123"
+                document:
+                  type: string
+                  description: "CPF without formatting (11 digits only)"
+                  example: "12345678900"
+                  pattern: '^\d{11}$'
+                phone:
+                  type: string
+                  description: "Phone without formatting (10-11 digits only)"
+                  nullable: true
+                  example: "11987654321"
+                  pattern: '^\d{10,11}$'
+      responses:
+        '201':
+          description: Usuário criado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    $ref: '#/components/schemas/User'
+                  token:
+                    type: string
+                    example: "1|AbCdEfGhIjKlMnOpQrStUvWxYz"
+        '422':
+          description: Dados inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/login:
+    post:
+      tags:
+        - Authentication
+      summary: Autenticar usuário
+      description: Autentica um usuário e retorna um token de acesso
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: "joao.silva@example.com"
+                password:
+                  type: string
+                  format: password
+                  example: "Senha@123"
+      responses:
+        '200':
+          description: Login realizado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    $ref: '#/components/schemas/User'
+                  token:
+                    type: string
+                    example: "2|AbCdEfGhIjKlMnOpQrStUvWxYz"
+        '401':
+          description: Credenciais inválidas
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Invalid credentials"
+
+  /v1/logout:
+    post:
+      tags:
+        - Authentication
+      summary: Fazer logout
+      description: Invalida o token de autenticação atual
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Logout realizado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Logged out successfully"
+        '401':
+          description: Não autenticado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Unauthenticated."
+
+  /v1/me:
+    get:
+      tags:
+        - Authentication
+      summary: Obter dados do usuário autenticado
+      description: Retorna informações do usuário atualmente autenticado
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Dados do usuário
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          description: Não autenticado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Unauthenticated."
+
+  /v1/profile:
+    get:
+      tags:
+        - Profile
+      summary: Obter perfil completo
+      description: Retorna o perfil completo do usuário com endereços e documentos
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Perfil do usuário
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    $ref: '#/components/schemas/User'
+                  addresses:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Address'
+                  documents:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Document'
+        '401':
+          description: Não autenticado
+
+    put:
+      tags:
+        - Profile
+      summary: Atualizar perfil
+      description: Atualiza informações do perfil do usuário autenticado
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "João da Silva"
+                email:
+                  type: string
+                  format: email
+                  example: "joao.silva.novo@example.com"
+                phone:
+                  type: string
+                  description: "Phone without formatting (10-11 digits)"
+                  nullable: true
+                  example: "11987654321"
+                  pattern: '^\d{10,11}$'
+      responses:
+        '200':
+          description: Perfil atualizado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    $ref: '#/components/schemas/User'
+                  message:
+                    type: string
+                    example: "Profile updated successfully"
+        '422':
+          description: Dados inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/addresses:
+    get:
+      tags:
+        - Addresses
+      summary: Listar endereços
+      description: Lista todos os endereços do usuário autenticado
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Lista de endereços
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Address'
+
+    post:
+      tags:
+        - Addresses
+      summary: Criar endereço
+      description: Adiciona um novo endereço para o usuário autenticado
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - zip_code
+                - street
+                - number
+                - neighborhood
+                - city
+                - state
+              properties:
+                zip_code:
+                  type: string
+                  description: "ZIP code without formatting (8 digits)"
+                  example: "01310100"
+                  pattern: '^\d{8}$'
+                street:
+                  type: string
+                  example: "Avenida Paulista"
+                number:
+                  type: string
+                  example: "1578"
+                complement:
+                  type: string
+                  nullable: true
+                  example: "Apto 42"
+                neighborhood:
+                  type: string
+                  example: "Bela Vista"
+                city:
+                  type: string
+                  example: "São Paulo"
+                state:
+                  type: string
+                  description: "State abbreviation (2 uppercase letters)"
+                  example: "SP"
+                  pattern: '^[A-Z]{2}$'
+                country:
+                  type: string
+                  nullable: true
+                  example: "Brasil"
+                is_primary:
+                  type: boolean
+                  example: false
+      responses:
+        '201':
+          description: Endereço criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Address'
+        '422':
+          description: Dados inválidos
+
+  /v1/addresses/{address}:
+    get:
+      tags:
+        - Addresses
+      summary: Obter endereço
+      description: Retorna os detalhes de um endereço específico
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: address
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: ID do endereço
+      responses:
+        '200':
+          description: Detalhes do endereço
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Address'
+        '404':
+          description: Endereço não encontrado
+
+    put:
+      tags:
+        - Addresses
+      summary: Atualizar endereço
+      description: Atualiza um endereço existente
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: address
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                zip_code:
+                  type: string
+                  description: "ZIP code without formatting (8 digits)"
+                  example: "01310100"
+                  pattern: '^\d{8}$'
+                street:
+                  type: string
+                  example: "Avenida Paulista"
+                number:
+                  type: string
+                  example: "1578"
+                complement:
+                  type: string
+                  nullable: true
+                neighborhood:
+                  type: string
+                  example: "Bela Vista"
+                city:
+                  type: string
+                  example: "São Paulo"
+                state:
+                  type: string
+                  description: "State abbreviation (2 uppercase letters)"
+                  example: "SP"
+                  pattern: '^[A-Z]{2}$'
+                country:
+                  type: string
+                  nullable: true
+                  example: "Brasil"
+                is_primary:
+                  type: boolean
+      responses:
+        '200':
+          description: Endereço atualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Address'
+        '404':
+          description: Endereço não encontrado
+
+    delete:
+      tags:
+        - Addresses
+      summary: Remover endereço
+      description: Remove um endereço do usuário
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: address
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Endereço removido
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Address deleted successfully"
+        '404':
+          description: Endereço não encontrado
+
+  /v1/documents:
+    get:
+      tags:
+        - Documents
+      summary: Listar documentos
+      description: Lista todos os documentos do usuário autenticado
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Lista de documentos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Document'
+
+    post:
+      tags:
+        - Documents
+      summary: Upload de documento
+      description: Faz upload de um documento do usuário (foto, RG, CNH)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - document_type
+                - file
+              properties:
+                document_type:
+                  type: string
+                  enum: [photo, rg_front, rg_back, cnh_front, cnh_back]
+                  example: "rg_front"
+                  description: "Tipo do documento"
+                file:
+                  type: string
+                  format: binary
+                  description: "Arquivo do documento (JPG, JPEG, PNG ou PDF, máximo 5MB)"
+      responses:
+        '201':
+          description: Documento enviado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Document'
+        '422':
+          description: Dados inválidos
+
+  /v1/documents/status:
+    get:
+      tags:
+        - Documents
+      summary: Status dos documentos
+      description: Retorna o status de verificação de todos os documentos
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Status dos documentos
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total:
+                    type: integer
+                    example: 3
+                  pending:
+                    type: integer
+                    example: 1
+                  approved:
+                    type: integer
+                    example: 2
+                  rejected:
+                    type: integer
+                    example: 0
+                  expired:
+                    type: integer
+                    example: 0
+
+  /v1/documents/{document}:
+    get:
+      tags:
+        - Documents
+      summary: Obter documento
+      description: Retorna os detalhes de um documento específico
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: document
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Detalhes do documento
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Document'
+        '404':
+          description: Documento não encontrado
+
+    delete:
+      tags:
+        - Documents
+      summary: Remover documento
+      description: Remove um documento do usuário
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: document
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Documento removido
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Document deleted successfully"
+        '404':
+          description: Documento não encontrado
+
+  /v1/wallet:
+    get:
+      tags:
+        - Wallet
+      summary: Obter carteira
+      description: Retorna os dados completos da carteira do usuário
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Dados da carteira
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Wallet'
+        '404':
+          description: Carteira não encontrada
+
+  /v1/wallet/balance:
+    get:
+      tags:
+        - Wallet
+      summary: Obter saldo
+      description: Retorna apenas o saldo atual da carteira
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Saldo da carteira
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  balance:
+                    type: number
+                    format: decimal
+                    example: 1250.50
+        '404':
+          description: Carteira não encontrada
+
+  /v1/transactions:
+    get:
+      tags:
+        - Transactions
+      summary: Listar transações
+      description: Lista todas as transações da carteira do usuário
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+          description: Número da página
+        - name: per_page
+          in: query
+          schema:
+            type: integer
+            default: 15
+          description: Itens por página
+        - name: type
+          in: query
+          schema:
+            type: string
+            enum: [deposit, withdraw, transfer_in, transfer_out, reversal]
+          description: Filtrar por tipo de transação
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [pending, completed, failed, reversed]
+          description: Filtrar por status
+      responses:
+        '200':
+          description: Lista de transações
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Transaction'
+                  current_page:
+                    type: integer
+                    example: 1
+                  per_page:
+                    type: integer
+                    example: 15
+                  total:
+                    type: integer
+                    example: 42
+
+  /v1/transactions/deposit:
+    post:
+      tags:
+        - Transactions
+      summary: Fazer depósito
+      description: Realiza um depósito na carteira do usuário
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - amount
+              properties:
+                amount:
+                  type: number
+                  format: decimal
+                  example: 100.00
+                  minimum: 0.01
+                  maximum: 999999.99
+                  description: "Valor do depósito (máximo 999,999.99)"
+                description:
+                  type: string
+                  nullable: true
+                  maxLength: 500
+                  example: "Depósito via PIX"
+      responses:
+        '201':
+          description: Depósito realizado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+        '422':
+          description: Dados inválidos
+
+  /v1/transactions/transfer:
+    post:
+      tags:
+        - Transactions
+      summary: Fazer transferência
+      description: Realiza uma transferência para outro usuário pelo email
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - receiver_email
+                - amount
+              properties:
+                receiver_email:
+                  type: string
+                  format: email
+                  description: "Email do usuário que receberá a transferência"
+                  example: "maria.santos@example.com"
+                amount:
+                  type: number
+                  format: decimal
+                  example: 50.00
+                  minimum: 0.01
+                  maximum: 999999.99
+                  description: "Valor da transferência (máximo 999,999.99)"
+                description:
+                  type: string
+                  nullable: true
+                  maxLength: 500
+                  example: "Pagamento de serviço"
+      responses:
+        '201':
+          description: Transferência realizada com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  transfer_out:
+                    $ref: '#/components/schemas/Transaction'
+                  transfer_in:
+                    $ref: '#/components/schemas/Transaction'
+        '422':
+          description: Dados inválidos
+        '400':
+          description: Saldo insuficiente, carteira bloqueada ou não pode transferir para si mesmo
+
+  /v1/transactions/{id}:
+    get:
+      tags:
+        - Transactions
+      summary: Obter transação
+      description: Retorna os detalhes de uma transação específica
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Detalhes da transação
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+        '404':
+          description: Transação não encontrada
+
+  /v1/transactions/{id}/reverse:
+    post:
+      tags:
+        - Transactions
+      summary: Estornar transação
+      description: Realiza o estorno de uma transação
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: ID da transação a ser estornada
+      responses:
+        '200':
+          description: Transação estornada com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  original_transaction:
+                    $ref: '#/components/schemas/Transaction'
+                  reversal_transaction:
+                    $ref: '#/components/schemas/Transaction'
+        '400':
+          description: Transação não pode ser estornada
+        '404':
+          description: Transação não encontrada
