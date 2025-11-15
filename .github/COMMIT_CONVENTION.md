@@ -4,7 +4,7 @@ Follow the Airbnb commit message convention for all commits in this project.
 
 ## Format
 
-```
+```text
 type(scope): subject
 
 body (optional)
@@ -37,6 +37,7 @@ footer (optional)
 ## Scope (optional)
 
 The scope provides context:
+
 - `auth` - Authentication
 - `wallet` - Wallet functionality
 - `transaction` - Transactions
@@ -75,7 +76,7 @@ feat add feature           # Missing colon
 
 Explain **what** and **why**, not **how**:
 
-```
+```text
 feat(wallet): add transaction reversal
 
 Implement reversal functionality to allow users to
@@ -89,7 +90,7 @@ and updates the transaction status accordingly.
 
 Reference issues or breaking changes:
 
-```
+```text
 fix(api): correct validation error response
 
 BREAKING CHANGE: API now returns 422 instead of 400
