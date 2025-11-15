@@ -13,6 +13,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./.docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - ./.docker/postgres/init-test-db.sh:/docker-entrypoint-initdb.d/init-test-db.sh:ro
     ports:
       - "${DB_PORT:-5432}:5432"
     networks:
@@ -33,6 +34,7 @@ services:
         - GID=${GID:-1000}
     container_name: financial-wallet-backend
     restart: unless-stopped
+    user: "${UID:-1000}:${GID:-1000}"
     working_dir: /var/www/html
     environment:
       APP_ENV: ${APP_ENV:-local}
