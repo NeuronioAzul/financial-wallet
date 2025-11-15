@@ -1,0 +1,59 @@
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment variables
+.env
+.env.local
+.env.production
+.env.*.local
+
+# Git hooks (already in repository)
+# .git/hooks/commit-msg is tracked
+
+# IDE
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Dependencies
+node_modules/
+vendor/
+
+# Build outputs
+dist/
+build/
+*.hot-update.*
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Docker
+.docker/postgres/data/
+
+# Laravel
+backend/storage/framework/cache/
+backend/storage/framework/sessions/
+backend/storage/framework/testing/
+backend/storage/framework/views/
+backend/storage/logs/
+backend/bootstrap/cache/*.php
+backend/.phpunit.result.cache
+
+# React
+frontend/dist/
+frontend/build/
+frontend/.vite/
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
