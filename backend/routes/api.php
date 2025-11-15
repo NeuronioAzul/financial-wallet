@@ -7,6 +7,11 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
+// Health check
+Route::get('/health', function () {
+    return response()->json(['status' => 'ok']);
+});
+
 // Public routes
 Route::prefix('v1')->group(function () {
     Route::post('/register', [\App\Http\Controllers\Api\AuthController::class, 'register']);
