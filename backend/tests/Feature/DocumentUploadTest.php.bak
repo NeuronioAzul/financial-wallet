@@ -1,0 +1,212 @@
+<?php
+
+namespace Tests\Feature;
+
+use App\Enums\DocumentStatus;
+use App\Enums\DocumentType;
+use App\Models\User;
+use App\Models\UserDocument;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+use Tests\TestCase;
+
+class DocumentUploadTest extends TestCase
+{
+    use WithFaker;
+
+    private function getFixturePath(string $filename): string
+    {
+        return __DIR__ . '/../Fixtures/files/' . $filename;
+    }
+
+    private function createUploadedFile(string $fixturePath): UploadedFile
+    {
+        return new UploadedFile(
+            $fixturePath,
+            basename($fixturePath),
+            mime_content_type($fixturePath),
+            null,
+            true
+        );
+    }
+
+    public function test_can_upload_photo_document(): void
+    {
+        Storage::fake('local');
+
+        $user = new User([
+            'id' => fake()->uuid(),
+            'name' => fake()->name(),
+            'email' => fake()->unique()->safeEmail(),
+        ]);
+
+        $file = $this->createUploadedFile($this->getFixturePath('images/test-photo.jpg'));
+
+        $response = $this->actingAs($user, 'sanctum')
+            ->postJson('/api/documents', [
+                'document_type' => DocumentType::PHOTO->value,
+                'file' => $file,
+            ]);
+
+        $response->assertStatus(201)
+            ->assertJsonStructure([
+                'data' => [
+                    'id',
+                    'document_type',
+                    'status',
+                    'file_path',
+                    'created_at',
+                ],
+            ]);
+
+        $this->assertEquals(DocumentType::PHOTO->value, $response->json('data.document_type'));
+        $this->assertEquals(DocumentStatus::PENDING->value, $response->json('data.status'));
+    }
+
+    public function test_can_upload_rg_front_document(): void
+    {
+        Storage::fake('local');
+
+        $user = new User([
+            'id' => fake()->uuid(),
+            'name' => fake()->name(),
+            'email' => fake()->unique()->safeEmail(),
+        ]);
+
+        $file = $this->createUploadedFile($this->getFixturePath('documents/test-rg-front.jpg'));
+
+        $response = $this->actingAs($user, 'sanctum')
+            ->postJson('/api/v1/documents', [
+                'document_type' => DocumentType::RG_FRONT->value,
+                'file' => $file,
+            ]);        $response->assertStatus(201)
+            ->assertJsonStructure(['data' => ['id', 'document_type', 'status']]);
+        $this->assertEquals(DocumentType::RG_FRONT->value, $response->json('data.document_type'));
+    }
+
+    public function test_can_upload_pdf_document(): void
+    {
+        Storage::fake('local');
+
+        $user = new User([
+            'id' => fake()->uuid(),
+            'name' => fake()->name(),
+            'email' => fake()->unique()->safeEmail(),
+        ]);
+
+        $file = $this->createUploadedFile($this->getFixturePath('documents/test-document.pdf'));
+
+        $response = $this->actingAs($user, 'sanctum')
+            ->postJson('/api/v1/documents', [
+                'document_type' => DocumentType::RG_FRONT->value,
+                'file' => $file,
+            ]);        $response->assertStatus(201);
+        $this->assertEquals(DocumentType::RG_FRONT->value, $response->json('data.document_type'));
+    }
+
+    public function test_cannot_upload_invalid_file_format(): void
+    {
+        Storage::fake('local');
+
+        $user = new User([
+            'id' => fake()->uuid(),
+            'name' => fake()->name(),
+            'email' => fake()->unique()->safeEmail(),
+        ]);
+
+        $file = $this->createUploadedFile($this->getFixturePath('invalid/not-an-image.txt'));
+
+        $response = $this->actingAs($user, 'sanctum')
+            ->postJson('/api/v1/documents', [
+                'document_type' => DocumentType::PHOTO->value,
+                'file' => $file,
+            ]);        $response->assertStatus(422)
+            ->assertJsonValidationErrors('file');
+    }
+
+    public function test_cannot_upload_without_authentication(): void
+    {
+        Storage::fake('local');
+
+        $file = $this->createUploadedFile($this->getFixturePath('images/test-photo.jpg'));
+
+        $response = $this->postJson('/api/v1/documents', [
+            'document_type' => DocumentType::PHOTO->value,
+            'file' => $file,
+        ]);
+
+        $response->assertStatus(401);
+    }
+
+    public function test_requires_document_type(): void
+    {
+        Storage::fake('local');
+
+        $user = new User([
+            'id' => fake()->uuid(),
+            'name' => fake()->name(),
+            'email' => fake()->unique()->safeEmail(),
+        ]);
+
+        $file = $this->createUploadedFile($this->getFixturePath('images/test-photo.jpg'));
+
+        $response = $this->actingAs($user, 'sanctum')
+            ->postJson('/api/v1/documents', [
+                'file' => $file,
+            ]);        $response->assertStatus(422)
+            ->assertJsonValidationErrors('document_type');
+    }
+
+    public function test_requires_file(): void
+    {
+        Storage::fake('local');
+
+        $user = new User([
+            'id' => fake()->uuid(),
+            'name' => fake()->name(),
+            'email' => fake()->unique()->safeEmail(),
+        ]);
+
+        $response = $this->actingAs($user, 'sanctum')
+            ->postJson('/api/v1/documents', [
+                'document_type' => DocumentType::PHOTO->value,
+            ]);        $response->assertStatus(422)
+            ->assertJsonValidationErrors('file');
+    }
+
+    public function test_can_list_user_documents(): void
+    {
+        $user = new User([
+            'id' => fake()->uuid(),
+            'name' => fake()->name(),
+            'email' => fake()->unique()->safeEmail(),
+        ]);
+
+        $response = $this->actingAs($user, 'sanctum')
+            ->getJson('/api/v1/documents');
+
+        $response->assertStatus(200)
+            ->assertJsonStructure(['data']);
+    }
+
+    public function test_can_get_document_validation_status(): void
+    {
+        $user = new User([
+            'id' => fake()->uuid(),
+            'name' => fake()->name(),
+            'email' => fake()->unique()->safeEmail(),
+        ]);
+
+        $response = $this->actingAs($user, 'sanctum')
+            ->getJson('/api/v1/documents/status');
+
+        $response->assertStatus(200)
+            ->assertJsonStructure([
+                'has_all_documents',
+                'all_approved',
+                'pending_count',
+                'rejected_count',
+            ]);
+    }
+}
