@@ -83,4 +83,28 @@ class User extends Authenticatable
     {
         return $this->status === UserStatus::BLOCKED;
     }
+
+    /**
+     * Get the user's addresses.
+     */
+    public function addresses(): HasMany
+    {
+        return $this->hasMany(Address::class);
+    }
+
+    /**
+     * Get the user's primary address.
+     */
+    public function primaryAddress(): HasOne
+    {
+        return $this->hasOne(Address::class)->where('is_primary', true);
+    }
+
+    /**
+     * Get the user's documents.
+     */
+    public function documents(): HasMany
+    {
+        return $this->hasMany(UserDocument::class);
+    }
 }
