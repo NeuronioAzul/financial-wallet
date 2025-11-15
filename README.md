@@ -1,23 +1,34 @@
-# Financial Wallet MVP
+# Financial Wallet MVP 💰
 
-Carteira financeira digital desenvolvida com Laravel 12, React.js e PostgreSQL 16.
+[![Laravel](https://img.shields.io/badge/Laravel-12.38-FF2D20?logo=laravel)](https://laravel.com)
+[![PHP](https://img.shields.io/badge/PHP-8.4-777BB4?logo=php)](https://php.net)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-18-336791?logo=postgresql)](https://postgresql.org)
+[![Tests](https://img.shields.io/badge/Tests-18%20passed-success)](backend/tests)
+
+Carteira digital completa desenvolvida com Laravel 12, React.js e PostgreSQL 18.
 
 ## 🚀 Tecnologias
 
-- **Backend:** PHP 8.4 + Laravel 12
-- **Frontend:** React.js 18 + Vite + TailwindCSS
-- **Database:** PostgreSQL 16 com UUID v7
+- **Backend:** PHP 8.4-FPM + Laravel 12 + Sanctum
+- **Frontend:** React.js 18 + Vite + TailwindCSS *(em desenvolvimento)*
+- **Database:** PostgreSQL 18 com UUID v7
 - **Infrastructure:** Docker + Docker Compose
-- **Tests:** Pest (backend) + Jest (frontend)
-- **CI/CD:** GitHub Actions
+- **Tests:** Pest (backend - 18/18 ✅) + Jest (frontend)
+- **API Docs:** Swagger UI
 
 ## 📋 Funcionalidades
 
-- ✅ Cadastro e autenticação de usuários
-- ✅ Transferências entre usuários
+### ✅ Implementado (MVP Backend)
+
+- ✅ Cadastro e autenticação de usuários (Sanctum)
+- ✅ Transferências entre usuários com concurrency control
 - ✅ Depósitos na carteira
-- ✅ Reversão de transações
-- ✅ Validação de saldo
+- ✅ Reversão de transações (estornos)
+- ✅ Validação de saldo em tempo real
+- ✅ Auditoria LGPD completa
+- ✅ Rate limiting (60 req/min)
+- ✅ UUID v7 em todas as entidades
+- ✅ 11 endpoints RESTful testados
 - ✅ Histórico de transações
 - ✅ Compliance LGPD
 
