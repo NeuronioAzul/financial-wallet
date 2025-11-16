@@ -107,4 +107,26 @@ export const profileService = {
     );
     return response.data.data;
   },
+
+  getDocuments: async (): Promise<any[]> => {
+    const response = await api.get<{ data: any[] }>('/v1/documents');
+    return response.data.data;
+  },
+
+  uploadDocument: async (file: File, type: string): Promise<any> => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('type', type);
+
+    const response = await api.post<{ data: any }>('/v1/documents', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data.data;
+  },
+
+  deleteDocument: async (documentId: string): Promise<void> => {
+    await api.delete(`/v1/documents/${documentId}`);
+  },
 };
