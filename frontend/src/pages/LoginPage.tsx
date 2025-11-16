@@ -50,9 +50,9 @@ export const LoginPage: React.FC = () => {
         <div className="max-w-md text-white">
           <div className="mb-8 flex items-center gap-3">
             <div className="rounded-2xl bg-white/10 p-3 backdrop-blur-sm">
-              <Wallet className="h-8 w-8" />
+              <Wallet className="h-8 w-8 text-golden-sand" />
             </div>
-            <h1 className="text-3xl font-bold">Grupo Adriano</h1>
+            <h1 className="text-3xl font-bold text-golden-sand">Grupo Adriano</h1>
           </div>
           <h2 className="mb-4 text-4xl font-bold leading-tight">
             Sua carteira digital completa
@@ -70,8 +70,8 @@ export const LoginPage: React.FC = () => {
           {/* Mobile Logo */}
           <div className="mb-8 lg:hidden">
             <div className="mb-4 flex items-center gap-2">
-              <Wallet className="h-6 w-6 text-primary" />
-              <span className="text-xl font-bold text-primary">Grupo Adriano</span>
+              <Wallet className="h-6 w-6 text-golden-sand" />
+              <span className="text-xl font-bold text-golden-sand">Grupo Adriano</span>
             </div>
           </div>
 
@@ -152,7 +152,7 @@ export const LoginPage: React.FC = () => {
 
             <Button
               type="submit"
-              className="w-full bg-gradient-to-r from-primary to-primary-light text-white hover:shadow-lg transition-all"
+              className="w-full bg-golden-sand text-gray-900 font-bold hover:bg-golden-sand-dark hover:shadow-lg transition-all"
               disabled={isLoading}
             >
               {isLoading ? 'Entrando...' : 'Entrar'}
