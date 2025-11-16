@@ -35,7 +35,7 @@ export const registerSchema = z
   });
 
 export const transferSchema = z.object({
-  recipient_email: z.string().email('Email do destinatário inválido'),
+  receiver_email: z.string().email('Email do destinatário inválido'),
   amount: z
     .number()
     .min(0.01, 'Valor mínimo de R$ 0,01')

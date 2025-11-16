@@ -22,20 +22,33 @@ export interface Wallet {
 export interface Transaction {
   id: string;
   wallet_id: string;
-  type: 'transfer' | 'deposit' | 'reversal';
+  type: 'transfer' | 'deposit' | 'reversal' | 1 | 2 | 3; // Backend pode retornar string ou number
   amount: string;
   description: string | null;
   status: 'pending' | 'completed' | 'failed' | 'reversed';
+  sender_user_id?: string;
+  receiver_user_id?: string;
   recipient_wallet_id?: string;
   original_transaction_id?: string;
   created_at: string;
   updated_at: string;
-  recipient?: {
+  senderUser?: {
     id: string;
     name: string;
     email: string;
   };
+  receiverUser?: {
+    id: string;
+    name: string;
+    email: string;
+  };
+  // Manter compatibilidade com nomes antigos
   sender?: {
+    id: string;
+    name: string;
+    email: string;
+  };
+  recipient?: {
     id: string;
     name: string;
     email: string;
@@ -61,7 +74,7 @@ export interface LoginResponse {
 }
 
 export interface TransferRequest {
-  recipient_email: string;
+  receiver_email: string;
   amount: number;
   description?: string;
 }

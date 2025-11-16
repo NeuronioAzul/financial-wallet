@@ -67,3 +67,33 @@ export const transactionService = {
     return response.data.data;
   },
 };
+
+export const profileService = {
+  updateProfile: async (data: { name: string; email: string }): Promise<User> => {
+    const response = await api.put<{ data: User }>('/v1/profile', data);
+    return response.data.data;
+  },
+
+  getAddress: async (): Promise<any> => {
+    const response = await api.get<{ data: any }>('/v1/address');
+    return response.data.data;
+  },
+
+  createAddress: async (data: any): Promise<any> => {
+    const response = await api.post<{ data: any }>('/v1/address', data);
+    return response.data.data;
+  },
+
+  updateAddress: async (data: any): Promise<any> => {
+    const response = await api.put<{ data: any }>('/v1/address', data);
+    return response.data.data;
+  },
+
+  changePassword: async (data: {
+    current_password: string;
+    new_password: string;
+    new_password_confirmation: string;
+  }): Promise<void> => {
+    await api.put('/v1/profile/password', data);
+  },
+};
