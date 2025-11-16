@@ -1,7 +1,8 @@
 import { useEffect, useState, useImperativeHandle, forwardRef } from 'react';
 import { ArrowUpRight, Plus, RotateCcw, Clock } from 'lucide-react';
 import { Card } from '@/components/ui/Card';
-import { transactionService } from '@/services';
+import { Button } from '@/components/ui/Button';
+import { transactionService, authService } from '@/services';
 import { Transaction } from '@/types';
 import { formatCurrency } from '@/utils/formatters';
 import { formatShortDate } from '@/utils/date';
@@ -15,10 +16,22 @@ export interface RecentTransactionsRef {
 export const RecentTransactions = forwardRef<RecentTransactionsRef, Record<string, never>>((_, ref) => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
+  const [reversingId, setReversingId] = useState<string | null>(null);
+  const [userId, setUserId] = useState<string>('');
 
   useEffect(() => {
     loadTransactions();
+    loadUserId();
   }, []);
+
+  const loadUserId = async () => {
+    try {
+      const user = await authService.getProfile();
+      setUserId(user.id);
+    } catch (error) {
+      console.error('Error loading user:', error);
+    }
+  };
 
   useImperativeHandle(ref, () => ({
     refresh: loadTransactions,
@@ -36,22 +49,39 @@ export const RecentTransactions = forwardRef<RecentTransactionsRef, Record<strin
     }
   };
 
-  const getTransactionIcon = (type: string) => {
+  const getTransactionIcon = (type: string | number) => {
+    // Mapear tipos numéricos do backend
+    const typeMap: Record<number, string> = {
+      1: 'deposit',
+      2: 'transfer',
+      3: 'reversal',
+    };
+    
+    const typeStr = typeof type === 'number' ? typeMap[type] : type;
+    
     const icons = {
       transfer: <ArrowUpRight size={20} />,
       deposit: <Plus size={20} />,
       reversal: <RotateCcw size={20} />,
     };
-    return icons[type as keyof typeof icons] || <Clock size={20} />;
+    return icons[typeStr as keyof typeof icons] || <Clock size={20} />;
   };
 
-  const getTransactionColor = (type: string) => {
+  const getTransactionColor = (type: string | number) => {
+    const typeMap: Record<number, string> = {
+      1: 'deposit',
+      2: 'transfer',
+      3: 'reversal',
+    };
+    
+    const typeStr = typeof type === 'number' ? typeMap[type] : type;
+    
     const colors = {
       transfer: 'text-blue-600 bg-blue-50',
       deposit: 'text-green-600 bg-green-50',
       reversal: 'text-orange-600 bg-orange-50',
     };
-    return colors[type as keyof typeof colors] || 'text-gray-600 bg-gray-50';
+    return colors[typeStr as keyof typeof colors] || 'text-gray-600 bg-gray-50';
   };
 
   const getStatusBadge = (status: string) => {
@@ -64,13 +94,64 @@ export const RecentTransactions = forwardRef<RecentTransactionsRef, Record<strin
     return badges[status as keyof typeof badges] || badges.completed;
   };
 
-  const getTransactionLabel = (type: string) => {
+  const getTransactionLabel = (type: string | number) => {
+    const typeMap: Record<number, string> = {
+      1: 'deposit',
+      2: 'transfer',
+      3: 'reversal',
+    };
+    
+    const typeStr = typeof type === 'number' ? typeMap[type] : type;
+    
     const labels = {
       transfer: 'Transferência',
       deposit: 'Depósito',
       reversal: 'Estorno',
     };
-    return labels[type as keyof typeof labels] || type;
+    return labels[typeStr as keyof typeof labels] || String(type);
+  };
+
+  const isPositiveTransaction = (transaction: Transaction): boolean => {
+    const type = transaction.type;
+    
+    // Depósitos e estornos são sempre positivos
+    if (type === 'deposit' || type === 1 || type === 'reversal' || type === 3) {
+      return true;
+    }
+    
+    // Para transferências, verifica se o usuário é o destinatário
+    if ((type === 'transfer' || type === 2) && userId) {
+      return transaction.receiver_user_id === userId;
+    }
+    
+    return false;
+  };
+
+  const canReverse = (transaction: Transaction): boolean => {
+    // Pode estornar transferências recebidas (tipo transfer que aumentaram o saldo)
+    // Verifica se é transferência e se está concluída e não foi estornada
+    const isTransfer = transaction.type === 'transfer' || transaction.type === 2;
+    const isCompleted = transaction.status === 'completed';
+    const notReversed = transaction.status !== 'reversed';
+    
+    return isTransfer && isCompleted && notReversed;
+  };
+
+  const handleReverse = async (transactionId: string) => {
+    if (!confirm('Tem certeza que deseja estornar esta transação? Esta ação não pode ser desfeita.')) {
+      return;
+    }
+
+    setReversingId(transactionId);
+    try {
+      await transactionService.reverse(transactionId);
+      toast.success('Transação estornada com sucesso!');
+      loadTransactions();
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || 'Erro ao estornar transação');
+    } finally {
+      setReversingId(null);
+    }
   };
 
   if (loading) {
@@ -111,7 +192,7 @@ export const RecentTransactions = forwardRef<RecentTransactionsRef, Record<strin
       <div className="space-y-3">
         {transactions.map((transaction) => {
           const badge = getStatusBadge(transaction.status);
-          const isPositive = transaction.type === 'deposit' || transaction.type === 'reversal';
+          const isPositive = isPositiveTransaction(transaction);
 
           return (
             <div
@@ -126,6 +207,13 @@ export const RecentTransactions = forwardRef<RecentTransactionsRef, Record<strin
                 <div className="flex items-center gap-2 mb-1">
                   <p className="font-semibold text-gray-900 truncate">
                     {getTransactionLabel(transaction.type)}
+                    {(transaction.type === 'transfer' || transaction.type === 2) && (
+                      <span className="font-normal text-sm">
+                        {transaction.receiver_user_id === userId 
+                          ? ` de ${transaction.senderUser?.name || transaction.sender?.name || 'Usuário'}` 
+                          : ` para ${transaction.receiverUser?.name || transaction.recipient?.name || 'Usuário'}`}
+                      </span>
+                    )}
                   </p>
                   <span className={clsx('text-xs px-2 py-0.5 rounded-full', badge.color)}>
                     {badge.text}
@@ -139,10 +227,22 @@ export const RecentTransactions = forwardRef<RecentTransactionsRef, Record<strin
                 </p>
               </div>
 
-              <div className="text-right">
-                <p className={clsx('text-lg font-bold', isPositive ? 'text-green-600' : 'text-red-600')}>
+              <div className="text-right flex-shrink-0">
+                <p className={clsx('text-lg font-bold mb-2', isPositive ? 'text-green-600' : 'text-red-600')}>
                   {isPositive ? '+' : '-'} {formatCurrency(transaction.amount)}
                 </p>
+                
+                {canReverse(transaction) && (
+                  <Button
+                    variant="outline"
+                    onClick={() => handleReverse(transaction.id)}
+                    isLoading={reversingId === transaction.id}
+                    className="text-xs px-3 py-1.5"
+                  >
+                    <RotateCcw size={14} />
+                    Estornar
+                  </Button>
+                )}
               </div>
             </div>
           );
