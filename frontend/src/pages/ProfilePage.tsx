@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ArrowLeft, User, MapPin, FileText, Lock, Save, Eye, EyeOff } from 'lucide-react';
+import { ArrowLeft, User, MapPin, FileText, Lock, Save, Eye, EyeOff, Settings, Moon, Sun, Contrast } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
@@ -9,6 +9,7 @@ import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { useAuth } from '@/contexts/AuthContext';
+import { useTheme } from '@/contexts/ThemeContext';
 import { profileService } from '@/services';
 import { formatCPF } from '@/utils/formatters';
 import toast from 'react-hot-toast';
@@ -44,7 +45,8 @@ type PasswordFormData = z.infer<typeof passwordSchema>;
 export const ProfilePage = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const [activeTab, setActiveTab] = useState<'profile' | 'address' | 'documents' | 'security'>('profile');
+  const { theme, contrast, setTheme, setContrast } = useTheme();
+  const [activeTab, setActiveTab] = useState<'profile' | 'address' | 'documents' | 'security' | 'settings'>('profile');
   const [loadingProfile, setLoadingProfile] = useState(false);
   const [loadingAddress, setLoadingAddress] = useState(false);
   const [loadingPassword, setLoadingPassword] = useState(false);
@@ -148,6 +150,7 @@ export const ProfilePage = () => {
     { id: 'address' as const, label: 'Endereço', icon: MapPin },
     { id: 'documents' as const, label: 'Documentos', icon: FileText },
     { id: 'security' as const, label: 'Segurança', icon: Lock },
+    { id: 'settings' as const, label: 'Configurações', icon: Settings },
   ];
 
   return (
@@ -392,7 +395,129 @@ export const ProfilePage = () => {
             </form>
           </Card>
         )}
+
+        {/* Settings Tab */}
+        {activeTab === 'settings' && (
+          <Card title="Configurações" subtitle="Personalize a aparência do sistema">
+            <div className="space-y-6">
+              {/* Theme Selection */}
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                  {theme === 'dark' ? <Moon size={20} /> : <Sun size={20} />}
+                  Tema
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <button
+                    onClick={() => setTheme('light')}
+                    className={`p-4 rounded-lg border-2 transition-all ${
+                      theme === 'light'
+                        ? 'border-primary bg-primary/5 shadow-md'
+                        : 'border-gray-200 bg-white hover:border-gray-300'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="p-2 rounded-lg bg-yellow-100">
+                        <Sun size={20} className="text-yellow-600" />
+                      </div>
+                      <span className="font-medium text-gray-900">Modo Claro</span>
+                      {theme === 'light' && (
+                        <div className="ml-auto w-2 h-2 bg-primary rounded-full"></div>
+                      )}
+                    </div>
+                    <p className="text-sm text-gray-600 text-left">
+                      Interface clara e brilhante, ideal para ambientes bem iluminados
+                    </p>
+                  </button>
+
+                  <button
+                    onClick={() => setTheme('dark')}
+                    className={`p-4 rounded-lg border-2 transition-all ${
+                      theme === 'dark'
+                        ? 'border-primary bg-primary/5 shadow-md'
+                        : 'border-gray-200 bg-white hover:border-gray-300'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="p-2 rounded-lg bg-indigo-100">
+                        <Moon size={20} className="text-indigo-600" />
+                      </div>
+                      <span className="font-medium text-gray-900">Modo Escuro</span>
+                      {theme === 'dark' && (
+                        <div className="ml-auto w-2 h-2 bg-primary rounded-full"></div>
+                      )}
+                    </div>
+                    <p className="text-sm text-gray-600 text-left">
+                      Interface escura que reduz a fadiga visual em ambientes com pouca luz
+                    </p>
+                  </button>
+                </div>
+              </div>
+
+              <div className="border-t border-gray-200 pt-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                  <Contrast size={20} />
+                  Contraste
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <button
+                    onClick={() => setContrast('normal')}
+                    className={`p-4 rounded-lg border-2 transition-all ${
+                      contrast === 'normal'
+                        ? 'border-primary bg-primary/5 shadow-md'
+                        : 'border-gray-200 bg-white hover:border-gray-300'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="p-2 rounded-lg bg-gray-100">
+                        <div className="w-5 h-5 rounded border-2 border-gray-400"></div>
+                      </div>
+                      <span className="font-medium text-gray-900">Contraste Normal</span>
+                      {contrast === 'normal' && (
+                        <div className="ml-auto w-2 h-2 bg-primary rounded-full"></div>
+                      )}
+                    </div>
+                    <p className="text-sm text-gray-600 text-left">
+                      Aparência padrão com cores balanceadas
+                    </p>
+                  </button>
+
+                  <button
+                    onClick={() => setContrast('high')}
+                    className={`p-4 rounded-lg border-2 transition-all ${
+                      contrast === 'high'
+                        ? 'border-primary bg-primary/5 shadow-md'
+                        : 'border-gray-200 bg-white hover:border-gray-300'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="p-2 rounded-lg bg-gray-900">
+                        <div className="w-5 h-5 rounded border-2 border-white"></div>
+                      </div>
+                      <span className="font-medium text-gray-900">Alto Contraste</span>
+                      {contrast === 'high' && (
+                        <div className="ml-auto w-2 h-2 bg-primary rounded-full"></div>
+                      )}
+                    </div>
+                    <p className="text-sm text-gray-600 text-left">
+                      Cores mais vibrantes para melhor visibilidade e acessibilidade
+                    </p>
+                  </button>
+                </div>
+              </div>
+
+              <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                <p className="text-sm text-blue-800 mb-2 font-medium">ℹ️ Sobre as configurações de aparência</p>
+                <ul className="text-xs text-blue-700 space-y-1">
+                  <li>• As configurações são salvas automaticamente no seu navegador</li>
+                  <li>• O modo escuro pode ajudar a reduzir o cansaço visual</li>
+                  <li>• O alto contraste melhora a acessibilidade para pessoas com baixa visão</li>
+                </ul>
+              </div>
+            </div>
+          </Card>
+        )}
       </main>
     </div>
   );
 };
+

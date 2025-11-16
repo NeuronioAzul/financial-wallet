@@ -5,6 +5,8 @@ export interface User {
   document: string;
   role: 'admin' | 'customer';
   status: 'active' | 'inactive' | 'suspended';
+  theme_mode?: 'light' | 'dark';
+  contrast_mode?: 'normal' | 'high';
   created_at: string;
   updated_at: string;
 }
