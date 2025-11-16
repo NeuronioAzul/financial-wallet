@@ -7,60 +7,60 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Grupo Adriano Colors
-        'forest-green': {
-          DEFAULT: '#00610D',
-          light: '#70E080',
-          dark: '#004008',
-        },
-        'golden-sand': {
-          DEFAULT: '#DAB655',
-          light: '#F0D685',
-          dark: '#B89640',
-        },
-        'ocean-blue': {
+        // Grupo Adriano Colors - usando camelCase para compatibilidade
+        oceanblue: {
           DEFAULT: '#003161',
           light: '#3D58B6',
           dark: '#001F3D',
         },
-        'burgundy-red': {
-          DEFAULT: '#610019',
-          light: '#8B0025',
-          dark: '#3D000F',
-        },
-        'royal-blue': {
+        royalblue: {
           DEFAULT: '#3D58B6',
           light: '#5D78D6',
           dark: '#2D4896',
         },
-        'mint-green': {
+        forestgreen: {
+          DEFAULT: '#00610D',
+          light: '#70E080',
+          dark: '#004008',
+        },
+        mintgreen: {
           DEFAULT: '#70E080',
           light: '#90F0A0',
           dark: '#50C060',
         },
-        'silver-gray': {
+        goldensand: {
+          DEFAULT: '#DAB655',
+          light: '#F0D685',
+          dark: '#B89640',
+        },
+        burgundyred: {
+          DEFAULT: '#610019',
+          light: '#8B0025',
+          dark: '#3D000F',
+        },
+        silvergray: {
           DEFAULT: '#B3B6CA',
           light: '#D3D6EA',
           dark: '#9396AA',
         },
-        'charcoal-gray': {
+        charcoalgray: {
           DEFAULT: '#686A75',
           light: '#888A95',
           dark: '#484A55',
         },
         // Semantic colors using the palette
         primary: {
-          DEFAULT: '#003161', // ocean-blue
-          light: '#3D58B6',   // royal-blue
+          DEFAULT: '#003161', // oceanblue
+          light: '#3D58B6',   // royalblue
           dark: '#001F3D',
         },
         secondary: {
-          DEFAULT: '#00610D', // forest-green
-          light: '#70E080',   // mint-green
+          DEFAULT: '#00610D', // forestgreen
+          light: '#70E080',   // mintgreen
           dark: '#004008',
         },
         accent: {
-          DEFAULT: '#DAB655', // golden-sand
+          DEFAULT: '#DAB655', // goldensand
           dark: '#B89640',
           light: '#F0D685',
         },
@@ -78,6 +78,7 @@ export default {
           DEFAULT: '#686A75',
           light: '#B3B6CA',
           dark: '#484A55',
+        },
         },
       },
       fontFamily: {
