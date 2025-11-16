@@ -22,8 +22,6 @@ info:
 servers:
   - url: http://localhost:8000/api
     description: Ambiente de desenvolvimento local
-  - url: http://localhost:8000/api/v1
-    description: API v1 - Desenvolvimento
 
 tags:
   - name: Health
