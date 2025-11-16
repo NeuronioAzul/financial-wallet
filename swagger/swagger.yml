@@ -89,6 +89,18 @@ components:
           type: string
           enum: [active, inactive, blocked]
           example: "active"
+        theme_mode:
+          type: string
+          enum: [light, dark]
+          default: light
+          example: "light"
+          description: "User's preferred theme mode"
+        contrast_mode:
+          type: string
+          enum: [normal, high]
+          default: normal
+          example: "normal"
+          description: "User's preferred contrast mode for accessibility"
         email_verified_at:
           type: string
           format: date-time
@@ -554,6 +566,62 @@ paths:
                   message:
                     type: string
                     example: "Profile updated successfully"
+        '422':
+          description: Dados inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/profile/theme-settings:
+    patch:
+      tags:
+        - Profile
+      summary: Atualizar configurações de tema
+      description: Atualiza as preferências de tema (light/dark) e contraste (normal/high) do usuário
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                theme_mode:
+                  type: string
+                  enum: [light, dark]
+                  example: "dark"
+                  description: "Modo de tema preferido"
+                contrast_mode:
+                  type: string
+                  enum: [normal, high]
+                  example: "high"
+                  description: "Modo de contraste para acessibilidade"
+      responses:
+        '200':
+          description: Configurações de tema atualizadas com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Theme settings updated successfully"
+                  data:
+                    type: object
+                    properties:
+                      theme_mode:
+                        type: string
+                        enum: [light, dark]
+                        example: "dark"
+                      contrast_mode:
+                        type: string
+                        enum: [normal, high]
+                        example: "high"
+        '401':
+          description: Não autenticado
         '422':
           description: Dados inválidos
           content:
