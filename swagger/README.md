@@ -228,5 +228,5 @@ Para adicionar novos endpoints à documentação:
 
 ---
 
-**Desenvolvido por Grupo Adriano** 🚀
+**Desenvolvido por Adriano Cobuccio** 🚀
 

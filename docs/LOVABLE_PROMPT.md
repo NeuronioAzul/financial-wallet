@@ -4,7 +4,7 @@ Crie um frontend React completo para uma **carteira digital financeira** com as 
 
 ## 🎨 Design System
 
-### Paleta de Cores (Grupo Adriano)
+### Paleta de Cores (Adriano Cobuccio)
 - **Azul Corporativo:** `#002a54` (primário)
 - **Azul Médio:** `#003d7a` (gradientes)
 - **Dourado:** `#e6c35f` (CTA e destaques)
@@ -67,7 +67,7 @@ Response: { "token": "string", "user": {...} }
 ## 💼 Dashboard (Priority 2)
 
 ### Header
-- Logo Grupo Adriano
+- Logo Adriano Cobuccio
 - Nome do usuário + avatar (inicial)
 - Dropdown: Perfil, Configurações, Sair
 - Indicador de role (Admin/Cliente)

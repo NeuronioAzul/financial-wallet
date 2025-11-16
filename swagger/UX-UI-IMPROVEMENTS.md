@@ -1,7 +1,7 @@
 # 🎨 Melhorias UX/UI - Swagger Customizado
 
 ## 🎯 Objetivo
-Aplicar identidade visual da marca Grupo Adriano ao Swagger UI com as cores corporativas.
+Aplicar identidade visual da marca Adriano Cobuccio ao Swagger UI com as cores corporativas.
 
 ---
 
@@ -380,7 +380,7 @@ http://localhost:8080
 
 **UX/UI Atualizada:** ✅ **COMPLETO**
 
-Todas as cores foram migradas para a identidade visual do Grupo Adriano, mantendo a funcionalidade e melhorando significativamente a experiência do usuário com:
+Todas as cores foram migradas para a identidade visual de Adriano Cobuccio, mantendo a funcionalidade e melhorando significativamente a experiência do usuário com:
 
 - Identidade visual forte e consistente
 - Animações e transições suaves

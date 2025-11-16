@@ -71,7 +71,10 @@ export const RegisterPage: React.FC = () => {
             <div className="rounded-2xl bg-white/10 p-3 backdrop-blur-sm">
               <Wallet className="h-8 w-8 text-golden-sand" />
             </div>
-            <h1 className="text-3xl font-bold text-golden-sand">Grupo Adriano</h1>
+            <div className="flex flex-col">
+              <span className="text-xs text-white/60 uppercase tracking-wide">grupo</span>
+              <h1 className="text-3xl font-bold text-golden-sand">Adriano Cobuccio</h1>
+            </div>
           </div>
           <h2 className="mb-4 text-4xl font-bold leading-tight">
             Comece sua jornada financeira
@@ -90,7 +93,10 @@ export const RegisterPage: React.FC = () => {
           <div className="mb-8 lg:hidden">
             <div className="mb-4 flex items-center gap-2">
               <Wallet className="h-6 w-6 text-golden-sand" />
-              <span className="text-xl font-bold text-golden-sand">Grupo Adriano</span>
+              <div className="flex flex-col">
+                <span className="text-xs text-gray-500 uppercase tracking-wide">grupo</span>
+                <span className="text-xl font-bold text-golden-sand">Adriano Cobuccio</span>
+              </div>
             </div>
           </div>
 

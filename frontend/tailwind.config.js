@@ -7,7 +7,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Grupo Adriano Colors - usando camelCase para compatibilidade
+        // Adriano Cobuccio Colors - usando camelCase para compatibilidade
         oceanblue: {
           DEFAULT: '#003161',
           light: '#3D58B6',
@@ -78,7 +78,6 @@ export default {
           DEFAULT: '#686A75',
           light: '#B3B6CA',
           dark: '#484A55',
-        },
         },
       },
       fontFamily: {

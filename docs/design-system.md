@@ -1,4 +1,4 @@
-# Design System - Grupo Adriano
+# Design System - Adriano Cobuccio
 
 ## Paleta de Cores
 

@@ -8,6 +8,7 @@ import { ForgotPasswordPage } from '@/pages/ForgotPasswordPage';
 import { DashboardPage } from '@/pages/DashboardPage';
 import { TransactionHistoryPage } from '@/pages/TransactionHistoryPage';
 import { ProfilePage } from '@/pages/ProfilePage';
+import { StyleGuidePage } from '@/pages/StyleGuidePage';
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
@@ -53,6 +54,7 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
+      <Route path="/style-guide" element={<StyleGuidePage />} />
       <Route path="/" element={<Navigate to="/dashboard" replace />} />
     </Routes>
   );

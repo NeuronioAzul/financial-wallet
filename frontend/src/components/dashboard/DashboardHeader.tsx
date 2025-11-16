@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { LogOut, User, ChevronDown } from 'lucide-react';
-import { useAuth } from '@/contexts/AuthContext';
-import { clsx } from 'clsx';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { LogOut, User, ChevronDown } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { clsx } from "clsx";
 
 export const DashboardHeader: React.FC = () => {
   const navigate = useNavigate();
@@ -15,8 +15,11 @@ export const DashboardHeader: React.FC = () => {
 
   const getRoleBadge = (role: string) => {
     const badges = {
-      admin: { text: 'Administrador', color: 'bg-royal-blue-light/20 text-royal-blue-dark' },
-      customer: { text: 'Cliente', color: 'bg-ocean-blue/10 text-ocean-blue' },
+      admin: {
+        text: "Administrador",
+        color: "bg-royal-blue-light/20 text-royal-blue-dark",
+      },
+      customer: { text: "Cliente", color: "bg-ocean-blue/10 text-ocean-blue" },
     };
     return badges[role as keyof typeof badges] || badges.customer;
   };
@@ -30,10 +33,12 @@ export const DashboardHeader: React.FC = () => {
           {/* Logo */}
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-oceanblue rounded-lg flex items-center justify-center">
-              <span className="text-goldensand font-bold text-lg">GA</span>
+              <span className="text-goldensand font-bold text-lg">AC</span>
             </div>
             <div>
-              <h1 className="text-lg font-bold text-oceanblue">Grupo Adriano</h1>
+              <h1 className="text-lg font-bold text-oceanblue">
+                Adriano Cobuccio
+              </h1>
               <p className="text-xs text-charcoalgray">Carteira Digital</p>
             </div>
           </div>
@@ -48,16 +53,26 @@ export const DashboardHeader: React.FC = () => {
                 {user && getInitial(user.name)}
               </div>
               <div className="hidden md:block text-left">
-                <p className="text-sm font-semibold text-gray-900">{user?.name}</p>
+                <p className="text-sm font-semibold text-gray-900">
+                  {user?.name}
+                </p>
                 {badge && (
-                  <span className={clsx('text-xs px-2 py-0.5 rounded-full', badge.color)}>
+                  <span
+                    className={clsx(
+                      "text-xs px-2 py-0.5 rounded-full",
+                      badge.color
+                    )}
+                  >
                     {badge.text}
                   </span>
                 )}
               </div>
               <ChevronDown
                 size={20}
-                className={clsx('text-gray-500 transition-transform', isMenuOpen && 'rotate-180')}
+                className={clsx(
+                  "text-gray-500 transition-transform",
+                  isMenuOpen && "rotate-180"
+                )}
               />
             </button>
 
@@ -70,12 +85,14 @@ export const DashboardHeader: React.FC = () => {
                 />
                 <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-20">
                   <div className="px-4 py-2 border-b border-gray-200">
-                    <p className="text-sm font-semibold text-gray-900">{user?.name}</p>
+                    <p className="text-sm font-semibold text-gray-900">
+                      {user?.name}
+                    </p>
                     <p className="text-xs text-gray-500">{user?.email}</p>
                   </div>
                   <button
                     onClick={() => {
-                      navigate('/profile');
+                      navigate("/profile");
                       setIsMenuOpen(false);
                     }}
                     className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2"
