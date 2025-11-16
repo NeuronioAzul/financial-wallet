@@ -10,6 +10,11 @@ class AddressService
 {
     public function createAddress(User $user, array $data): Address
     {
+        // Se for o primeiro endereço, marca como principal automaticamente
+        if ($user->addresses()->count() === 0) {
+            $data['is_primary'] = true;
+        }
+
         // Se marcar como principal, desmarcar outros
         if ($data['is_primary'] ?? false) {
             $user->addresses()->update(['is_primary' => false]);

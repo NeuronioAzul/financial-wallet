@@ -11,6 +11,15 @@ class StoreAddressRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation(): void
+    {
+        if ($this->has('zip_code')) {
+            $this->merge([
+                'zip_code' => preg_replace('/\D/', '', $this->zip_code),
+            ]);
+        }
+    }
+
     public function rules(): array
     {
         return [

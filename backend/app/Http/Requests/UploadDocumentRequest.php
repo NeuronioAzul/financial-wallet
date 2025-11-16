@@ -16,7 +16,12 @@ class UploadDocumentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'document_type' => ['required', Rule::enum(DocumentType::class)],
+            'document_type' => [
+                'required',
+                Rule::enum(DocumentType::class),
+                Rule::unique('user_documents', 'document_type')
+                    ->where('user_id', $this->user()->id),
+            ],
             'file' => [
                 'required',
                 'file',
@@ -30,6 +35,7 @@ class UploadDocumentRequest extends FormRequest
     {
         return [
             'document_type.required' => 'Document type is required',
+            'document_type.unique' => 'You have already uploaded this document type',
             'file.required' => 'File is required',
             'file.mimes' => 'File must be JPG, JPEG, PNG or PDF',
             'file.max' => 'File size must not exceed 5MB',
