@@ -33,17 +33,17 @@ export const StyleGuidePage: React.FC = () => {
             <ArrowLeft size={20} />
             Voltar ao Dashboard
           </Link>
-          <h1 className="text-4xl font-bold text-oceanblue mb-2">
+          <h1 className="text-4xl font-bold text-ocean-blue mb-2">
             Design System
           </h1>
-          <p className="text-charcoalgray">
+          <p className="text-charcoal-gray">
             Guia de estilos e componentes - Adriano Cobuccio
           </p>
         </div>
 
         {/* Colors */}
         <Card className="mb-8">
-          <h2 className="text-2xl font-bold text-oceanblue mb-4">Cores</h2>
+          <h2 className="text-2xl font-bold text-ocean-blue mb-4">Cores</h2>
 
           <div className="space-y-6">
             {/* Primary Colors */}
@@ -51,35 +51,35 @@ export const StyleGuidePage: React.FC = () => {
               <h3 className="text-lg font-semibold mb-3">Cores Principais</h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div>
-                  <div className="h-24 bg-oceanblue rounded-lg mb-2"></div>
+                  <div className="h-24 bg-ocean-blue rounded-lg mb-2"></div>
                   <p className="font-medium">Ocean Blue</p>
                   <p className="text-sm text-gray-600">#003161</p>
                   <code className="text-xs bg-gray-100 px-2 py-1 rounded">
-                    bg-oceanblue
+                    bg-ocean-blue
                   </code>
                 </div>
                 <div>
-                  <div className="h-24 bg-royalblue rounded-lg mb-2"></div>
+                  <div className="h-24 bg-royal-blue rounded-lg mb-2"></div>
                   <p className="font-medium">Royal Blue</p>
                   <p className="text-sm text-gray-600">#3D58B6</p>
                   <code className="text-xs bg-gray-100 px-2 py-1 rounded">
-                    bg-royalblue
+                    bg-royal-blue
                   </code>
                 </div>
                 <div>
-                  <div className="h-24 bg-forestgreen rounded-lg mb-2"></div>
+                  <div className="h-24 bg-forest-green rounded-lg mb-2"></div>
                   <p className="font-medium">Forest Green</p>
                   <p className="text-sm text-gray-600">#00610D</p>
                   <code className="text-xs bg-gray-100 px-2 py-1 rounded">
-                    bg-forestgreen
+                    bg-forest-green
                   </code>
                 </div>
                 <div>
-                  <div className="h-24 bg-mintgreen rounded-lg mb-2"></div>
+                  <div className="h-24 bg-mint-green rounded-lg mb-2"></div>
                   <p className="font-medium">Mint Green</p>
                   <p className="text-sm text-gray-600">#70E080</p>
                   <code className="text-xs bg-gray-100 px-2 py-1 rounded">
-                    bg-mintgreen
+                    bg-mint-green
                   </code>
                 </div>
               </div>
@@ -90,35 +90,35 @@ export const StyleGuidePage: React.FC = () => {
               <h3 className="text-lg font-semibold mb-3">Cores de Acento</h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div>
-                  <div className="h-24 bg-goldensand rounded-lg mb-2"></div>
+                  <div className="h-24 bg-golden-sand rounded-lg mb-2"></div>
                   <p className="font-medium">Golden Sand</p>
                   <p className="text-sm text-gray-600">#DAB655</p>
                   <code className="text-xs bg-gray-100 px-2 py-1 rounded">
-                    bg-goldensand
+                    bg-golden-sand
                   </code>
                 </div>
                 <div>
-                  <div className="h-24 bg-burgundyred rounded-lg mb-2"></div>
+                  <div className="h-24 bg-burgundy-red rounded-lg mb-2"></div>
                   <p className="font-medium">Burgundy Red</p>
                   <p className="text-sm text-gray-600">#610019</p>
                   <code className="text-xs bg-gray-100 px-2 py-1 rounded">
-                    bg-burgundyred
+                    bg-burgundy-red
                   </code>
                 </div>
                 <div>
-                  <div className="h-24 bg-silvergray rounded-lg mb-2"></div>
+                  <div className="h-24 bg-silver-gray rounded-lg mb-2"></div>
                   <p className="font-medium">Silver Gray</p>
                   <p className="text-sm text-gray-600">#B3B6CA</p>
                   <code className="text-xs bg-gray-100 px-2 py-1 rounded">
-                    bg-silvergray
+                    bg-silver-gray
                   </code>
                 </div>
                 <div>
-                  <div className="h-24 bg-charcoalgray rounded-lg mb-2"></div>
+                  <div className="h-24 bg-charcoal-gray rounded-lg mb-2"></div>
                   <p className="font-medium">Charcoal Gray</p>
                   <p className="text-sm text-gray-600">#686A75</p>
                   <code className="text-xs bg-gray-100 px-2 py-1 rounded">
-                    bg-charcoalgray
+                    bg-charcoal-gray
                   </code>
                 </div>
               </div>
@@ -128,7 +128,7 @@ export const StyleGuidePage: React.FC = () => {
 
         {/* Typography */}
         <Card className="mb-8">
-          <h2 className="text-2xl font-bold text-oceanblue mb-4">Tipografia</h2>
+          <h2 className="text-2xl font-bold text-ocean-blue mb-4">Tipografia</h2>
           <div className="space-y-4">
             <div>
               <h1 className="text-4xl font-bold text-gray-900">
@@ -193,27 +193,27 @@ export const StyleGuidePage: React.FC = () => {
 
         {/* Buttons */}
         <Card className="mb-8">
-          <h2 className="text-2xl font-bold text-oceanblue mb-4">Botões</h2>
+          <h2 className="text-2xl font-bold text-ocean-blue mb-4">Botões</h2>
           <div className="space-y-6">
             <div>
               <h3 className="text-lg font-semibold mb-3">Tamanhos e Estilos</h3>
               <div className="flex flex-wrap gap-4">
-                <Button className="bg-goldensand text-gray-900 font-bold hover:bg-goldensand-dark">
+                <Button className="bg-golden-sand text-gray-900 font-bold hover:bg-golden-sand-dark">
                   Golden Sand
                 </Button>
-                <Button className="bg-oceanblue text-white hover:bg-oceanblue-light">
+                <Button className="bg-ocean-blue text-white hover:bg-ocean-blue-light">
                   Ocean Blue
                 </Button>
-                <Button className="bg-forestgreen text-white hover:bg-forestgreen-light">
+                <Button className="bg-forest-green text-white hover:bg-forest-green-light">
                   Forest Green
                 </Button>
-                <Button className="border-2 border-oceanblue text-oceanblue hover:bg-oceanblue hover:text-white">
+                <Button className="border-2 border-ocean-blue text-ocean-blue hover:bg-ocean-blue hover:text-white">
                   Outline
                 </Button>
                 <Button className="bg-gray-200 text-gray-700 hover:bg-gray-300">
                   Secondary
                 </Button>
-                <Button className="bg-burgundyred text-white hover:bg-burgundyred-light">
+                <Button className="bg-burgundy-red text-white hover:bg-burgundy-red-light">
                   Danger
                 </Button>
               </div>
@@ -222,15 +222,15 @@ export const StyleGuidePage: React.FC = () => {
             <div>
               <h3 className="text-lg font-semibold mb-3">Com Ícones</h3>
               <div className="flex flex-wrap gap-4">
-                <Button className="bg-goldensand text-gray-900 font-bold hover:bg-goldensand-dark">
+                <Button className="bg-golden-sand text-gray-900 font-bold hover:bg-golden-sand-dark">
                   <Plus size={20} />
                   Depositar
                 </Button>
-                <Button className="bg-oceanblue text-white hover:bg-oceanblue-light">
+                <Button className="bg-ocean-blue text-white hover:bg-ocean-blue-light">
                   <ArrowUpRight size={20} />
                   Transferir
                 </Button>
-                <Button className="border-2 border-oceanblue text-oceanblue hover:bg-oceanblue hover:text-white">
+                <Button className="border-2 border-ocean-blue text-ocean-blue hover:bg-ocean-blue hover:text-white">
                   <RotateCcw size={20} />
                   Estornar
                 </Button>
@@ -240,11 +240,11 @@ export const StyleGuidePage: React.FC = () => {
             <div>
               <h3 className="text-lg font-semibold mb-3">Estados</h3>
               <div className="flex flex-wrap gap-4">
-                <Button className="bg-goldensand text-gray-900 font-bold">
+                <Button className="bg-golden-sand text-gray-900 font-bold">
                   Normal
                 </Button>
                 <Button
-                  className="bg-goldensand text-gray-900 font-bold opacity-50 cursor-not-allowed"
+                  className="bg-golden-sand text-gray-900 font-bold opacity-50 cursor-not-allowed"
                   disabled
                 >
                   Disabled
@@ -256,7 +256,7 @@ export const StyleGuidePage: React.FC = () => {
 
         {/* Form Elements */}
         <Card className="mb-8">
-          <h2 className="text-2xl font-bold text-oceanblue mb-4">
+          <h2 className="text-2xl font-bold text-ocean-blue mb-4">
             Formulários
           </h2>
           <div className="space-y-6 max-w-md">
@@ -298,7 +298,7 @@ export const StyleGuidePage: React.FC = () => {
 
             <div>
               <h3 className="text-lg font-semibold mb-3">Select</h3>
-              <select className="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-royalblue focus:ring-2 focus:ring-royalblue/20 outline-none">
+              <select className="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-royal-blue focus:ring-2 focus:ring-royal-blue/20 outline-none">
                 <option>Selecione uma opção</option>
                 <option>Opção 1</option>
                 <option>Opção 2</option>
@@ -312,7 +312,7 @@ export const StyleGuidePage: React.FC = () => {
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input
                     type="checkbox"
-                    className="h-4 w-4 rounded border-gray-300 text-oceanblue focus:ring-oceanblue"
+                    className="h-4 w-4 rounded border-gray-300 text-ocean-blue focus:ring-ocean-blue"
                   />
                   <span className="text-sm">Checkbox option</span>
                 </label>
@@ -320,7 +320,7 @@ export const StyleGuidePage: React.FC = () => {
                   <input
                     type="radio"
                     name="example"
-                    className="h-4 w-4 border-gray-300 text-oceanblue focus:ring-oceanblue"
+                    className="h-4 w-4 border-gray-300 text-ocean-blue focus:ring-ocean-blue"
                   />
                   <span className="text-sm">Radio option 1</span>
                 </label>
@@ -328,7 +328,7 @@ export const StyleGuidePage: React.FC = () => {
                   <input
                     type="radio"
                     name="example"
-                    className="h-4 w-4 border-gray-300 text-oceanblue focus:ring-oceanblue"
+                    className="h-4 w-4 border-gray-300 text-ocean-blue focus:ring-ocean-blue"
                   />
                   <span className="text-sm">Radio option 2</span>
                 </label>
@@ -339,38 +339,38 @@ export const StyleGuidePage: React.FC = () => {
 
         {/* Icons */}
         <Card className="mb-8">
-          <h2 className="text-2xl font-bold text-oceanblue mb-4">Ícones</h2>
+          <h2 className="text-2xl font-bold text-ocean-blue mb-4">Ícones</h2>
           <div className="space-y-6">
             <div>
               <h3 className="text-lg font-semibold mb-3">Transações</h3>
               <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                 <div className="flex flex-col items-center gap-2">
-                  <div className="w-12 h-12 rounded-full bg-mintgreen/10 flex items-center justify-center">
-                    <Plus size={24} className="text-mintgreen" />
+                  <div className="w-12 h-12 rounded-full bg-mint-green/10 flex items-center justify-center">
+                    <Plus size={24} className="text-mint-green" />
                   </div>
                   <p className="text-sm">Depósito</p>
                 </div>
                 <div className="flex flex-col items-center gap-2">
-                  <div className="w-12 h-12 rounded-full bg-royalblue/10 flex items-center justify-center">
-                    <ArrowUpRight size={24} className="text-royalblue" />
+                  <div className="w-12 h-12 rounded-full bg-royal-blue/10 flex items-center justify-center">
+                    <ArrowUpRight size={24} className="text-royal-blue" />
                   </div>
                   <p className="text-sm">Enviado</p>
                 </div>
                 <div className="flex flex-col items-center gap-2">
-                  <div className="w-12 h-12 rounded-full bg-mintgreen/10 flex items-center justify-center">
-                    <ArrowDownLeft size={24} className="text-mintgreen" />
+                  <div className="w-12 h-12 rounded-full bg-mint-green/10 flex items-center justify-center">
+                    <ArrowDownLeft size={24} className="text-mint-green" />
                   </div>
                   <p className="text-sm">Recebido</p>
                 </div>
                 <div className="flex flex-col items-center gap-2">
-                  <div className="w-12 h-12 rounded-full bg-goldensand/10 flex items-center justify-center">
-                    <RotateCcw size={24} className="text-goldensand" />
+                  <div className="w-12 h-12 rounded-full bg-golden-sand/10 flex items-center justify-center">
+                    <RotateCcw size={24} className="text-golden-sand" />
                   </div>
                   <p className="text-sm">Estorno</p>
                 </div>
                 <div className="flex flex-col items-center gap-2">
-                  <div className="w-12 h-12 rounded-full bg-oceanblue/10 flex items-center justify-center">
-                    <Wallet size={24} className="text-oceanblue" />
+                  <div className="w-12 h-12 rounded-full bg-ocean-blue/10 flex items-center justify-center">
+                    <Wallet size={24} className="text-ocean-blue" />
                   </div>
                   <p className="text-sm">Carteira</p>
                 </div>
@@ -381,26 +381,26 @@ export const StyleGuidePage: React.FC = () => {
               <h3 className="text-lg font-semibold mb-3">Status</h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="flex flex-col items-center gap-2">
-                  <div className="w-12 h-12 rounded-full bg-forestgreen/10 flex items-center justify-center">
-                    <Check size={24} className="text-forestgreen" />
+                  <div className="w-12 h-12 rounded-full bg-forest-green/10 flex items-center justify-center">
+                    <Check size={24} className="text-forest-green" />
                   </div>
                   <p className="text-sm">Sucesso</p>
                 </div>
                 <div className="flex flex-col items-center gap-2">
-                  <div className="w-12 h-12 rounded-full bg-burgundyred/10 flex items-center justify-center">
-                    <X size={24} className="text-burgundyred" />
+                  <div className="w-12 h-12 rounded-full bg-burgundy-red/10 flex items-center justify-center">
+                    <X size={24} className="text-burgundy-red" />
                   </div>
                   <p className="text-sm">Erro</p>
                 </div>
                 <div className="flex flex-col items-center gap-2">
-                  <div className="w-12 h-12 rounded-full bg-goldensand/10 flex items-center justify-center">
-                    <AlertTriangle size={24} className="text-goldensand" />
+                  <div className="w-12 h-12 rounded-full bg-golden-sand/10 flex items-center justify-center">
+                    <AlertTriangle size={24} className="text-golden-sand" />
                   </div>
                   <p className="text-sm">Aviso</p>
                 </div>
                 <div className="flex flex-col items-center gap-2">
-                  <div className="w-12 h-12 rounded-full bg-royalblue/10 flex items-center justify-center">
-                    <Info size={24} className="text-royalblue" />
+                  <div className="w-12 h-12 rounded-full bg-royal-blue/10 flex items-center justify-center">
+                    <Info size={24} className="text-royal-blue" />
                   </div>
                   <p className="text-sm">Info</p>
                 </div>
@@ -411,24 +411,24 @@ export const StyleGuidePage: React.FC = () => {
 
         {/* Badges */}
         <Card className="mb-8">
-          <h2 className="text-2xl font-bold text-oceanblue mb-4">Badges</h2>
+          <h2 className="text-2xl font-bold text-ocean-blue mb-4">Badges</h2>
           <div className="flex flex-wrap gap-3">
-            <span className="px-3 py-1 rounded-full bg-forestgreen/10 text-forestgreen text-sm font-medium">
+            <span className="px-3 py-1 rounded-full bg-forest-green/10 text-forest-green text-sm font-medium">
               Concluída
             </span>
-            <span className="px-3 py-1 rounded-full bg-goldensand/20 text-goldensand-dark text-sm font-medium">
+            <span className="px-3 py-1 rounded-full bg-golden-sand/20 text-golden-sand-dark text-sm font-medium">
               Pendente
             </span>
-            <span className="px-3 py-1 rounded-full bg-burgundyred/10 text-burgundyred text-sm font-medium">
+            <span className="px-3 py-1 rounded-full bg-burgundy-red/10 text-burgundy-red text-sm font-medium">
               Falhou
             </span>
-            <span className="px-3 py-1 rounded-full bg-silvergray text-charcoalgray text-sm font-medium">
+            <span className="px-3 py-1 rounded-full bg-silver-gray text-charcoal-gray text-sm font-medium">
               Estornada
             </span>
-            <span className="px-3 py-1 rounded-full bg-oceanblue/10 text-oceanblue text-sm font-medium">
+            <span className="px-3 py-1 rounded-full bg-ocean-blue/10 text-ocean-blue text-sm font-medium">
               Cliente
             </span>
-            <span className="px-3 py-1 rounded-full bg-royalblue/20 text-royalblue-dark text-sm font-medium">
+            <span className="px-3 py-1 rounded-full bg-royal-blue/20 text-royal-blue-dark text-sm font-medium">
               Admin
             </span>
           </div>
@@ -436,7 +436,7 @@ export const StyleGuidePage: React.FC = () => {
 
         {/* Cards */}
         <Card className="mb-8">
-          <h2 className="text-2xl font-bold text-oceanblue mb-4">Cards</h2>
+          <h2 className="text-2xl font-bold text-ocean-blue mb-4">Cards</h2>
           <div className="grid md:grid-cols-2 gap-4">
             <Card>
               <h3 className="text-lg font-semibold mb-2">Card Padrão</h3>
@@ -444,7 +444,7 @@ export const StyleGuidePage: React.FC = () => {
                 Este é um card com o estilo padrão do sistema.
               </p>
             </Card>
-            <Card className="bg-gradient-to-br from-oceanblue to-royalblue text-white">
+            <Card className="bg-gradient-to-br from-ocean-blue to-royal-blue text-white">
               <h3 className="text-lg font-semibold mb-2">Card com Gradiente</h3>
               <p className="text-white/80">Card com gradiente azul oceano.</p>
             </Card>
@@ -453,7 +453,7 @@ export const StyleGuidePage: React.FC = () => {
 
         {/* Table */}
         <Card className="mb-8">
-          <h2 className="text-2xl font-bold text-oceanblue mb-4">Tabela</h2>
+          <h2 className="text-2xl font-bold text-ocean-blue mb-4">Tabela</h2>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
@@ -477,11 +477,11 @@ export const StyleGuidePage: React.FC = () => {
                   <td className="py-3 px-4 text-sm">001</td>
                   <td className="py-3 px-4">João Silva</td>
                   <td className="py-3 px-4">
-                    <span className="px-2 py-1 rounded-full bg-forestgreen/10 text-forestgreen text-xs">
+                    <span className="px-2 py-1 rounded-full bg-forest-green/10 text-forest-green text-xs">
                       Ativo
                     </span>
                   </td>
-                  <td className="py-3 px-4 text-forestgreen font-semibold">
+                  <td className="py-3 px-4 text-forest-green font-semibold">
                     R$ 1.000,00
                   </td>
                 </tr>
@@ -489,11 +489,11 @@ export const StyleGuidePage: React.FC = () => {
                   <td className="py-3 px-4 text-sm">002</td>
                   <td className="py-3 px-4">Maria Santos</td>
                   <td className="py-3 px-4">
-                    <span className="px-2 py-1 rounded-full bg-goldensand/20 text-goldensand-dark text-xs">
+                    <span className="px-2 py-1 rounded-full bg-golden-sand/20 text-golden-sand-dark text-xs">
                       Pendente
                     </span>
                   </td>
-                  <td className="py-3 px-4 text-charcoalgray font-semibold">
+                  <td className="py-3 px-4 text-charcoal-gray font-semibold">
                     R$ 500,00
                   </td>
                 </tr>
@@ -501,11 +501,11 @@ export const StyleGuidePage: React.FC = () => {
                   <td className="py-3 px-4 text-sm">003</td>
                   <td className="py-3 px-4">Pedro Costa</td>
                   <td className="py-3 px-4">
-                    <span className="px-2 py-1 rounded-full bg-burgundyred/10 text-burgundyred text-xs">
+                    <span className="px-2 py-1 rounded-full bg-burgundy-red/10 text-burgundy-red text-xs">
                       Inativo
                     </span>
                   </td>
-                  <td className="py-3 px-4 text-burgundyred font-semibold">
+                  <td className="py-3 px-4 text-burgundy-red font-semibold">
                     -R$ 200,00
                   </td>
                 </tr>

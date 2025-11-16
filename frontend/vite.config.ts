@@ -11,13 +11,17 @@ export default defineConfig({
   },
   server: {
     port: 3000,
-    host: true,
+    host: '0.0.0.0',
+    strictPort: true,
     watch: {
       usePolling: true, // Necessário para Docker
+      interval: 100, // Verificar a cada 100ms
     },
     hmr: {
+      protocol: 'ws',
       host: 'localhost',
       port: 3000,
+      clientPort: 3000,
     },
     proxy: {
       '/api': {
