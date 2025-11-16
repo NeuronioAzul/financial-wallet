@@ -29,12 +29,12 @@ export const DashboardHeader: React.FC = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 gradient-primary rounded-lg flex items-center justify-center">
-              <span className="text-golden-sand font-bold text-lg">GA</span>
+            <div className="w-10 h-10 bg-oceanblue rounded-lg flex items-center justify-center">
+              <span className="text-goldensand font-bold text-lg">GA</span>
             </div>
             <div>
-              <h1 className="text-lg font-bold gradient-text">Grupo Adriano</h1>
-              <p className="text-xs text-charcoal-gray">Carteira Digital</p>
+              <h1 className="text-lg font-bold text-oceanblue">Grupo Adriano</h1>
+              <p className="text-xs text-charcoalgray">Carteira Digital</p>
             </div>
           </div>
 
@@ -44,7 +44,7 @@ export const DashboardHeader: React.FC = () => {
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="flex items-center gap-3 hover:bg-gray-50 rounded-lg px-3 py-2 transition-colors"
             >
-              <div className="w-10 h-10 rounded-full gradient-primary flex items-center justify-center text-white font-bold">
+              <div className="w-10 h-10 rounded-full bg-oceanblue flex items-center justify-center text-white font-bold">
                 {user && getInitial(user.name)}
               </div>
               <div className="hidden md:block text-left">
