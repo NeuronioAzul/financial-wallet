@@ -16,26 +16,26 @@
 
 @layer components {
   .btn-primary {
-    @apply bg-gradient-to-br from-accent to-accent-dark text-primary font-semibold px-6 py-3 rounded-card 
-           transition-all duration-300 ease-elastic hover:shadow-button hover:scale-105 
+    @apply bg-gradient-to-r from-[#003161] to-[#3D58B6] text-white font-semibold px-6 py-3 rounded-card 
+           transition-all duration-300 ease-elastic hover:shadow-lg hover:scale-105 
            active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100;
   }
   
   .btn-secondary {
-    @apply bg-gradient-to-br from-primary to-primary-light text-white font-semibold px-6 py-3 rounded-card 
-           transition-all duration-300 ease-elastic hover:shadow-card hover:scale-105 
+    @apply bg-gradient-to-r from-[#00610D] to-[#70E080] text-white font-semibold px-6 py-3 rounded-card 
+           transition-all duration-300 ease-elastic hover:shadow-lg hover:scale-105 
            active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
   }
   
   .btn-outline {
-    @apply border-2 border-accent text-accent font-semibold px-6 py-3 rounded-card 
-           transition-all duration-300 ease-elastic hover:bg-accent hover:text-primary 
+    @apply border-2 border-[#003161] text-[#003161] font-semibold px-6 py-3 rounded-card 
+           transition-all duration-300 ease-elastic hover:bg-[#003161] hover:text-white 
            active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
   }
   
   .input-field {
-    @apply w-full px-4 py-3 rounded-card border-2 border-gray-300 
-           focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none 
+    @apply w-full px-4 py-3 rounded-card border-2 border-[#B3B6CA] 
+           focus:border-[#3D58B6] focus:ring-2 focus:ring-[#3D58B6]/20 outline-none 
            transition-all duration-200 disabled:bg-gray-100 disabled:cursor-not-allowed;
   }
   
@@ -43,7 +43,19 @@
     @apply bg-white rounded-modal shadow-card p-6 transition-all duration-300;
   }
   
+  .gradient-primary {
+    @apply bg-gradient-to-br from-[#003161] via-[#3D58B6] to-[#001F3D];
+  }
+  
+  .gradient-success {
+    @apply bg-gradient-to-r from-[#00610D] to-[#70E080];
+  }
+  
+  .gradient-accent {
+    @apply bg-gradient-to-r from-[#DAB655] to-[#B89640];
+  }
+  
   .gradient-text {
-    @apply bg-gradient-to-r from-primary to-primary-light bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-[#003161] to-[#3D58B6] bg-clip-text text-transparent;
   }
 }

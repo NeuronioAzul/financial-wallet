@@ -111,15 +111,15 @@ export const TransactionHistoryPage = () => {
     if (typeStr === 'transfer') {
       const isReceived = transaction.receiver_user_id === userId;
       return isReceived 
-        ? <ArrowDownLeft size={24} className="text-green-600" /> 
-        : <ArrowUpRight size={24} className="text-blue-600" />;
+        ? <ArrowDownLeft size={24} className="text-mint-green" /> 
+        : <ArrowUpRight size={24} className="text-royal-blue" />;
     }
     
     const icons = {
-      deposit: <Plus size={24} className="text-green-600" />,
-      reversal: <RotateCcw size={24} className="text-orange-600" />,
+      deposit: <Plus size={24} className="text-mint-green" />,
+      reversal: <RotateCcw size={24} className="text-golden-sand" />,
     };
-    return icons[typeStr as keyof typeof icons] || <Plus size={24} className="text-green-600" />;
+    return icons[typeStr as keyof typeof icons] || <Plus size={24} className="text-mint-green" />;
   };
 
   const getTransactionLabel = (type: string | number) => {
@@ -141,10 +141,10 @@ export const TransactionHistoryPage = () => {
 
   const getStatusBadge = (status: string) => {
     const badges = {
-      completed: { text: 'Concluída', color: 'bg-green-100 text-green-700' },
-      pending: { text: 'Pendente', color: 'bg-yellow-100 text-yellow-700' },
-      failed: { text: 'Falhou', color: 'bg-red-100 text-red-700' },
-      reversed: { text: 'Estornada', color: 'bg-gray-100 text-gray-700' },
+      completed: { text: 'Concluída', color: 'bg-forest-green/10 text-forest-green' },
+      pending: { text: 'Pendente', color: 'bg-golden-sand/20 text-golden-sand-dark' },
+      failed: { text: 'Falhou', color: 'bg-burgundy-red/10 text-burgundy-red' },
+      reversed: { text: 'Estornada', color: 'bg-silver-gray text-charcoal-gray' },
     };
     return badges[status as keyof typeof badges] || badges.completed;
   };
@@ -307,7 +307,7 @@ export const TransactionHistoryPage = () => {
                                 <span className="font-normal text-sm ml-1">
                                   {isReceived ? 'de ' : 'para '}
                                   <UserTooltip name={person.name} email={person.email}>
-                                    <span className="text-blue-600 hover:underline cursor-pointer">
+                                    <span className="text-royal-blue hover:underline cursor-pointer">
                                       {getShortName(person.name)}
                                     </span>
                                   </UserTooltip>
@@ -331,7 +331,7 @@ export const TransactionHistoryPage = () => {
                       </div>
 
                       <div className="text-right flex-shrink-0">
-                        <p className={clsx('text-xl font-bold', isPositive ? 'text-green-600' : 'text-red-600')}>
+                        <p className={clsx('text-xl font-bold', isPositive ? 'text-forest-green' : 'text-burgundy-red')}>
                           {isPositive ? '+' : '-'} {formatCurrency(transaction.amount)}
                         </p>
                       </div>

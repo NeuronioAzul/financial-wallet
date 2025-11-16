@@ -15,8 +15,8 @@ export const DashboardHeader: React.FC = () => {
 
   const getRoleBadge = (role: string) => {
     const badges = {
-      admin: { text: 'Administrador', color: 'bg-purple-100 text-purple-700' },
-      customer: { text: 'Cliente', color: 'bg-blue-100 text-blue-700' },
+      admin: { text: 'Administrador', color: 'bg-royal-blue-light/20 text-royal-blue-dark' },
+      customer: { text: 'Cliente', color: 'bg-ocean-blue/10 text-ocean-blue' },
     };
     return badges[role as keyof typeof badges] || badges.customer;
   };
@@ -29,12 +29,12 @@ export const DashboardHeader: React.FC = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary-light rounded-lg flex items-center justify-center">
-              <span className="text-accent font-bold text-lg">FW</span>
+            <div className="w-10 h-10 gradient-primary rounded-lg flex items-center justify-center">
+              <span className="text-golden-sand font-bold text-lg">GA</span>
             </div>
             <div>
-              <h1 className="text-lg font-bold gradient-text">Financial Wallet</h1>
-              <p className="text-xs text-gray-500">Grupo Adriano</p>
+              <h1 className="text-lg font-bold gradient-text">Grupo Adriano</h1>
+              <p className="text-xs text-charcoal-gray">Carteira Digital</p>
             </div>
           </div>
 
@@ -44,7 +44,7 @@ export const DashboardHeader: React.FC = () => {
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="flex items-center gap-3 hover:bg-gray-50 rounded-lg px-3 py-2 transition-colors"
             >
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-accent to-accent-dark flex items-center justify-center text-primary font-bold">
+              <div className="w-10 h-10 rounded-full gradient-primary flex items-center justify-center text-white font-bold">
                 {user && getInitial(user.name)}
               </div>
               <div className="hidden md:block text-left">

@@ -87,22 +87,22 @@ export const RecentTransactions = forwardRef<RecentTransactionsRef, Record<strin
     // Para transferências, usa cor verde se recebida, azul se enviada
     if (typeStr === 'transfer') {
       const isReceived = transaction.receiver_user_id === userId;
-      return isReceived ? 'text-green-600 bg-green-50' : 'text-blue-600 bg-blue-50';
+      return isReceived ? 'text-mint-green bg-mint-green/10' : 'text-royal-blue bg-royal-blue/10';
     }
     
     const colors = {
-      deposit: 'text-green-600 bg-green-50',
-      reversal: 'text-orange-600 bg-orange-50',
+      deposit: 'text-mint-green bg-mint-green/10',
+      reversal: 'text-golden-sand bg-golden-sand/10',
     };
-    return colors[typeStr as keyof typeof colors] || 'text-gray-600 bg-gray-50';
+    return colors[typeStr as keyof typeof colors] || 'text-charcoal-gray bg-silver-gray/20';
   };
 
   const getStatusBadge = (status: string) => {
     const badges = {
-      completed: { text: 'Concluída', color: 'bg-green-100 text-green-700' },
-      pending: { text: 'Pendente', color: 'bg-yellow-100 text-yellow-700' },
-      failed: { text: 'Falhou', color: 'bg-red-100 text-red-700' },
-      reversed: { text: 'Estornada', color: 'bg-gray-100 text-gray-700' },
+      completed: { text: 'Concluída', color: 'bg-forest-green/10 text-forest-green' },
+      pending: { text: 'Pendente', color: 'bg-golden-sand/20 text-golden-sand-dark' },
+      failed: { text: 'Falhou', color: 'bg-burgundy-red/10 text-burgundy-red' },
+      reversed: { text: 'Estornada', color: 'bg-silver-gray text-charcoal-gray' },
     };
     return badges[status as keyof typeof badges] || badges.completed;
   };
@@ -272,7 +272,7 @@ export const RecentTransactions = forwardRef<RecentTransactionsRef, Record<strin
               </div>
 
               <div className="text-right flex-shrink-0">
-                <p className={clsx('text-lg font-bold mb-2', isPositive ? 'text-green-600' : 'text-red-600')}>
+                <p className={clsx('text-lg font-bold mb-2', isPositive ? 'text-forest-green' : 'text-burgundy-red')}>
                   {isPositive ? '+' : '-'} {formatCurrency(transaction.amount)}
                 </p>
                 
