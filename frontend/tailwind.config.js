@@ -4,10 +4,11 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
-        // Grupo Adriano Colors
+        // Adriano Cobuccio Colors - usando camelCase para compatibilidade
         'ocean-blue': {
           DEFAULT: '#003161',
           light: '#3D58B6',
