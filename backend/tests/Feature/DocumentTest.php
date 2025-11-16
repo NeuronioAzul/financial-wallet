@@ -295,8 +295,8 @@ class DocumentTest extends TestCase
             ->assertJson([
                 'data' => [
                     'id' => $document->id,
-                    'document_type' => $document->document_type,
-                    'status' => $document->status,
+                    'document_type' => $document->document_type->value,
+                    'status' => $document->status->value,
                 ],
             ]);
     }
@@ -361,12 +361,14 @@ class DocumentTest extends TestCase
         $response->assertStatus(200)
             ->assertJsonStructure([
                 'data' => [
-                    'photo',
-                    'rg_front',
-                    'rg_back',
-                    'cnh_front',
-                    'cnh_back',
-                    'verification_complete',
+                    'has_photo',
+                    'has_rg',
+                    'has_cnh',
+                    'is_complete',
+                    'all_approved',
+                    'has_rejected',
+                    'has_pending',
+                    'verification_status',
                 ],
             ]);
     }
