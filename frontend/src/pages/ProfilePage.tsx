@@ -115,9 +115,7 @@ export const ProfilePage = () => {
         });
       }
     } catch (error: any) {
-      if (error.response?.status !== 404) {
-        toast.error('Erro ao carregar endereço');
-      }
+      toast.error('Erro ao carregar endereço');
     }
   };
 

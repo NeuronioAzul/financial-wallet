@@ -1,0 +1,732 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-gray-200;
+  }
+  
+  body {
+    @apply bg-gray-50 text-gray-900 font-sans antialiased;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-gradient-to-r from-[#003161] to-[#3D58B6] text-white font-semibold px-6 py-3 rounded-card 
+           transition-all duration-300 ease-elastic hover:shadow-lg hover:scale-105 
+           active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100;
+  }
+  
+  .btn-secondary {
+    @apply bg-gradient-to-r from-[#00610D] to-[#70E080] text-white font-semibold px-6 py-3 rounded-card 
+           transition-all duration-300 ease-elastic hover:shadow-lg hover:scale-105 
+           active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  
+  .btn-outline {
+    @apply border-2 border-[#003161] text-[#003161] font-semibold px-6 py-3 rounded-card 
+           transition-all duration-300 ease-elastic hover:bg-[#003161] hover:text-white 
+           active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  
+  .input-field {
+    @apply w-full px-4 py-3 rounded-card border-2 border-[#B3B6CA] 
+           focus:border-[#3D58B6] focus:ring-2 focus:ring-[#3D58B6]/20 outline-none 
+           transition-all duration-200 disabled:bg-gray-100 disabled:cursor-not-allowed;
+  }
+  
+  .card {
+    @apply bg-white rounded-modal shadow-card p-6 transition-all duration-300;
+  }
+  
+  .gradient-primary {
+    @apply bg-gradient-to-br from-[#003161] via-[#3D58B6] to-[#001F3D];
+  }
+  
+  .gradient-success {
+    @apply bg-gradient-to-r from-[#00610D] to-[#70E080];
+  }
+  
+  .gradient-accent {
+    @apply bg-gradient-to-r from-[#DAB655] to-[#B89640];
+  }
+  
+  .gradient-text {
+    @apply bg-gradient-to-r from-[#003161] to-[#3D58B6] bg-clip-text text-transparent;
+  }
+}
+
+/* Dark Mode Styles */
+.dark {
+  color-scheme: dark;
+}
+
+.dark body {
+  background-color: rgb(17 24 39);
+  color: rgb(243 244 246);
+}
+
+.dark .bg-white {
+  background-color: rgb(31 41 55);
+  color: rgb(243 244 246);
+}
+
+.dark .bg-gray-50 {
+  background-color: rgb(17 24 39);
+}
+
+.dark .bg-gray-100 {
+  background-color: rgb(31 41 55);
+}
+
+.dark .text-gray-900 {
+  color: rgb(243 244 246);
+}
+
+.dark .text-gray-700 {
+  color: rgb(209 213 219);
+}
+
+.dark .text-gray-600 {
+  color: rgb(156 163 175);
+}
+
+.dark .border-gray-200 {
+  border-color: rgb(55 65 81);
+}
+
+.dark .border-gray-300 {
+  border-color: rgb(75 85 99);
+}
+
+.dark .card {
+  background-color: rgb(31 41 55);
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.5), 0 8px 10px -6px rgb(0 0 0 / 0.5);
+}
+
+.dark input,
+.dark select,
+.dark textarea {
+  background-color: rgb(55 65 81);
+  color: rgb(243 244 246);
+  border-color: rgb(75 85 99);
+}
+
+.dark input:disabled,
+.dark select:disabled,
+.dark textarea:disabled {
+  background-color: rgb(17 24 39);
+  color: rgb(107 114 128);
+}
+
+/* ===================================
+   HIGH CONTRAST MODE (LIGHT)
+   Based on WCAG AAA standards (7:1 ratio)
+   Refined for better UX/UI
+   =================================== */
+.high-contrast {
+  /* Semantic colors with excellent contrast */
+  --hc-primary: #003366;        /* Navy blue: 12.6:1 */
+  --hc-success: #006B00;        /* Forest green: 8.1:1 */
+  --hc-danger: #A00000;         /* Deep red: 8.2:1 */
+  --hc-warning: #8B6914;        /* Dark gold: 7.2:1 */
+  --hc-info: #004C8C;           /* Ocean blue: 9.1:1 */
+}
+
+/* Base styles - Light High Contrast */
+.high-contrast body {
+  background-color: #F8F9FA !important;
+  color: #1a1a1a !important;
+  font-weight: 500;
+}
+
+.high-contrast .bg-white {
+  background-color: #FFFFFF !important;
+  color: #1a1a1a !important;
+}
+
+.high-contrast .bg-gray-50 {
+  background-color: #F8F9FA !important;
+  color: #1a1a1a !important;
+}
+
+.high-contrast .bg-gray-100 {
+  background-color: #F0F0F0 !important;
+  color: #1a1a1a !important;
+}
+
+.high-contrast .text-gray-900,
+.high-contrast .text-gray-800,
+.high-contrast .text-gray-700 {
+  color: #1a1a1a !important;
+  font-weight: 600;
+}
+
+.high-contrast .text-gray-600,
+.high-contrast .text-gray-500 {
+  color: #2d2d2d !important;
+  font-weight: 600;
+}
+
+.high-contrast .text-gray-400 {
+  color: #404040 !important;
+  font-weight: 600;
+}
+
+/* Cards and containers */
+.high-contrast .card {
+  background-color: #FFFFFF !important;
+  border: none !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25), 0 1px 3px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Buttons - Refined and accessible */
+.high-contrast button,
+.high-contrast .btn-primary,
+.high-contrast .btn-secondary {
+  font-weight: 600 !important;
+  border: none !important;
+  background-color: #003366 !important;
+  color: #FFFFFF !important;
+  padding: 0.75rem 1.5rem !important;
+}
+
+.high-contrast button:hover,
+.high-contrast .btn-primary:hover,
+.high-contrast .btn-secondary:hover {
+  background-color: #00509E !important;
+  border: none !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 51, 102, 0.4) !important;
+}
+
+.high-contrast .btn-outline {
+  background-color: #FFFFFF !important;
+  color: #003366 !important;
+  border: 1px solid #003366 !important;
+}
+
+.high-contrast .btn-outline:hover {
+  background-color: #003366 !important;
+  color: #FFFFFF !important;
+  border: 1px solid #003366 !important;
+}
+
+/* Tab buttons */
+.high-contrast .bg-primary.text-white {
+  background-color: #003366 !important;
+  border: none !important;
+}
+
+.high-contrast .bg-white.text-gray-600 {
+  background-color: #FFFFFF !important;
+  color: #1a1a1a !important;
+  border: none !important;
+}
+
+.high-contrast .bg-white.text-gray-600:hover {
+  background-color: #F0F0F0 !important;
+  border: none !important;
+}
+
+/* Links - Clear but not overwhelming */
+.high-contrast a {
+  color: #003366 !important;
+  font-weight: 600 !important;
+  text-decoration: underline !important;
+  text-decoration-thickness: 1.5px !important;
+  text-underline-offset: 3px !important;
+}
+
+.high-contrast a:hover {
+  color: #00509E !important;
+  text-decoration-thickness: 2px !important;
+}
+
+/* Inputs - Clean and accessible */
+.high-contrast input,
+.high-contrast select,
+.high-contrast textarea {
+  background-color: #FFFFFF !important;
+  color: #1a1a1a !important;
+  border: 1px solid #9E9E9E !important;
+  font-weight: 500 !important;
+}
+
+.high-contrast input:focus,
+.high-contrast select:focus,
+.high-contrast textarea:focus {
+  border-color: #003366 !important;
+  outline: 2px solid #003366 !important;
+  outline-offset: 0px !important;
+  box-shadow: none !important;
+}
+
+.high-contrast input:disabled,
+.high-contrast select:disabled,
+.high-contrast textarea:disabled {
+  background-color: #E8E8E8 !important;
+  color: #5a5a5a !important;
+  border: 1px solid #BDBDBD !important;
+  opacity: 0.7;
+}
+
+/* Status badges - Refined colors */
+.high-contrast .bg-green-100 {
+  background-color: #E6F4EA !important;
+  border: none !important;
+  color: #006B00 !important;
+  padding: 0.5rem 0.75rem !important;
+}
+
+.high-contrast .text-green-700,
+.high-contrast .text-green-600 {
+  color: #006B00 !important;
+  font-weight: 700 !important;
+}
+
+.high-contrast .bg-red-100 {
+  background-color: #FCE8E6 !important;
+  border: none !important;
+  color: #A00000 !important;
+  padding: 0.5rem 0.75rem !important;
+}
+
+.high-contrast .text-red-700,
+.high-contrast .text-red-600 {
+  color: #A00000 !important;
+  font-weight: 700 !important;
+}
+
+.high-contrast .bg-yellow-100 {
+  background-color: #FFF8E1 !important;
+  border: none !important;
+  color: #8B6914 !important;
+  padding: 0.5rem 0.75rem !important;
+}
+
+.high-contrast .text-yellow-700,
+.high-contrast .text-yellow-600 {
+  color: #8B6914 !important;
+  font-weight: 700 !important;
+}
+
+.high-contrast .bg-blue-50 {
+  background-color: #E3F2FD !important;
+  border: none !important;
+  color: #004C8C !important;
+  padding: 0.5rem 0.75rem !important;
+}
+
+.high-contrast .text-blue-700,
+.high-contrast .text-blue-800 {
+  color: #004C8C !important;
+  font-weight: 700 !important;
+}
+
+.high-contrast .text-blue-600 {
+  color: #004C8C !important;
+  font-weight: 600 !important;
+}
+
+/* Icon backgrounds */
+.high-contrast .bg-yellow-100 {
+  background-color: #FFF8E1 !important;
+}
+
+.high-contrast .text-yellow-600 {
+  color: #8B6914 !important;
+}
+
+.high-contrast .bg-indigo-100 {
+  background-color: #E8EAF6 !important;
+}
+
+.high-contrast .text-indigo-600 {
+  color: #283593 !important;
+  font-weight: 600;
+}
+
+.high-contrast .bg-blue-100 {
+  background-color: #E3F2FD !important;
+}
+
+.high-contrast .text-blue-600 {
+  color: #004C8C !important;
+  font-weight: 600;
+}
+
+.high-contrast .bg-gray-100 {
+  background-color: #F0F0F0 !important;
+}
+
+.high-contrast .border-gray-400 {
+  border-color: #5a5a5a !important;
+}
+
+.high-contrast .bg-gray-900 {
+  background-color: #1a1a1a !important;
+}
+
+.high-contrast .border-white {
+  border-color: #FFFFFF !important;
+}
+
+/* Primary color overrides */
+.high-contrast .bg-primary {
+  background: #003366 !important;
+  color: #FFFFFF !important;
+}
+
+.high-contrast .gradient-primary {
+  background: #003366 !important;
+  color: #FFFFFF !important;
+}
+
+.high-contrast .text-primary {
+  color: #003366 !important;
+  font-weight: 600;
+}
+
+.high-contrast .border-primary {
+  border-color: #003366 !important;
+}
+
+/* Shadows - Subtle but visible */
+.high-contrast .shadow-sm {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important;
+}
+
+.high-contrast .shadow,
+.high-contrast .shadow-md {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25), 0 1px 3px rgba(0, 0, 0, 0.15) !important;
+}
+
+.high-contrast .shadow-lg,
+.high-contrast .shadow-card {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), 0 2px 6px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Focus indicators - Clear but elegant */
+.high-contrast *:focus-visible {
+  outline: 2px solid #003366 !important;
+  outline-offset: 0px !important;
+}
+
+/* Gradients - Solid colors */
+.high-contrast .gradient-text {
+  background: none !important;
+  color: #003366 !important;
+  background-clip: unset !important;
+  -webkit-background-clip: unset !important;
+  -webkit-text-fill-color: unset !important;
+  font-weight: 700;
+}
+
+/* ===================================
+   HIGH CONTRAST MODE (DARK)
+   Based on WCAG AAA standards (7:1 ratio)
+   Refined for better UX/UI
+   =================================== */
+.dark.high-contrast {
+  /* Semantic colors with excellent contrast on dark */
+  --hc-primary: #5CB3FF;        /* Sky blue: 8.1:1 */
+  --hc-success: #00E676;        /* Emerald green: 10.2:1 */
+  --hc-danger: #FF5252;         /* Coral red: 8.5:1 */
+  --hc-warning: #FFD54F;        /* Amber: 12.1:1 */
+  --hc-info: #40C4FF;           /* Cyan: 9.8:1 */
+}
+
+/* Base styles - Dark High Contrast */
+.dark.high-contrast body {
+  background-color: #0A0A0A !important;
+  color: #F5F5F5 !important;
+  font-weight: 500;
+}
+
+.dark.high-contrast .bg-white {
+  background-color: #1A1A1A !important;
+  color: #F5F5F5 !important;
+}
+
+.dark.high-contrast .bg-gray-50 {
+  background-color: #0A0A0A !important;
+  color: #F5F5F5 !important;
+}
+
+.dark.high-contrast .bg-gray-100,
+.dark.high-contrast .bg-gray-800,
+.dark.high-contrast .bg-gray-900 {
+  background-color: #1A1A1A !important;
+  color: #F5F5F5 !important;
+}
+
+.dark.high-contrast .text-gray-900,
+.dark.high-contrast .text-gray-800,
+.dark.high-contrast .text-gray-700,
+.dark.high-contrast .text-gray-600,
+.dark.high-contrast .text-gray-500,
+.dark.high-contrast .text-gray-400,
+.dark.high-contrast .text-gray-300,
+.dark.high-contrast .text-gray-200,
+.dark.high-contrast .text-gray-100 {
+  color: #F5F5F5 !important;
+  font-weight: 600;
+}
+
+/* Icon backgrounds */
+.dark.high-contrast .card {
+  background-color: #1A1A1A !important;
+  border: none !important;
+  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.15), 0 1px 3px rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Buttons - Refined and accessible */
+.dark.high-contrast button,
+.dark.high-contrast .btn-primary,
+.dark.high-contrast .btn-secondary {
+  font-weight: 600 !important;
+  border: none !important;
+  background-color: #5CB3FF !important;
+  color: #0A0A0A !important;
+  padding: 0.75rem 1.5rem !important;
+}
+
+.dark.high-contrast button:hover,
+.dark.high-contrast .btn-primary:hover,
+.dark.high-contrast .btn-secondary:hover {
+  background-color: #82C4FF !important;
+  border: none !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(92, 179, 255, 0.4) !important;
+}
+
+.dark.high-contrast .btn-outline {
+  background-color: #1A1A1A !important;
+  color: #5CB3FF !important;
+  border: 1px solid #5CB3FF !important;
+}
+
+.dark.high-contrast .btn-outline:hover {
+  background-color: #5CB3FF !important;
+  color: #0A0A0A !important;
+  border: 1px solid #5CB3FF !important;
+}
+
+/* Tab buttons */
+.dark.high-contrast .bg-primary.text-white {
+  background-color: #5CB3FF !important;
+  color: #0A0A0A !important;
+  border: none !important;
+}
+
+.dark.high-contrast .bg-white.text-gray-600 {
+  background-color: #1A1A1A !important;
+  color: #F5F5F5 !important;
+  border: none !important;
+}
+
+.dark.high-contrast .bg-white.text-gray-600:hover {
+  background-color: #2A2A2A !important;
+  border: none !important;
+}
+
+/* Links - Clear but not overwhelming */
+.dark.high-contrast a {
+  color: #5CB3FF !important;
+  font-weight: 600 !important;
+  text-decoration: underline !important;
+  text-decoration-thickness: 1.5px !important;
+  text-underline-offset: 3px !important;
+}
+
+.dark.high-contrast a:hover {
+  color: #82C4FF !important;
+  text-decoration-thickness: 2px !important;
+}
+
+/* Inputs - Clean and accessible */
+.dark.high-contrast input,
+.dark.high-contrast select,
+.dark.high-contrast textarea {
+  background-color: #1A1A1A !important;
+  color: #F5F5F5 !important;
+  border: 1px solid #757575 !important;
+  font-weight: 500 !important;
+}
+
+.dark.high-contrast input:focus,
+.dark.high-contrast select:focus,
+.dark.high-contrast textarea:focus {
+  border-color: #5CB3FF !important;
+  outline: 2px solid #5CB3FF !important;
+  outline-offset: 0px !important;
+  box-shadow: none !important;
+}
+
+.dark.high-contrast input:disabled,
+.dark.high-contrast select:disabled,
+.dark.high-contrast textarea:disabled {
+  background-color: #2A2A2A !important;
+  color: #808080 !important;
+  border: 1px solid #505050 !important;
+  opacity: 0.7;
+}
+
+/* Status badges - Refined colors */
+.dark.high-contrast .bg-green-100 {
+  background-color: #0D3818 !important;
+  border: none !important;
+  color: #00E676 !important;
+  padding: 0.5rem 0.75rem !important;
+}
+
+.dark.high-contrast .text-green-700,
+.dark.high-contrast .text-green-600 {
+  color: #00E676 !important;
+  font-weight: 700 !important;
+}
+
+.dark.high-contrast .bg-red-100 {
+  background-color: #331010 !important;
+  border: none !important;
+  color: #FF5252 !important;
+  padding: 0.5rem 0.75rem !important;
+}
+
+.dark.high-contrast .text-red-700,
+.dark.high-contrast .text-red-600 {
+  color: #FF5252 !important;
+  font-weight: 700 !important;
+}
+
+.dark.high-contrast .bg-yellow-100 {
+  background-color: #332A0D !important;
+  border: none !important;
+  color: #FFD54F !important;
+  padding: 0.5rem 0.75rem !important;
+}
+
+.dark.high-contrast .text-yellow-700,
+.dark.high-contrast .text-yellow-600 {
+  color: #FFD54F !important;
+  font-weight: 700 !important;
+}
+
+.dark.high-contrast .bg-blue-50 {
+  background-color: #0D2433 !important;
+  border: none !important;
+  color: #40C4FF !important;
+  padding: 0.5rem 0.75rem !important;
+}
+
+.dark.high-contrast .text-blue-700,
+.dark.high-contrast .text-blue-800 {
+  color: #40C4FF !important;
+  font-weight: 700 !important;
+}
+
+.dark.high-contrast .text-blue-600 {
+  color: #40C4FF !important;
+  font-weight: 600 !important;
+}
+
+/* Icon backgrounds */
+.dark.high-contrast .bg-yellow-100 {
+  background-color: #332A0D !important;
+}
+
+.dark.high-contrast .text-yellow-600 {
+  color: #FFD54F !important;
+}
+
+.dark.high-contrast .bg-indigo-100 {
+  background-color: #1A1A2E !important;
+}
+
+.dark.high-contrast .text-indigo-600 {
+  color: #7C8AFF !important;
+  font-weight: 600;
+}
+
+.dark.high-contrast .bg-blue-100 {
+  background-color: #0D2433 !important;
+}
+
+.dark.high-contrast .text-blue-600 {
+  color: #40C4FF !important;
+  font-weight: 600;
+}
+
+.dark.high-contrast .bg-gray-100 {
+  background-color: #2A2A2A !important;
+}
+
+.dark.high-contrast .border-gray-400 {
+  border-color: #808080 !important;
+}
+
+.dark.high-contrast .bg-gray-900 {
+  background-color: #0A0A0A !important;
+}
+
+.dark.high-contrast .border-white {
+  border-color: #F5F5F5 !important;
+}
+
+/* Primary color overrides */
+.dark.high-contrast .bg-primary {
+  background: #5CB3FF !important;
+  color: #0A0A0A !important;
+}
+
+.dark.high-contrast .gradient-primary {
+  background: #5CB3FF !important;
+  color: #0A0A0A !important;
+}
+
+.dark.high-contrast .text-primary {
+  color: #5CB3FF !important;
+  font-weight: 600;
+}
+
+.dark.high-contrast .border-primary {
+  border-color: #5CB3FF !important;
+}
+
+/* Shadows - Subtle but visible */
+.dark.high-contrast .shadow-sm {
+  box-shadow: 0 1px 3px rgba(255, 255, 255, 0.12) !important;
+}
+
+.dark.high-contrast .shadow,
+.dark.high-contrast .shadow-md {
+  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.15), 0 1px 3px rgba(255, 255, 255, 0.1) !important;
+}
+
+.dark.high-contrast .shadow-lg,
+.dark.high-contrast .shadow-card {
+  box-shadow: 0 4px 16px rgba(255, 255, 255, 0.2), 0 2px 6px rgba(255, 255, 255, 0.12) !important;
+}
+
+/* Focus indicators - Clear but elegant */
+.dark.high-contrast *:focus-visible {
+  outline: 2px solid #5CB3FF !important;
+  outline-offset: 0px !important;
+}
+
+/* Gradients - Solid colors */
+.dark.high-contrast .gradient-text {
+  background: none !important;
+  color: #5CB3FF !important;
+  background-clip: unset !important;
+  -webkit-background-clip: unset !important;
+  -webkit-text-fill-color: unset !important;
+  font-weight: 700;
+}
+
+

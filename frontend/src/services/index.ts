@@ -75,8 +75,16 @@ export const profileService = {
   },
 
   getAddress: async (): Promise<any> => {
-    const response = await api.get<{ data: any }>('/v1/address');
-    return response.data.data;
+    try {
+      const response = await api.get<{ data: any }>('/v1/address');
+      return response.data.data;
+    } catch (error: any) {
+      // Return null if address not found (404), rethrow other errors
+      if (error.response?.status === 404) {
+        return null;
+      }
+      throw error;
+    }
   },
 
   createAddress: async (data: any): Promise<any> => {
