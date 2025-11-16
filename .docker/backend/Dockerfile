@@ -9,15 +9,23 @@ RUN apk add --no-cache \
     git \
     curl \
     libpng-dev \
+    libjpeg-turbo-dev \
+    freetype-dev \
     libxml2-dev \
     zip \
     unzip \
+    sockets \
     postgresql-dev \
     shadow \
     $PHPIZE_DEPS
 
+# Configure GD with JPEG and FreeType support
+RUN docker-php-ext-configure gd \
+    --with-freetype \
+    --with-jpeg
+
 # Install PHP extensions
-RUN docker-php-ext-install pdo pdo_pgsql pgsql
+RUN docker-php-ext-install pdo pdo_pgsql pgsql gd
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
