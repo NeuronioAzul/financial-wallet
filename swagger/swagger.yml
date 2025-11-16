@@ -5,17 +5,18 @@ info:
     API REST da carteira financeira digital desenvolvida com Laravel 12 e PostgreSQL 18.
     
     ## Autenticação
-    A API utiliza Laravel Sanctum para autenticação. Após o login, você receberá um token Bearer que deve ser incluído no header `Authorization` de todas as requisições protegidas.
+    A API utiliza Laravel Sanctum para autenticação. Após o login, caso não autentique sozinho, você receberá um token Bearer que deve ser incluído no header `Authorization` de todas as requisições protegidas.
     
     ## Timezone
-    Todos os timestamps são retornados em America/Sao_Paulo (UTC-3).
+    America/Sao_Paulo (UTC-3).
     
     ## Formato de IDs
-    A API utiliza UUID v7 para todos os identificadores.
+    A API utiliza UUID v7
+
   version: 1.0.0
   contact:
-    name: Grupo Adriano
-    email: dev@grupoadriano.com
+    name: Mauro Rocha Tavares
+    email: mauro.rocha.t@gmail.com
   license:
     name: MIT
 
