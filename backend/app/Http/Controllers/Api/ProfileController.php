@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateProfileRequest;
+use App\Http\Requests\UpdateThemeSettingsRequest;
 use App\Services\ProfileService;
 use Illuminate\Http\JsonResponse;
 
@@ -31,6 +32,20 @@ class ProfileController extends Controller
         return response()->json([
             'message' => 'Profile updated successfully',
             'data' => $user,
+        ]);
+    }
+
+    public function updateThemeSettings(UpdateThemeSettingsRequest $request): JsonResponse
+    {
+        $user = auth()->user();
+        $user->update($request->validated());
+
+        return response()->json([
+            'message' => 'Theme settings updated successfully',
+            'data' => [
+                'theme_mode' => $user->theme_mode,
+                'contrast_mode' => $user->contrast_mode,
+            ],
         ]);
     }
 }

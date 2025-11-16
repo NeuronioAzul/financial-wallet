@@ -32,6 +32,8 @@ class UserFactory extends Factory
             'document' => fake()->numerify('###########'),
             'phone' => fake()->numerify('11#########'),
             'status' => \App\Enums\UserStatus::ACTIVE,
+            'theme_mode' => 'light',
+            'contrast_mode' => 'normal',
             'remember_token' => Str::random(10),
         ];
     }

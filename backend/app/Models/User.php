@@ -27,6 +27,8 @@ class User extends Authenticatable
         'document',
         'phone',
         'status',
+        'theme_mode',
+        'contrast_mode',
     ];
 
     /**

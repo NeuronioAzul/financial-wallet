@@ -27,6 +27,7 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
     // Profile
     Route::get('/profile', [\App\Http\Controllers\Api\ProfileController::class, 'show']);
     Route::put('/profile', [\App\Http\Controllers\Api\ProfileController::class, 'update']);
+    Route::patch('/profile/theme-settings', [\App\Http\Controllers\Api\ProfileController::class, 'updateThemeSettings']);
 
     // Addresses
     Route::get('/addresses', [\App\Http\Controllers\Api\AddressController::class, 'index']);
