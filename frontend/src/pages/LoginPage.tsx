@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Mail, Lock } from 'lucide-react';
+import { Wallet, Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
@@ -13,6 +13,7 @@ export const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const { login, isAuthenticated } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -43,56 +44,127 @@ export const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary to-primary-light p-4">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2">Financial Wallet</h1>
-          <p className="text-accent text-lg">Grupo Adriano</p>
+    <div className="flex min-h-screen">
+      {/* Left Side - Branding */}
+      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-primary to-primary-light items-center justify-center p-12">
+        <div className="max-w-md text-white">
+          <div className="mb-8 flex items-center gap-3">
+            <div className="rounded-2xl bg-white/10 p-3 backdrop-blur-sm">
+              <Wallet className="h-8 w-8" />
+            </div>
+            <h1 className="text-3xl font-bold">Grupo Adriano</h1>
+          </div>
+          <h2 className="mb-4 text-4xl font-bold leading-tight">
+            Sua carteira digital completa
+          </h2>
+          <p className="text-lg text-white/80">
+            Gerencie suas finanças com segurança e praticidade. 
+            Transferências, depósitos e controle total na palma da sua mão.
+          </p>
         </div>
+      </div>
 
-        <div className="card">
-          <h2 className="text-2xl font-bold gradient-text mb-6">Entrar</h2>
-          
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <Input
-              {...register('email')}
-              label="Email"
-              type="email"
-              placeholder="seu@email.com"
-              icon={<Mail size={20} />}
-              error={errors.email?.message}
-            />
+      {/* Right Side - Login Form */}
+      <div className="flex w-full items-center justify-center p-8 lg:w-1/2 bg-gray-50">
+        <div className="w-full max-w-md">
+          {/* Mobile Logo */}
+          <div className="mb-8 lg:hidden">
+            <div className="mb-4 flex items-center gap-2">
+              <Wallet className="h-6 w-6 text-primary" />
+              <span className="text-xl font-bold text-primary">Grupo Adriano</span>
+            </div>
+          </div>
 
-            <Input
-              {...register('password')}
-              label="Senha"
-              type="password"
-              placeholder="••••••••"
-              icon={<Lock size={20} />}
-              error={errors.password?.message}
-            />
+          <h2 className="mb-2 text-3xl font-bold text-gray-900">Bem-vindo de volta</h2>
+          <p className="mb-8 text-gray-600">
+            Entre com suas credenciais para acessar sua conta
+          </p>
 
-            <div className="flex items-center justify-between text-sm">
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" className="rounded border-gray-300 text-primary focus:ring-accent" />
-                <span className="text-gray-700">Lembrar-me</span>
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            <div className="space-y-2">
+              <label htmlFor="email" className="text-sm font-medium text-gray-700">
+                Email
               </label>
-              <Link to="/forgot-password" className="text-accent hover:text-accent-dark font-semibold">
+              <Input
+                id="email"
+                type="email"
+                placeholder="seu@email.com"
+                {...register('email')}
+                disabled={isLoading}
+              />
+              {errors.email && (
+                <p className="text-sm text-red-600">{errors.email.message}</p>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <label htmlFor="password" className="text-sm font-medium text-gray-700">
+                Senha
+              </label>
+              <div className="relative">
+                <Input
+                  id="password"
+                  type={showPassword ? 'text' : 'password'}
+                  placeholder="••••••••"
+                  {...register('password')}
+                  disabled={isLoading}
+                  className="pr-10"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                  tabIndex={-1}
+                >
+                  {showPassword ? (
+                    <EyeOff className="h-4 w-4" />
+                  ) : (
+                    <Eye className="h-4 w-4" />
+                  )}
+                </button>
+              </div>
+              {errors.password && (
+                <p className="text-sm text-red-600">{errors.password.message}</p>
+              )}
+            </div>
+
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <input
+                  id="remember"
+                  type="checkbox"
+                  className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
+                />
+                <label
+                  htmlFor="remember"
+                  className="text-sm font-medium text-gray-700 cursor-pointer"
+                >
+                  Lembrar-me
+                </label>
+              </div>
+              <Link
+                to="/forgot-password"
+                className="text-sm font-medium text-primary hover:text-primary/80"
+              >
                 Esqueci minha senha
               </Link>
             </div>
 
-            <Button type="submit" variant="primary" fullWidth isLoading={isLoading}>
-              Entrar
+            <Button
+              type="submit"
+              className="w-full bg-gradient-to-r from-primary to-primary-light text-white hover:shadow-lg transition-all"
+              disabled={isLoading}
+            >
+              {isLoading ? 'Entrando...' : 'Entrar'}
             </Button>
-          </form>
 
-          <div className="mt-6 text-center">
-            <span className="text-gray-600">Não tem uma conta? </span>
-            <Link to="/register" className="text-accent hover:text-accent-dark font-semibold">
-              Criar conta
-            </Link>
-          </div>
+            <p className="text-center text-sm text-gray-600">
+              Não tem uma conta?{' '}
+              <Link to="/register" className="font-medium text-primary hover:text-primary/80">
+                Criar conta
+              </Link>
+            </p>
+          </form>
         </div>
       </div>
     </div>
