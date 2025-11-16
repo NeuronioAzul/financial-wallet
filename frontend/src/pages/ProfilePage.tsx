@@ -61,6 +61,8 @@ export const ProfilePage = () => {
   // Document upload modals
   const [showDocumentModal, setShowDocumentModal] = useState(false);
   const [documentModalType, setDocumentModalType] = useState<string>('');
+  const [documentModalStep, setDocumentModalStep] = useState<1 | 2 | 3>(1);
+  const [selectedSubtype, setSelectedSubtype] = useState<string>('');
   
   // Selfie modal states
   const [showSelfieModal, setShowSelfieModal] = useState(false);
@@ -268,27 +270,53 @@ export const ProfilePage = () => {
   // Document modal handlers
   const openDocumentModal = (type: string) => {
     setDocumentModalType(type);
+    setDocumentModalStep(1);
+    // Auto-select subtype for documents without variants (CPF, comprovante, outros)
+    if (type !== 'rg' && type !== 'cnh') {
+      setSelectedSubtype(type);
+    } else {
+      setSelectedSubtype('');
+    }
+    setSelfiePreview(null);
+    setCapturedFile(null);
+    setUseCamera(false);
     setShowDocumentModal(true);
   };
 
   const closeDocumentModal = () => {
     setShowDocumentModal(false);
     setDocumentModalType('');
+    setDocumentModalStep(1);
+    setSelectedSubtype('');
+    setSelfiePreview(null);
+    setCapturedFile(null);
+    setUseCamera(false);
+    stopCamera();
   };
 
-  const handleDocumentTypeSelect = async (subtype: string) => {
-    // Create a hidden file input
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = '.pdf,.jpg,.jpeg,.png';
-    input.onchange = async (e) => {
-      const file = (e.target as HTMLInputElement).files?.[0];
-      if (file) {
-        await uploadDocumentFile(file, subtype);
-      }
-    };
-    input.click();
-    closeDocumentModal();
+  const handleDocumentSubtypeSelect = (subtype: string) => {
+    setSelectedSubtype(subtype);
+    // Stay on step 2
+  };
+
+  const handleDocumentFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setCapturedFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setSelfiePreview(reader.result as string);
+        setDocumentModalStep(3);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const saveDocument = async () => {
+    if (capturedFile && selectedSubtype) {
+      await uploadDocumentFile(capturedFile, selectedSubtype);
+      closeDocumentModal();
+    }
   };
 
   const uploadDocumentFile = async (file: File, type: string) => {
@@ -367,10 +395,18 @@ export const ProfilePage = () => {
         ctx.drawImage(video, 0, 0);
         canvas.toBlob((blob) => {
           if (blob) {
-            const file = new File([blob], 'selfie.jpg', { type: 'image/jpeg' });
+            const fileName = showSelfieModal ? 'selfie.jpg' : 'document.jpg';
+            const file = new File([blob], fileName, { type: 'image/jpeg' });
             setCapturedFile(file);
             setSelfiePreview(canvas.toDataURL('image/jpeg'));
-            setSelfieStep(3);
+            
+            // Update the correct step based on which modal is open
+            if (showSelfieModal) {
+              setSelfieStep(3);
+            } else if (showDocumentModal) {
+              setDocumentModalStep(3);
+            }
+            
             stopCamera();
           }
         }, 'image/jpeg', 0.9);
@@ -886,7 +922,7 @@ export const ProfilePage = () => {
 
                           {/* Documents in Group */}
                           <div className="divide-y divide-gray-100">
-                            {docs.map((doc, index) => (
+                            {docs.map((doc) => (
                               <div
                                 key={doc.id}
                                 className="flex items-center justify-between p-4 hover:bg-gray-50 transition-colors"
@@ -1162,117 +1198,327 @@ export const ProfilePage = () => {
       {/* Document Type Selection Modal */}
       {showDocumentModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl shadow-2xl max-w-md w-full p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">
-                {documentModalType === 'rg' && 'Enviar RG'}
-                {documentModalType === 'cnh' && 'Enviar CNH'}
-                {documentModalType === 'cpf' && 'Enviar CPF'}
-                {documentModalType === 'comprovante_residencia' && 'Enviar Comprovante de Residência'}
-                {documentModalType === 'outros' && 'Enviar Documento'}
-              </h3>
-              <button
-                onClick={closeDocumentModal}
-                className="text-gray-400 hover:text-gray-600 transition-colors"
-              >
-                <X size={24} />
-              </button>
-            </div>
-
-            <p className="text-sm text-gray-600 mb-6">
-              Escolha uma opção de envio:
-            </p>
-
-            <div className="space-y-3">
-              {documentModalType === 'rg' && (
-                <>
+          <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full p-6">
+            {/* Step 1: Instructions */}
+            {documentModalStep === 1 && (
+              <>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    {documentModalType === 'rg' && '🪪 Como fotografar seu RG'}
+                    {documentModalType === 'cnh' && '🚗 Como fotografar sua CNH'}
+                    {documentModalType === 'cpf' && '📋 Como fotografar seu CPF'}
+                    {documentModalType === 'comprovante_residencia' && '📍 Como fotografar seu Comprovante'}
+                    {documentModalType === 'outros' && '📄 Como fotografar seu Documento'}
+                  </h3>
                   <button
-                    onClick={() => handleDocumentTypeSelect('rg_front')}
-                    className="w-full p-4 border-2 border-blue-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all text-left"
+                    onClick={closeDocumentModal}
+                    className="text-gray-400 hover:text-gray-600 transition-colors"
                   >
-                    <div className="font-medium text-gray-900">📄 Frente do RG</div>
-                    <div className="text-sm text-gray-600 mt-1">Envie apenas a parte frontal</div>
+                    <X size={24} />
+                  </button>
+                </div>
+
+                <div className="space-y-4 mb-6">
+                  <div className="flex items-start gap-3 p-3 bg-blue-50 rounded-lg">
+                    <CheckCircle className="text-blue-600 flex-shrink-0 mt-0.5" size={20} />
+                    <div>
+                      <div className="font-medium text-blue-900">Boa iluminação</div>
+                      <div className="text-sm text-blue-700">Tire a foto em um ambiente bem iluminado, evite sombras sobre o documento</div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-3 p-3 bg-blue-50 rounded-lg">
+                    <CheckCircle className="text-blue-600 flex-shrink-0 mt-0.5" size={20} />
+                    <div>
+                      <div className="font-medium text-blue-900">Imagem nítida</div>
+                      <div className="text-sm text-blue-700">Certifique-se de que todos os dados estão legíveis e sem desfoque</div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-3 p-3 bg-blue-50 rounded-lg">
+                    <CheckCircle className="text-blue-600 flex-shrink-0 mt-0.5" size={20} />
+                    <div>
+                      <div className="font-medium text-blue-900">Enquadramento correto</div>
+                      <div className="text-sm text-blue-700">O documento deve ocupar a maior parte da foto, sem cortes nas bordas</div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-3 p-3 bg-blue-50 rounded-lg">
+                    <CheckCircle className="text-blue-600 flex-shrink-0 mt-0.5" size={20} />
+                    <div>
+                      <div className="font-medium text-blue-900">Sem reflexos</div>
+                      <div className="text-sm text-blue-700">Evite reflexos de luz que possam ocultar informações do documento</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex gap-3">
+                  <button
+                    onClick={closeDocumentModal}
+                    className="flex-1 px-4 py-3 border-2 border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors"
+                  >
+                    Cancelar
                   </button>
                   <button
-                    onClick={() => handleDocumentTypeSelect('rg_back')}
-                    className="w-full p-4 border-2 border-blue-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all text-left"
+                    onClick={() => setDocumentModalStep(2)}
+                    className="flex-1 px-4 py-3 bg-ocean-blue text-white rounded-lg font-medium hover:bg-ocean-blue/90 transition-colors"
                   >
-                    <div className="font-medium text-gray-900">📄 Verso do RG</div>
-                    <div className="text-sm text-gray-600 mt-1">Envie apenas o verso</div>
+                    Continuar
+                  </button>
+                </div>
+              </>
+            )}
+
+            {/* Step 2: Select Subtype (RG/CNH) or Capture Method */}
+            {documentModalStep === 2 && (
+              <>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    {(documentModalType === 'rg' || documentModalType === 'cnh') && !selectedSubtype && (
+                      <>{documentModalType === 'rg' ? '🪪 Qual parte do RG?' : '🚗 Qual parte da CNH?'}</>
+                    )}
+                    {((documentModalType !== 'rg' && documentModalType !== 'cnh') || selectedSubtype) && (
+                      <>📷 Como deseja enviar?</>
+                    )}
+                  </h3>
+                  <button
+                    onClick={closeDocumentModal}
+                    className="text-gray-400 hover:text-gray-600 transition-colors"
+                  >
+                    <X size={24} />
+                  </button>
+                </div>
+
+                {/* Show subtype selection for RG/CNH if not selected yet */}
+                {(documentModalType === 'rg' || documentModalType === 'cnh') && !selectedSubtype ? (
+                  <div className="space-y-3">
+                    <p className="text-sm text-gray-600 mb-4">
+                      Escolha qual parte do documento você deseja enviar:
+                    </p>
+
+                    {documentModalType === 'rg' && (
+                      <>
+                        <button
+                          onClick={() => handleDocumentSubtypeSelect('rg_front')}
+                          className="w-full p-4 border-2 border-blue-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all text-left"
+                        >
+                          <div className="font-medium text-blue-900">📄 Frente do RG</div>
+                          <div className="text-sm text-blue-600 mt-1">Apenas a parte frontal do documento</div>
+                        </button>
+                        <button
+                          onClick={() => handleDocumentSubtypeSelect('rg_back')}
+                          className="w-full p-4 border-2 border-blue-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all text-left"
+                        >
+                          <div className="font-medium text-blue-900">📄 Verso do RG</div>
+                          <div className="text-sm text-blue-600 mt-1">Apenas a parte de trás do documento</div>
+                        </button>
+                        <button
+                          onClick={() => handleDocumentSubtypeSelect('rg')}
+                          className="w-full p-4 border-2 border-blue-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all text-left"
+                        >
+                          <div className="font-medium text-blue-900">📄 RG Completo</div>
+                          <div className="text-sm text-blue-600 mt-1">Frente e verso em uma única imagem</div>
+                        </button>
+                      </>
+                    )}
+
+                    {documentModalType === 'cnh' && (
+                      <>
+                        <button
+                          onClick={() => handleDocumentSubtypeSelect('cnh_front')}
+                          className="w-full p-4 border-2 border-purple-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-all text-left"
+                        >
+                          <div className="font-medium text-purple-900">📄 Frente da CNH</div>
+                          <div className="text-sm text-purple-600 mt-1">Apenas a parte frontal do documento</div>
+                        </button>
+                        <button
+                          onClick={() => handleDocumentSubtypeSelect('cnh_back')}
+                          className="w-full p-4 border-2 border-purple-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-all text-left"
+                        >
+                          <div className="font-medium text-purple-900">📄 Verso da CNH</div>
+                          <div className="text-sm text-purple-600 mt-1">Apenas a parte de trás do documento</div>
+                        </button>
+                        <button
+                          onClick={() => handleDocumentSubtypeSelect('cnh')}
+                          className="w-full p-4 border-2 border-purple-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-all text-left"
+                        >
+                          <div className="font-medium text-purple-900">📄 CNH Completa</div>
+                          <div className="text-sm text-purple-600 mt-1">Frente e verso em uma única imagem</div>
+                        </button>
+                      </>
+                    )}
+
+                    <button
+                      onClick={() => setDocumentModalStep(1)}
+                      className="w-full mt-4 px-4 py-2 text-sm text-gray-600 hover:text-gray-800 transition-colors"
+                    >
+                      ← Voltar
+                    </button>
+                  </div>
+                ) : !useCamera ? (
+                  <div className="space-y-4">
+                    <button
+                      onClick={() => {
+                        setUseCamera(true);
+                        startCamera();
+                      }}
+                      className="w-full p-6 border-2 border-ocean-blue rounded-lg hover:bg-ocean-blue/5 transition-all"
+                    >
+                      <Camera size={40} className="mx-auto text-ocean-blue mb-2" />
+                      <div className="font-medium text-gray-900">Usar Câmera</div>
+                      <div className="text-sm text-gray-600 mt-1">Tire uma foto do documento agora</div>
+                    </button>
+
+                    <div className="relative">
+                      <div className="absolute inset-0 flex items-center">
+                        <div className="w-full border-t border-gray-300"></div>
+                      </div>
+                      <div className="relative flex justify-center text-sm">
+                        <span className="bg-white px-2 text-gray-500">ou</span>
+                      </div>
+                    </div>
+
+                    <label className="block">
+                      <input
+                        type="file"
+                        accept="image/*,.pdf"
+                        onChange={handleDocumentFileSelect}
+                        className="hidden"
+                      />
+                      <div className="w-full p-6 border-2 border-gray-300 rounded-lg hover:border-ocean-blue hover:bg-ocean-blue/5 transition-all cursor-pointer">
+                        <Upload size={40} className="mx-auto text-gray-400 mb-2" />
+                        <div className="font-medium text-gray-900">Enviar Arquivo</div>
+                        <div className="text-sm text-gray-600 mt-1">Selecione uma foto ou PDF do seu dispositivo</div>
+                      </div>
+                    </label>
+
+                    <button
+                      onClick={() => {
+                        if (documentModalType === 'rg' || documentModalType === 'cnh') {
+                          setSelectedSubtype('');
+                        } else {
+                          setDocumentModalStep(1);
+                        }
+                      }}
+                      className="w-full px-4 py-2 text-sm text-gray-600 hover:text-gray-800 transition-colors"
+                    >
+                      ← Voltar
+                    </button>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    <div className="relative bg-black rounded-lg overflow-hidden">
+                      <video
+                        ref={videoRef}
+                        autoPlay
+                        playsInline
+                        className="w-full"
+                      />
+                    </div>
+
+                    <div className="bg-amber-50 border border-amber-200 rounded-lg p-3">
+                      <p className="text-sm text-amber-800">
+                        ⚠️ Posicione o documento completamente visível na tela e evite reflexos
+                      </p>
+                    </div>
+
+                    <div className="flex gap-3">
+                      <button
+                        onClick={() => {
+                          stopCamera();
+                          setUseCamera(false);
+                        }}
+                        className="flex-1 px-4 py-3 border-2 border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors"
+                      >
+                        Cancelar
+                      </button>
+                      <button
+                        onClick={capturePhoto}
+                        className="flex-1 px-4 py-3 bg-ocean-blue text-white rounded-lg font-medium hover:bg-ocean-blue/90 transition-colors flex items-center justify-center gap-2"
+                      >
+                        <Camera size={20} />
+                        Capturar
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
+
+            {/* Step 3: Preview and Confirm */}
+            {documentModalStep === 3 && (
+              <>
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-lg font-semibold text-gray-900">✓ Confirmar Documento</h3>
+                  <button
+                    onClick={closeDocumentModal}
+                    className="text-gray-400 hover:text-gray-600 transition-colors"
+                  >
+                    <X size={24} />
+                  </button>
+                </div>
+
+                <div className="mb-6">
+                  <div className="relative bg-gray-100 rounded-lg overflow-hidden">
+                    {selfiePreview && (
+                      <img
+                        src={selfiePreview}
+                        alt="Preview"
+                        className="w-full"
+                      />
+                    )}
+                  </div>
+
+                  <div className="mt-4 p-4 bg-amber-50 border border-amber-200 rounded-lg">
+                    <div className="flex items-start gap-2">
+                      <AlertCircle className="text-amber-600 flex-shrink-0 mt-0.5" size={20} />
+                      <div className="text-sm text-amber-800">
+                        <p className="font-medium mb-1">Verifique se a imagem está adequada:</p>
+                        <ul className="space-y-1 text-xs">
+                          <li>✓ Todos os dados estão legíveis</li>
+                          <li>✓ Não há reflexos ou sombras</li>
+                          <li>✓ O documento está completamente visível</li>
+                          <li>✓ A imagem está nítida</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => {
+                      setSelfiePreview(null);
+                      setCapturedFile(null);
+                      setDocumentModalStep(2);
+                    }}
+                    className="flex-1 px-4 py-3 border-2 border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors"
+                  >
+                    Tirar Novamente
                   </button>
                   <button
-                    onClick={() => handleDocumentTypeSelect('rg')}
-                    className="w-full p-4 border-2 border-blue-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all text-left"
+                    onClick={saveDocument}
+                    disabled={uploadingDocument}
+                    className="flex-1 px-4 py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                   >
-                    <div className="font-medium text-gray-900">📋 RG Completo (uma página)</div>
-                    <div className="text-sm text-gray-600 mt-1">Frente e verso em uma única imagem</div>
+                    {uploadingDocument ? (
+                      <>
+                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                        Enviando...
+                      </>
+                    ) : (
+                      <>
+                        <Check size={20} />
+                        Confirmar e Enviar
+                      </>
+                    )}
                   </button>
-                </>
-              )}
-
-              {documentModalType === 'cnh' && (
-                <>
-                  <button
-                    onClick={() => handleDocumentTypeSelect('cnh_front')}
-                    className="w-full p-4 border-2 border-purple-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-all text-left"
-                  >
-                    <div className="font-medium text-gray-900">📄 Frente da CNH</div>
-                    <div className="text-sm text-gray-600 mt-1">Envie apenas a parte frontal</div>
-                  </button>
-                  <button
-                    onClick={() => handleDocumentTypeSelect('cnh_back')}
-                    className="w-full p-4 border-2 border-purple-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-all text-left"
-                  >
-                    <div className="font-medium text-gray-900">📄 Verso da CNH</div>
-                    <div className="text-sm text-gray-600 mt-1">Envie apenas o verso</div>
-                  </button>
-                  <button
-                    onClick={() => handleDocumentTypeSelect('cnh')}
-                    className="w-full p-4 border-2 border-purple-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-all text-left"
-                  >
-                    <div className="font-medium text-gray-900">📋 CNH Completa (uma página)</div>
-                    <div className="text-sm text-gray-600 mt-1">Frente e verso em uma única imagem</div>
-                  </button>
-                </>
-              )}
-
-              {documentModalType === 'cpf' && (
-                <button
-                  onClick={() => handleDocumentTypeSelect('cpf')}
-                  className="w-full p-4 border-2 border-green-200 rounded-lg hover:border-green-500 hover:bg-green-50 transition-all text-left"
-                >
-                  <div className="font-medium text-gray-900">📄 Documento CPF</div>
-                  <div className="text-sm text-gray-600 mt-1">Envie foto do documento físico ou digital</div>
-                </button>
-              )}
-
-              {documentModalType === 'comprovante_residencia' && (
-                <button
-                  onClick={() => handleDocumentTypeSelect('comprovante_residencia')}
-                  className="w-full p-4 border-2 border-amber-200 rounded-lg hover:border-amber-500 hover:bg-amber-50 transition-all text-left"
-                >
-                  <div className="font-medium text-gray-900">📄 Comprovante de Residência</div>
-                  <div className="text-sm text-gray-600 mt-1">Conta de luz, água, telefone ou extrato bancário</div>
-                </button>
-              )}
-
-              {documentModalType === 'outros' && (
-                <button
-                  onClick={() => handleDocumentTypeSelect('outros')}
-                  className="w-full p-4 border-2 border-gray-200 rounded-lg hover:border-gray-500 hover:bg-gray-50 transition-all text-left"
-                >
-                  <div className="font-medium text-gray-900">📄 Outro Documento</div>
-                  <div className="text-sm text-gray-600 mt-1">Qualquer outro documento necessário</div>
-                </button>
-              )}
-            </div>
-
-            <button
-              onClick={closeDocumentModal}
-              className="w-full mt-4 px-4 py-2 text-sm text-gray-600 hover:text-gray-800 transition-colors"
-            >
-              Cancelar
-            </button>
+                </div>
+              </>
+            )}
+            
+            {/* Hidden canvas for photo capture */}
+            <canvas ref={canvasRef} className="hidden" />
           </div>
         </div>
       )}
