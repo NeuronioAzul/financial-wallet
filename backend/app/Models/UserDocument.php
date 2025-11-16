@@ -32,6 +32,8 @@ class UserDocument extends Model
         'verified_at' => 'datetime',
     ];
 
+    protected $appends = ['file_url'];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -55,5 +57,15 @@ class UserDocument extends Model
     public function isRejected(): bool
     {
         return $this->status === DocumentStatus::REJECTED;
+    }
+
+    public function getFileUrlAttribute(): ?string
+    {
+        if (!$this->file_path) {
+            return null;
+        }
+
+        // URL para download via API
+        return url("/api/v1/documents/{$this->id}/download");
     }
 }

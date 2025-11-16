@@ -9,6 +9,8 @@ use App\Models\UserDocument;
 use App\Services\DocumentService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class DocumentController extends Controller
 {
@@ -30,7 +32,7 @@ class DocumentController extends Controller
     {
         $document = $this->documentService->uploadDocument(
             auth()->user(),
-            DocumentType::from($request->validated('document_type')),
+            DocumentType::from($request->validated('type')),
             $request->file('file')
         );
 
@@ -59,6 +61,17 @@ class DocumentController extends Controller
         return response()->json([
             'message' => 'Document deleted successfully',
         ]);
+    }
+
+    public function download(UserDocument $document): StreamedResponse
+    {
+        $this->authorize('view', $document);
+
+        if (!Storage::exists($document->file_path)) {
+            abort(404, 'File not found');
+        }
+
+        return Storage::download($document->file_path, $document->file_name);
     }
 
     public function status(): JsonResponse

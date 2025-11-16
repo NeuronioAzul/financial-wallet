@@ -14,7 +14,19 @@ return new class extends Migration
         Schema::create('user_documents', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('user_id');
-            $table->enum('document_type', ['photo', 'rg_front', 'rg_back', 'cnh_front', 'cnh_back']);
+            $table->enum('document_type', [
+                'photo',
+                'rg',
+                'rg_front',
+                'rg_back',
+                'cnh',
+                'cnh_front',
+                'cnh_back',
+                'cpf',
+                'comprovante_residencia',
+                'cartao_credito',
+                'outros'
+            ]);
             $table->string('file_path');
             $table->string('file_name');
             $table->string('mime_type', 100);

@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ArrowLeft, User, MapPin, FileText, Lock, Save, Eye, EyeOff, Settings, Moon, Sun, Contrast, Check, Upload, Trash2, Download } from 'lucide-react';
+import { ArrowLeft, User, MapPin, FileText, Lock, Save, Eye, EyeOff, Settings, Moon, Sun, Contrast, Check, Upload, Trash2, Download, Camera, X, AlertCircle, CheckCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
@@ -57,6 +57,20 @@ export const ProfilePage = () => {
   const [documents, setDocuments] = useState<any[]>([]);
   const [loadingDocuments, setLoadingDocuments] = useState(false);
   const [uploadingDocument, setUploadingDocument] = useState(false);
+  
+  // Document upload modals
+  const [showDocumentModal, setShowDocumentModal] = useState(false);
+  const [documentModalType, setDocumentModalType] = useState<string>('');
+  
+  // Selfie modal states
+  const [showSelfieModal, setShowSelfieModal] = useState(false);
+  const [selfieStep, setSelfieStep] = useState<1 | 2 | 3>(1);
+  const [selfiePreview, setSelfiePreview] = useState<string | null>(null);
+  const [capturedFile, setCapturedFile] = useState<File | null>(null);
+  const [useCamera, setUseCamera] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const streamRef = useRef<MediaStream | null>(null);
 
   const profileForm = useForm<ProfileFormData>({
     resolver: zodResolver(profileSchema),
@@ -117,10 +131,167 @@ export const ProfilePage = () => {
     }
   };
 
-  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>, type: string) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
+  const handleDeleteDocument = async (documentId: string) => {
+    if (!window.confirm('Tem certeza que deseja excluir este documento?')) return;
 
+    try {
+      await profileService.deleteDocument(documentId);
+      setDocuments(prev => prev.filter(d => d.id !== documentId));
+      toast.success('Documento excluído com sucesso!');
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || 'Erro ao excluir documento');
+    }
+  };
+
+  const getDocumentTypeLabel = (type: string) => {
+    const labels: Record<string, string> = {
+      'rg': 'RG',
+      'cnh': 'CNH',
+      'cpf': 'CPF',
+      'comprovante_residencia': 'Comp. Residência',
+      'cartao_credito': 'Cartão de Crédito',
+      'outros': 'Outros',
+      'photo': 'Foto',
+      'rg_front': 'RG Frente',
+      'rg_back': 'RG Verso',
+      'cnh_front': 'CNH Frente',
+      'cnh_back': 'CNH Verso',
+    };
+    return labels[type] || type;
+  };
+
+  const getDocumentTypeBadgeColor = (type: string) => {
+    const colors: Record<string, string> = {
+      'rg': 'bg-blue-100 text-blue-700',
+      'rg_front': 'bg-blue-100 text-blue-700',
+      'rg_back': 'bg-blue-100 text-blue-700',
+      'cnh': 'bg-purple-100 text-purple-700',
+      'cnh_front': 'bg-purple-100 text-purple-700',
+      'cnh_back': 'bg-purple-100 text-purple-700',
+      'cpf': 'bg-green-100 text-green-700',
+      'comprovante_residencia': 'bg-amber-100 text-amber-700',
+      'cartao_credito': 'bg-pink-100 text-pink-700',
+      'photo': 'bg-indigo-100 text-indigo-700',
+      'outros': 'bg-gray-100 text-gray-700',
+    };
+    return colors[type] || 'bg-ocean-blue/10 text-ocean-blue';
+  };
+
+  // Group documents by category
+  const groupDocumentsByType = (docs: any[]) => {
+    const groups: Record<string, any[]> = {
+      photo: [],
+      rg: [],
+      cnh: [],
+      cpf: [],
+      comprovante_residencia: [],
+      cartao_credito: [],
+      outros: []
+    };
+
+    docs.forEach(doc => {
+      const type = doc.document_type || doc.type;
+      
+      // Group RG variants together
+      if (['rg', 'rg_front', 'rg_back'].includes(type)) {
+        groups.rg.push(doc);
+      }
+      // Group CNH variants together
+      else if (['cnh', 'cnh_front', 'cnh_back'].includes(type)) {
+        groups.cnh.push(doc);
+      }
+      // Other types go to their own group
+      else if (type === 'photo') {
+        groups.photo.push(doc);
+      } else if (type === 'cpf') {
+        groups.cpf.push(doc);
+      } else if (type === 'comprovante_residencia') {
+        groups.comprovante_residencia.push(doc);
+      } else if (type === 'cartao_credito') {
+        groups.cartao_credito.push(doc);
+      } else {
+        groups.outros.push(doc);
+      }
+    });
+
+    return groups;
+  };
+
+  const getGroupInfo = (groupKey: string) => {
+    const info: Record<string, { icon: string; title: string; color: string; bgColor: string }> = {
+      photo: {
+        icon: '📸',
+        title: 'Foto/Selfie',
+        color: 'text-indigo-700',
+        bgColor: 'bg-indigo-100'
+      },
+      rg: {
+        icon: '🪪',
+        title: 'RG',
+        color: 'text-blue-700',
+        bgColor: 'bg-blue-100'
+      },
+      cnh: {
+        icon: '🚗',
+        title: 'CNH',
+        color: 'text-purple-700',
+        bgColor: 'bg-purple-100'
+      },
+      cpf: {
+        icon: '📋',
+        title: 'CPF',
+        color: 'text-green-700',
+        bgColor: 'bg-green-100'
+      },
+      comprovante_residencia: {
+        icon: '📍',
+        title: 'Comprovante de Residência',
+        color: 'text-amber-700',
+        bgColor: 'bg-amber-100'
+      },
+      cartao_credito: {
+        icon: '💳',
+        title: 'Cartão de Crédito',
+        color: 'text-pink-700',
+        bgColor: 'bg-pink-100'
+      },
+      outros: {
+        icon: '📄',
+        title: 'Outros Documentos',
+        color: 'text-gray-700',
+        bgColor: 'bg-gray-100'
+      }
+    };
+    return info[groupKey];
+  };
+
+  // Document modal handlers
+  const openDocumentModal = (type: string) => {
+    setDocumentModalType(type);
+    setShowDocumentModal(true);
+  };
+
+  const closeDocumentModal = () => {
+    setShowDocumentModal(false);
+    setDocumentModalType('');
+  };
+
+  const handleDocumentTypeSelect = async (subtype: string) => {
+    // Create a hidden file input
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.pdf,.jpg,.jpeg,.png';
+    input.onchange = async (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (file) {
+        await uploadDocumentFile(file, subtype);
+      }
+    };
+    input.click();
+    closeDocumentModal();
+  };
+
+  const uploadDocumentFile = async (file: File, type: string) => {
     // Validação de tamanho (máx 5MB)
     if (file.size > 5 * 1024 * 1024) {
       toast.error('Arquivo muito grande (máximo 5MB)');
@@ -139,8 +310,6 @@ export const ProfilePage = () => {
       await profileService.uploadDocument(file, type);
       toast.success('Documento enviado com sucesso!');
       loadDocuments();
-      // Limpar o input
-      event.target.value = '';
     } catch (error: any) {
       toast.error(error.response?.data?.message || 'Erro ao enviar documento');
     } finally {
@@ -148,15 +317,84 @@ export const ProfilePage = () => {
     }
   };
 
-  const handleDeleteDocument = async (documentId: string) => {
-    if (!window.confirm('Tem certeza que deseja excluir este documento?')) return;
+  // Selfie modal handlers
+  const openSelfieModal = () => {
+    setShowSelfieModal(true);
+    setSelfieStep(1);
+    setSelfiePreview(null);
+    setCapturedFile(null);
+  };
 
+  const closeSelfieModal = () => {
+    setShowSelfieModal(false);
+    setSelfieStep(1);
+    setSelfiePreview(null);
+    setCapturedFile(null);
+    setUseCamera(false);
+    stopCamera();
+  };
+
+  const startCamera = async () => {
     try {
-      await profileService.deleteDocument(documentId);
-      setDocuments(prev => prev.filter(d => d.id !== documentId));
-      toast.success('Documento excluído com sucesso!');
-    } catch (error: any) {
-      toast.error(error.response?.data?.message || 'Erro ao excluir documento');
+      const stream = await navigator.mediaDevices.getUserMedia({ 
+        video: { facingMode: 'user', width: 1280, height: 720 } 
+      });
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+        streamRef.current = stream;
+      }
+    } catch (error) {
+      toast.error('Não foi possível acessar a câmera');
+      console.error('Camera error:', error);
+    }
+  };
+
+  const stopCamera = () => {
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach(track => track.stop());
+      streamRef.current = null;
+    }
+  };
+
+  const capturePhoto = () => {
+    if (videoRef.current && canvasRef.current) {
+      const video = videoRef.current;
+      const canvas = canvasRef.current;
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        ctx.drawImage(video, 0, 0);
+        canvas.toBlob((blob) => {
+          if (blob) {
+            const file = new File([blob], 'selfie.jpg', { type: 'image/jpeg' });
+            setCapturedFile(file);
+            setSelfiePreview(canvas.toDataURL('image/jpeg'));
+            setSelfieStep(3);
+            stopCamera();
+          }
+        }, 'image/jpeg', 0.9);
+      }
+    }
+  };
+
+  const handleSelfieFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setCapturedFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setSelfiePreview(reader.result as string);
+        setSelfieStep(3);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const saveSelfie = async () => {
+    if (capturedFile) {
+      await uploadDocumentFile(capturedFile, 'photo');
+      closeSelfieModal();
     }
   };
 
@@ -504,35 +742,83 @@ export const ProfilePage = () => {
                   </p>
                   
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-3 max-w-2xl mx-auto">
-                    {[
-                      { type: 'rg', label: 'RG' },
-                      { type: 'cnh', label: 'CNH' },
-                      { type: 'cpf', label: 'CPF' },
-                      { type: 'comprovante_residencia', label: 'Comprovante de Residência' },
-                      { type: 'cartao_credito', label: 'Cartão de Crédito' },
-                      { type: 'outros', label: 'Outros' },
-                    ].map(({ type, label }) => (
-                      <div key={type} className="relative">
-                        <input
-                          type="file"
-                          accept=".pdf,.jpg,.jpeg,.png"
-                          onChange={(e) => handleFileUpload(e, type)}
-                          className="hidden"
-                          id={`upload-${type}`}
-                          disabled={uploadingDocument}
-                        />
-                        <label
-                          htmlFor={`upload-${type}`}
-                          className={`block px-4 py-2 text-sm font-medium rounded-lg border-2 transition-colors cursor-pointer
-                            ${uploadingDocument 
-                              ? 'bg-gray-100 border-gray-200 text-gray-400 cursor-not-allowed' 
-                              : 'bg-white border-ocean-blue text-ocean-blue hover:bg-ocean-blue hover:text-white'
-                            }`}
-                        >
-                          {label}
-                        </label>
-                      </div>
-                    ))}
+                    {/* Selfie/Foto */}
+                    <button
+                      onClick={openSelfieModal}
+                      disabled={uploadingDocument}
+                      className={`px-4 py-2 text-sm font-medium rounded-lg border-2 transition-colors
+                        ${uploadingDocument 
+                          ? 'bg-gray-100 border-gray-200 text-gray-400 cursor-not-allowed' 
+                          : 'bg-white border-indigo-500 text-indigo-600 hover:bg-indigo-500 hover:text-white'
+                        }`}
+                    >
+                      📸 Foto/Selfie
+                    </button>
+
+                    {/* RG */}
+                    <button
+                      onClick={() => openDocumentModal('rg')}
+                      disabled={uploadingDocument}
+                      className={`px-4 py-2 text-sm font-medium rounded-lg border-2 transition-colors
+                        ${uploadingDocument 
+                          ? 'bg-gray-100 border-gray-200 text-gray-400 cursor-not-allowed' 
+                          : 'bg-white border-blue-500 text-blue-600 hover:bg-blue-500 hover:text-white'
+                        }`}
+                    >
+                      RG
+                    </button>
+
+                    {/* CNH */}
+                    <button
+                      onClick={() => openDocumentModal('cnh')}
+                      disabled={uploadingDocument}
+                      className={`px-4 py-2 text-sm font-medium rounded-lg border-2 transition-colors
+                        ${uploadingDocument 
+                          ? 'bg-gray-100 border-gray-200 text-gray-400 cursor-not-allowed' 
+                          : 'bg-white border-purple-500 text-purple-600 hover:bg-purple-500 hover:text-white'
+                        }`}
+                    >
+                      CNH
+                    </button>
+
+                    {/* CPF */}
+                    <button
+                      onClick={() => openDocumentModal('cpf')}
+                      disabled={uploadingDocument}
+                      className={`px-4 py-2 text-sm font-medium rounded-lg border-2 transition-colors
+                        ${uploadingDocument 
+                          ? 'bg-gray-100 border-gray-200 text-gray-400 cursor-not-allowed' 
+                          : 'bg-white border-green-500 text-green-600 hover:bg-green-500 hover:text-white'
+                        }`}
+                    >
+                      CPF
+                    </button>
+
+                    {/* Comprovante de Residência */}
+                    <button
+                      onClick={() => openDocumentModal('comprovante_residencia')}
+                      disabled={uploadingDocument}
+                      className={`px-4 py-2 text-sm font-medium rounded-lg border-2 transition-colors
+                        ${uploadingDocument 
+                          ? 'bg-gray-100 border-gray-200 text-gray-400 cursor-not-allowed' 
+                          : 'bg-white border-amber-500 text-amber-600 hover:bg-amber-500 hover:text-white'
+                        }`}
+                    >
+                      Comp. Residência
+                    </button>
+
+                    {/* Outros */}
+                    <button
+                      onClick={() => openDocumentModal('outros')}
+                      disabled={uploadingDocument}
+                      className={`px-4 py-2 text-sm font-medium rounded-lg border-2 transition-colors
+                        ${uploadingDocument 
+                          ? 'bg-gray-100 border-gray-200 text-gray-400 cursor-not-allowed' 
+                          : 'bg-white border-gray-500 text-gray-600 hover:bg-gray-500 hover:text-white'
+                        }`}
+                    >
+                      Outros
+                    </button>
                   </div>
                   
                   {uploadingDocument && (
@@ -563,56 +849,114 @@ export const ProfilePage = () => {
                   </p>
                 </div>
               ) : (
-                <div className="space-y-3">
-                  <h4 className="text-sm font-medium text-gray-700">
-                    Documentos Enviados ({documents.length})
-                  </h4>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    {documents.map((doc) => (
-                      <div
-                        key={doc.id}
-                        className="flex items-center justify-between p-4 border border-gray-200 rounded-lg bg-white hover:shadow-md transition-shadow"
-                      >
-                        <div className="flex items-center gap-3 flex-1 min-w-0">
-                          <div className="flex-shrink-0">
-                            <FileText size={24} className="text-ocean-blue" />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-2 mb-1">
-                              <span className="text-xs font-medium px-2 py-1 rounded bg-ocean-blue/10 text-ocean-blue uppercase">
-                                {doc.type?.replace('_', ' ') || 'Documento'}
-                              </span>
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <h4 className="text-sm font-medium text-gray-700">
+                      Documentos Enviados ({documents.length})
+                    </h4>
+                  </div>
+
+                  {/* Grouped Documents by Type */}
+                  <div className="space-y-3">
+                    {Object.entries(groupDocumentsByType(documents)).map(([groupKey, docs]) => {
+                      if (docs.length === 0) return null;
+                      const groupInfo = getGroupInfo(groupKey);
+
+                      return (
+                        <div key={groupKey} className="border border-gray-200 rounded-xl overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow">
+                          {/* Group Header */}
+                          <div className={`${groupInfo.bgColor} px-4 py-3 border-b border-gray-200`}>
+                            <div className="flex items-center gap-3">
+                              <span className="text-2xl">{groupInfo.icon}</span>
+                              <div className="flex-1">
+                                <h5 className={`text-sm font-semibold ${groupInfo.color}`}>
+                                  {groupInfo.title}
+                                </h5>
+                                <p className="text-xs text-gray-600">
+                                  {docs.length === 1 
+                                    ? '1 arquivo' 
+                                    : groupKey === 'rg' || groupKey === 'cnh'
+                                      ? `${docs.length} arquivo${docs.length > 1 ? 's' : ''} (${docs.map(d => getDocumentTypeLabel(d.document_type || d.type)).join(', ')})`
+                                      : `${docs.length} arquivo${docs.length > 1 ? 's' : ''}`
+                                  }
+                                </p>
+                              </div>
                             </div>
-                            <p className="text-sm text-gray-900 truncate">
-                              {doc.file_name || 'Documento'}
-                            </p>
-                            <p className="text-xs text-gray-500">
-                              Enviado em {new Date(doc.created_at).toLocaleDateString('pt-BR')}
-                            </p>
+                          </div>
+
+                          {/* Documents in Group */}
+                          <div className="divide-y divide-gray-100">
+                            {docs.map((doc, index) => (
+                              <div
+                                key={doc.id}
+                                className="flex items-center justify-between p-4 hover:bg-gray-50 transition-colors"
+                              >
+                                <div className="flex items-center gap-3 flex-1 min-w-0">
+                                  <div className="flex-shrink-0">
+                                    <div className={`p-2 rounded-lg ${groupInfo.bgColor}`}>
+                                      <FileText size={20} className={groupInfo.color} />
+                                    </div>
+                                  </div>
+                                  <div className="flex-1 min-w-0">
+                                    <div className="flex items-center gap-2 mb-1 flex-wrap">
+                                      {/* Show subtype badge only for RG/CNH variants */}
+                                      {(groupKey === 'rg' || groupKey === 'cnh') && (
+                                        <span className={`text-xs font-semibold px-2.5 py-1 rounded-md ${getDocumentTypeBadgeColor(doc.document_type || doc.type)}`}>
+                                          {getDocumentTypeLabel(doc.document_type || doc.type)}
+                                        </span>
+                                      )}
+                                      {doc.status && (
+                                        <span className={`text-xs px-2 py-0.5 rounded-full ${
+                                          doc.status === 'approved' 
+                                            ? 'bg-green-100 text-green-700' 
+                                            : doc.status === 'rejected'
+                                            ? 'bg-red-100 text-red-700'
+                                            : 'bg-yellow-100 text-yellow-700'
+                                        }`}>
+                                          {doc.status === 'approved' ? '✓ Aprovado' : doc.status === 'rejected' ? '✗ Rejeitado' : '⏱ Pendente'}
+                                        </span>
+                                      )}
+                                    </div>
+                                    <p className="text-sm text-gray-900 truncate font-medium">
+                                      {doc.file_name || 'Documento'}
+                                    </p>
+                                    <p className="text-xs text-gray-500">
+                                      Enviado em {new Date(doc.created_at).toLocaleDateString('pt-BR', {
+                                        day: '2-digit',
+                                        month: 'short',
+                                        year: 'numeric',
+                                        hour: '2-digit',
+                                        minute: '2-digit'
+                                      })}
+                                    </p>
+                                  </div>
+                                </div>
+                                <div className="flex items-center gap-2 flex-shrink-0">
+                                  {doc.file_url && (
+                                    <a
+                                      href={doc.file_url}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="p-2 text-ocean-blue hover:bg-ocean-blue/10 rounded-lg transition-colors"
+                                      title="Download"
+                                    >
+                                      <Download size={18} />
+                                    </a>
+                                  )}
+                                  <button
+                                    onClick={() => handleDeleteDocument(doc.id)}
+                                    className="p-2 text-burgundy-red hover:bg-burgundy-red/10 rounded-lg transition-colors"
+                                    title="Excluir"
+                                  >
+                                    <Trash2 size={18} />
+                                  </button>
+                                </div>
+                              </div>
+                            ))}
                           </div>
                         </div>
-                        <div className="flex items-center gap-2 flex-shrink-0">
-                          {doc.file_url && (
-                            <a
-                              href={doc.file_url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="p-2 text-ocean-blue hover:bg-ocean-blue/10 rounded-lg transition-colors"
-                              title="Download"
-                            >
-                              <Download size={18} />
-                            </a>
-                          )}
-                          <button
-                            onClick={() => handleDeleteDocument(doc.id)}
-                            className="p-2 text-burgundy-red hover:bg-burgundy-red/10 rounded-lg transition-colors"
-                            title="Excluir"
-                          >
-                            <Trash2 size={18} />
-                          </button>
-                        </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </div>
               )}
@@ -710,7 +1054,9 @@ export const ProfilePage = () => {
                       </div>
                       <span className="font-medium text-gray-900">Modo Claro</span>
                       {theme === 'light' && (
-                        <div className="ml-auto w-2 h-2 bg-primary rounded-full"></div>
+                        <div className="ml-auto p-1 bg-primary rounded-full">
+                          <Check size={16} className="text-white" />
+                        </div>
                       )}
                     </div>
                     <p className="text-sm text-gray-600 text-left">
@@ -732,7 +1078,9 @@ export const ProfilePage = () => {
                       </div>
                       <span className="font-medium text-gray-900">Modo Escuro</span>
                       {theme === 'dark' && (
-                        <div className="ml-auto w-2 h-2 bg-primary rounded-full"></div>
+                        <div className="ml-auto p-1 bg-primary rounded-full">
+                          <Check size={16} className="text-white" />
+                        </div>
                       )}
                     </div>
                     <p className="text-sm text-gray-600 text-left">
@@ -810,6 +1158,360 @@ export const ProfilePage = () => {
           </Card>
         )}
       </main>
+
+      {/* Document Type Selection Modal */}
+      {showDocumentModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl shadow-2xl max-w-md w-full p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-gray-900">
+                {documentModalType === 'rg' && 'Enviar RG'}
+                {documentModalType === 'cnh' && 'Enviar CNH'}
+                {documentModalType === 'cpf' && 'Enviar CPF'}
+                {documentModalType === 'comprovante_residencia' && 'Enviar Comprovante de Residência'}
+                {documentModalType === 'outros' && 'Enviar Documento'}
+              </h3>
+              <button
+                onClick={closeDocumentModal}
+                className="text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            <p className="text-sm text-gray-600 mb-6">
+              Escolha uma opção de envio:
+            </p>
+
+            <div className="space-y-3">
+              {documentModalType === 'rg' && (
+                <>
+                  <button
+                    onClick={() => handleDocumentTypeSelect('rg_front')}
+                    className="w-full p-4 border-2 border-blue-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all text-left"
+                  >
+                    <div className="font-medium text-gray-900">📄 Frente do RG</div>
+                    <div className="text-sm text-gray-600 mt-1">Envie apenas a parte frontal</div>
+                  </button>
+                  <button
+                    onClick={() => handleDocumentTypeSelect('rg_back')}
+                    className="w-full p-4 border-2 border-blue-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all text-left"
+                  >
+                    <div className="font-medium text-gray-900">📄 Verso do RG</div>
+                    <div className="text-sm text-gray-600 mt-1">Envie apenas o verso</div>
+                  </button>
+                  <button
+                    onClick={() => handleDocumentTypeSelect('rg')}
+                    className="w-full p-4 border-2 border-blue-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all text-left"
+                  >
+                    <div className="font-medium text-gray-900">📋 RG Completo (uma página)</div>
+                    <div className="text-sm text-gray-600 mt-1">Frente e verso em uma única imagem</div>
+                  </button>
+                </>
+              )}
+
+              {documentModalType === 'cnh' && (
+                <>
+                  <button
+                    onClick={() => handleDocumentTypeSelect('cnh_front')}
+                    className="w-full p-4 border-2 border-purple-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-all text-left"
+                  >
+                    <div className="font-medium text-gray-900">📄 Frente da CNH</div>
+                    <div className="text-sm text-gray-600 mt-1">Envie apenas a parte frontal</div>
+                  </button>
+                  <button
+                    onClick={() => handleDocumentTypeSelect('cnh_back')}
+                    className="w-full p-4 border-2 border-purple-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-all text-left"
+                  >
+                    <div className="font-medium text-gray-900">📄 Verso da CNH</div>
+                    <div className="text-sm text-gray-600 mt-1">Envie apenas o verso</div>
+                  </button>
+                  <button
+                    onClick={() => handleDocumentTypeSelect('cnh')}
+                    className="w-full p-4 border-2 border-purple-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-all text-left"
+                  >
+                    <div className="font-medium text-gray-900">📋 CNH Completa (uma página)</div>
+                    <div className="text-sm text-gray-600 mt-1">Frente e verso em uma única imagem</div>
+                  </button>
+                </>
+              )}
+
+              {documentModalType === 'cpf' && (
+                <button
+                  onClick={() => handleDocumentTypeSelect('cpf')}
+                  className="w-full p-4 border-2 border-green-200 rounded-lg hover:border-green-500 hover:bg-green-50 transition-all text-left"
+                >
+                  <div className="font-medium text-gray-900">📄 Documento CPF</div>
+                  <div className="text-sm text-gray-600 mt-1">Envie foto do documento físico ou digital</div>
+                </button>
+              )}
+
+              {documentModalType === 'comprovante_residencia' && (
+                <button
+                  onClick={() => handleDocumentTypeSelect('comprovante_residencia')}
+                  className="w-full p-4 border-2 border-amber-200 rounded-lg hover:border-amber-500 hover:bg-amber-50 transition-all text-left"
+                >
+                  <div className="font-medium text-gray-900">📄 Comprovante de Residência</div>
+                  <div className="text-sm text-gray-600 mt-1">Conta de luz, água, telefone ou extrato bancário</div>
+                </button>
+              )}
+
+              {documentModalType === 'outros' && (
+                <button
+                  onClick={() => handleDocumentTypeSelect('outros')}
+                  className="w-full p-4 border-2 border-gray-200 rounded-lg hover:border-gray-500 hover:bg-gray-50 transition-all text-left"
+                >
+                  <div className="font-medium text-gray-900">📄 Outro Documento</div>
+                  <div className="text-sm text-gray-600 mt-1">Qualquer outro documento necessário</div>
+                </button>
+              )}
+            </div>
+
+            <button
+              onClick={closeDocumentModal}
+              className="w-full mt-4 px-4 py-2 text-sm text-gray-600 hover:text-gray-800 transition-colors"
+            >
+              Cancelar
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Selfie Modal */}
+      {showSelfieModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full p-6">
+            {/* Step 1: Instructions */}
+            {selfieStep === 1 && (
+              <>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold text-gray-900">📸 Como tirar uma boa selfie</h3>
+                  <button
+                    onClick={closeSelfieModal}
+                    className="text-gray-400 hover:text-gray-600 transition-colors"
+                  >
+                    <X size={24} />
+                  </button>
+                </div>
+
+                <div className="space-y-4 mb-6">
+                  <div className="flex items-start gap-3 p-3 bg-blue-50 rounded-lg">
+                    <CheckCircle className="text-blue-600 flex-shrink-0 mt-0.5" size={20} />
+                    <div>
+                      <div className="font-medium text-blue-900">Boa iluminação</div>
+                      <div className="text-sm text-blue-700">Tire a foto em um ambiente bem iluminado, de preferência com luz natural</div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-3 p-3 bg-blue-50 rounded-lg">
+                    <CheckCircle className="text-blue-600 flex-shrink-0 mt-0.5" size={20} />
+                    <div>
+                      <div className="font-medium text-blue-900">Rosto visível</div>
+                      <div className="text-sm text-blue-700">Seu rosto deve estar completamente visível, sem óculos escuros ou chapéus</div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-3 p-3 bg-blue-50 rounded-lg">
+                    <CheckCircle className="text-blue-600 flex-shrink-0 mt-0.5" size={20} />
+                    <div>
+                      <div className="font-medium text-blue-900">Fundo neutro</div>
+                      <div className="text-sm text-blue-700">Prefira um fundo claro e sem distrações</div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-3 p-3 bg-blue-50 rounded-lg">
+                    <CheckCircle className="text-blue-600 flex-shrink-0 mt-0.5" size={20} />
+                    <div>
+                      <div className="font-medium text-blue-900">Expressão natural</div>
+                      <div className="text-sm text-blue-700">Mantenha uma expressão neutra, similar à de documentos oficiais</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex gap-3">
+                  <button
+                    onClick={closeSelfieModal}
+                    className="flex-1 px-4 py-3 border-2 border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors"
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    onClick={() => setSelfieStep(2)}
+                    className="flex-1 px-4 py-3 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-colors"
+                  >
+                    Continuar
+                  </button>
+                </div>
+              </>
+            )}
+
+            {/* Step 2: Camera or File Upload */}
+            {selfieStep === 2 && (
+              <>
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-lg font-semibold text-gray-900">📸 Tirar Selfie</h3>
+                  <button
+                    onClick={closeSelfieModal}
+                    className="text-gray-400 hover:text-gray-600 transition-colors"
+                  >
+                    <X size={24} />
+                  </button>
+                </div>
+
+                {!useCamera ? (
+                  <div className="space-y-4">
+                    <button
+                      onClick={() => {
+                        setUseCamera(true);
+                        startCamera();
+                      }}
+                      className="w-full p-6 border-2 border-indigo-200 rounded-lg hover:border-indigo-500 hover:bg-indigo-50 transition-all"
+                    >
+                      <Camera size={40} className="mx-auto text-indigo-600 mb-2" />
+                      <div className="font-medium text-gray-900">Usar Câmera</div>
+                      <div className="text-sm text-gray-600 mt-1">Tire uma foto agora</div>
+                    </button>
+
+                    <div className="relative">
+                      <div className="absolute inset-0 flex items-center">
+                        <div className="w-full border-t border-gray-300"></div>
+                      </div>
+                      <div className="relative flex justify-center text-sm">
+                        <span className="px-2 bg-white text-gray-500">ou</span>
+                      </div>
+                    </div>
+
+                    <label className="block">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleSelfieFileSelect}
+                        className="hidden"
+                      />
+                      <div className="w-full p-6 border-2 border-indigo-200 rounded-lg hover:border-indigo-500 hover:bg-indigo-50 transition-all cursor-pointer">
+                        <Upload size={40} className="mx-auto text-indigo-600 mb-2" />
+                        <div className="font-medium text-gray-900">Enviar Arquivo</div>
+                        <div className="text-sm text-gray-600 mt-1">Escolha uma foto da galeria</div>
+                      </div>
+                    </label>
+
+                    <button
+                      onClick={() => setSelfieStep(1)}
+                      className="w-full px-4 py-2 text-sm text-gray-600 hover:text-gray-800 transition-colors"
+                    >
+                      ← Voltar
+                    </button>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    <div className="relative bg-black rounded-lg overflow-hidden">
+                      <video
+                        ref={videoRef}
+                        autoPlay
+                        playsInline
+                        className="w-full"
+                      />
+                    </div>
+
+                    <div className="flex gap-3">
+                      <button
+                        onClick={() => {
+                          setUseCamera(false);
+                          stopCamera();
+                        }}
+                        className="flex-1 px-4 py-3 border-2 border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors"
+                      >
+                        Cancelar
+                      </button>
+                      <button
+                        onClick={capturePhoto}
+                        className="flex-1 px-4 py-3 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-colors flex items-center justify-center gap-2"
+                      >
+                        <Camera size={20} />
+                        Capturar
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
+
+            {/* Step 3: Preview and Confirm */}
+            {selfieStep === 3 && (
+              <>
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-lg font-semibold text-gray-900">📸 Confirmar Selfie</h3>
+                  <button
+                    onClick={closeSelfieModal}
+                    className="text-gray-400 hover:text-gray-600 transition-colors"
+                  >
+                    <X size={24} />
+                  </button>
+                </div>
+
+                <div className="mb-6">
+                  <div className="relative bg-gray-100 rounded-lg overflow-hidden">
+                    {selfiePreview && (
+                      <img
+                        src={selfiePreview}
+                        alt="Preview"
+                        className="w-full"
+                      />
+                    )}
+                  </div>
+
+                  <div className="mt-4 p-4 bg-amber-50 border border-amber-200 rounded-lg">
+                    <div className="flex items-start gap-2">
+                      <AlertCircle className="text-amber-600 flex-shrink-0 mt-0.5" size={20} />
+                      <div className="text-sm text-amber-800">
+                        <div className="font-medium mb-1">Verifique sua foto</div>
+                        <ul className="space-y-1 text-xs">
+                          <li>✓ Rosto bem iluminado e visível</li>
+                          <li>✓ Imagem nítida e sem tremor</li>
+                          <li>✓ Fundo neutro e sem distrações</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => {
+                      setSelfiePreview(null);
+                      setCapturedFile(null);
+                      setSelfieStep(2);
+                    }}
+                    className="flex-1 px-4 py-3 border-2 border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors"
+                  >
+                    Tirar Novamente
+                  </button>
+                  <button
+                    onClick={saveSelfie}
+                    disabled={uploadingDocument}
+                    className="flex-1 px-4 py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  >
+                    {uploadingDocument ? (
+                      <>
+                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                        Enviando...
+                      </>
+                    ) : (
+                      <>
+                        <CheckCircle size={20} />
+                        Confirmar e Enviar
+                      </>
+                    )}
+                  </button>
+                </div>
+              </>
+            )}
+
+            {/* Hidden canvas for photo capture */}
+            <canvas ref={canvasRef} className="hidden" />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -41,6 +41,7 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
     Route::post('/documents', [\App\Http\Controllers\Api\DocumentController::class, 'store']);
     Route::get('/documents/status', [\App\Http\Controllers\Api\DocumentController::class, 'status']);
     Route::get('/documents/{document}', [\App\Http\Controllers\Api\DocumentController::class, 'show']);
+    Route::get('/documents/{document}/download', [\App\Http\Controllers\Api\DocumentController::class, 'download']);
     Route::delete('/documents/{document}', [\App\Http\Controllers\Api\DocumentController::class, 'destroy']);
 
     // Wallets

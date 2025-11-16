@@ -38,7 +38,7 @@ class DocumentUploadTest extends TestCase
 
         $response = $this->actingAs($user, 'sanctum')
             ->postJson('/api/v1/documents', [
-                'document_type' => DocumentType::PHOTO->value,
+                'type' => DocumentType::PHOTO->value,
                 'file' => $file,
             ]);
 
@@ -58,7 +58,7 @@ class DocumentUploadTest extends TestCase
 
         $response = $this->actingAs($user, 'sanctum')
             ->postJson('/api/v1/documents', [
-                'document_type' => DocumentType::RG_FRONT->value,
+                'type' => DocumentType::RG_FRONT->value,
                 'file' => $file,
             ]);
 
@@ -105,7 +105,7 @@ class DocumentUploadTest extends TestCase
             ->postJson('/api/v1/documents', ['file' => $file]);
 
         $response->assertStatus(422)
-            ->assertJsonValidationErrors('document_type');
+            ->assertJsonValidationErrors('type');
     }
 
     public function test_requires_file(): void
