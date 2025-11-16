@@ -5,6 +5,7 @@ import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
+import { UserTooltip } from '@/components/ui/UserTooltip';
 import { transactionService, authService } from '@/services';
 import { Transaction } from '@/types';
 import { formatCurrency } from '@/utils/formatters';
@@ -42,6 +43,7 @@ export const TransactionHistoryPage = () => {
     setLoading(true);
     try {
       const response = await transactionService.getTransactions(currentPage, 20);
+      console.log('History - Transactions loaded:', response.data);
       
       let filtered = response.data;
       
@@ -87,6 +89,12 @@ export const TransactionHistoryPage = () => {
     }
     
     return false;
+  };
+
+  const getShortName = (fullName: string): string => {
+    const parts = fullName.trim().split(' ');
+    if (parts.length === 1) return parts[0];
+    return `${parts[0]} ${parts[parts.length - 1][0]}.`;
   };
 
   const getTransactionIcon = (transaction: Transaction) => {
@@ -287,13 +295,25 @@ export const TransactionHistoryPage = () => {
                         <div className="flex items-center gap-2 mb-1">
                           <p className="font-semibold text-gray-900">
                             {getTransactionLabel(transaction.type)}
-                            {(transaction.type === 'transfer' || transaction.type === 2) && (
-                              <span className="font-normal text-sm ml-1">
-                                {transaction.receiver_user_id === userId 
-                                  ? ` de ${transaction.senderUser?.name || transaction.sender?.name || 'Usuário'}` 
-                                  : ` para ${transaction.receiverUser?.name || transaction.recipient?.name || 'Usuário'}`}
-                              </span>
-                            )}
+                            {(transaction.type === 'transfer' || transaction.type === 2) && (() => {
+                              const isReceived = transaction.receiver_user_id === userId;
+                              const person = isReceived 
+                                ? transaction.sender_user
+                                : transaction.receiver_user;
+                              
+                              if (!person) return null;
+                              
+                              return (
+                                <span className="font-normal text-sm ml-1">
+                                  {isReceived ? 'de ' : 'para '}
+                                  <UserTooltip name={person.name} email={person.email}>
+                                    <span className="text-blue-600 hover:underline cursor-pointer">
+                                      {getShortName(person.name)}
+                                    </span>
+                                  </UserTooltip>
+                                </span>
+                              );
+                            })()}
                           </p>
                           <span className={clsx('text-xs px-2 py-0.5 rounded-full', badge.color)}>
                             {badge.text}

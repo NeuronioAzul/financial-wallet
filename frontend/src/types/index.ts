@@ -32,23 +32,12 @@ export interface Transaction {
   original_transaction_id?: string;
   created_at: string;
   updated_at: string;
-  senderUser?: {
+  sender_user?: {
     id: string;
     name: string;
     email: string;
   };
-  receiverUser?: {
-    id: string;
-    name: string;
-    email: string;
-  };
-  // Manter compatibilidade com nomes antigos
-  sender?: {
-    id: string;
-    name: string;
-    email: string;
-  };
-  recipient?: {
+  receiver_user?: {
     id: string;
     name: string;
     email: string;

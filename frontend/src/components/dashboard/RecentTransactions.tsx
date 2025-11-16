@@ -2,6 +2,7 @@ import { useEffect, useState, useImperativeHandle, forwardRef } from 'react';
 import { ArrowUpRight, ArrowDownLeft, Plus, RotateCcw, Clock } from 'lucide-react';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
+import { UserTooltip } from '@/components/ui/UserTooltip';
 import { transactionService, authService } from '@/services';
 import { Transaction } from '@/types';
 import { formatCurrency } from '@/utils/formatters';
@@ -40,6 +41,7 @@ export const RecentTransactions = forwardRef<RecentTransactionsRef, Record<strin
   const loadTransactions = async () => {
     try {
       const response = await transactionService.getTransactions(1, 5);
+      console.log('Transactions loaded:', response.data);
       setTransactions(response.data);
     } catch (error) {
       console.error('Error loading transactions:', error);
@@ -138,6 +140,12 @@ export const RecentTransactions = forwardRef<RecentTransactionsRef, Record<strin
     return false;
   };
 
+  const getShortName = (fullName: string): string => {
+    const parts = fullName.trim().split(' ');
+    if (parts.length === 1) return parts[0];
+    return `${parts[0]} ${parts[parts.length - 1][0]}.`;
+  };
+
   const canReverse = (transaction: Transaction): boolean => {
     // Pode estornar transferências recebidas (tipo transfer que aumentaram o saldo)
     // Verifica se é transferência e se está concluída e não foi estornada
@@ -218,13 +226,38 @@ export const RecentTransactions = forwardRef<RecentTransactionsRef, Record<strin
                 <div className="flex items-center gap-2 mb-1">
                   <p className="font-semibold text-gray-900 truncate">
                     {getTransactionLabel(transaction.type)}
-                    {(transaction.type === 'transfer' || transaction.type === 2) && (
-                      <span className="font-normal text-sm">
-                        {transaction.receiver_user_id === userId 
-                          ? ` de ${transaction.senderUser?.name || transaction.sender?.name || 'Usuário'}` 
-                          : ` para ${transaction.receiverUser?.name || transaction.recipient?.name || 'Usuário'}`}
-                      </span>
-                    )}
+                    {(transaction.type === 'transfer' || transaction.type === 2) && (() => {
+                      const isReceived = transaction.receiver_user_id === userId;
+                      const person = isReceived 
+                        ? transaction.sender_user
+                        : transaction.receiver_user;
+                      
+                      console.log('Transaction:', transaction.id, {
+                        type: transaction.type,
+                        isReceived,
+                        userId,
+                        receiver_user_id: transaction.receiver_user_id,
+                        sender_user_id: transaction.sender_user_id,
+                        sender_user: transaction.sender_user,
+                        receiver_user: transaction.receiver_user,
+                        person
+                      });
+                      
+                      if (!person) {
+                        return <span className="font-normal text-sm text-red-500"> [sem dados do usuário]</span>;
+                      }
+                      
+                      return (
+                        <span className="font-normal text-sm">
+                          {isReceived ? ' de ' : ' para '}
+                          <UserTooltip name={person.name} email={person.email}>
+                            <span className="text-blue-600 hover:underline cursor-pointer">
+                              {getShortName(person.name)}
+                            </span>
+                          </UserTooltip>
+                        </span>
+                      );
+                    })()}
                   </p>
                   <span className={clsx('text-xs px-2 py-0.5 rounded-full', badge.color)}>
                     {badge.text}
