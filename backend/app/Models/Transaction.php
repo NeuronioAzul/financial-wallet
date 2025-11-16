@@ -141,7 +141,7 @@ class Transaction extends Model
     public function canBeReversed(): bool
     {
         return $this->status === TransactionStatus::COMPLETED
-            && !$this->reversed_at
-            && !$this->reversal()->exists();
+            && ! $this->reversed_at
+            && ! $this->reversal()->exists();
     }
 }

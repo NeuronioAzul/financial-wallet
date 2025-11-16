@@ -74,7 +74,7 @@ class TransactionService
             $receiverWallet = $wallets[$receiverWallet->id];
 
             // Validate sender balance
-            if (!$senderWallet->hasSufficientBalance($amount)) {
+            if (! $senderWallet->hasSufficientBalance($amount)) {
                 throw new \Exception('Insufficient balance');
             }
 
@@ -128,7 +128,7 @@ class TransactionService
     {
         return DB::transaction(function () use ($originalTransaction, $reason) {
             // Validate transaction can be reversed
-            if (!$originalTransaction->canBeReversed()) {
+            if (! $originalTransaction->canBeReversed()) {
                 throw new \Exception('Transaction cannot be reversed');
             }
 
@@ -214,7 +214,7 @@ class TransactionService
      */
     private function generateTransactionCode(): string
     {
-        return 'TXN-' . strtoupper(Str::random(10)) . '-' . now()->format('YmdHis');
+        return 'TXN-'.strtoupper(Str::random(10)).'-'.now()->format('YmdHis');
     }
 
     /**

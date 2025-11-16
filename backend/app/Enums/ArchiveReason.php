@@ -13,7 +13,7 @@ enum ArchiveReason: int
 
     public function label(): string
     {
-        return match($this) {
+        return match ($this) {
             self::USER_REQUEST => 'User Request',
             self::LGPD_COMPLIANCE => 'LGPD Compliance',
             self::ACCOUNT_CLOSURE => 'Account Closure',

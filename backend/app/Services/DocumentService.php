@@ -56,9 +56,9 @@ class DocumentService
         $hasRG = $documents->whereIn('document_type', [DocumentType::RG_FRONT, DocumentType::RG_BACK])->count() === 2;
         $hasCNH = $documents->whereIn('document_type', [DocumentType::CNH_FRONT, DocumentType::CNH_BACK])->count() === 2;
 
-        $allApproved = $documents->every(fn($doc) => $doc->status === DocumentStatus::APPROVED);
-        $hasRejected = $documents->contains(fn($doc) => $doc->status === DocumentStatus::REJECTED);
-        $hasPending = $documents->contains(fn($doc) => $doc->status === DocumentStatus::PENDING);
+        $allApproved = $documents->every(fn ($doc) => $doc->status === DocumentStatus::APPROVED);
+        $hasRejected = $documents->contains(fn ($doc) => $doc->status === DocumentStatus::REJECTED);
+        $hasPending = $documents->contains(fn ($doc) => $doc->status === DocumentStatus::PENDING);
 
         return [
             'has_photo' => $hasPhoto,

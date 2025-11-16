@@ -26,7 +26,7 @@ class ProfileService
         return [
             'user' => $user,
             'addresses' => $user->addresses,
-            'documents' => $user->documents->map(fn($doc) => [
+            'documents' => $user->documents->map(fn ($doc) => [
                 'id' => $doc->id,
                 'document_type' => $doc->document_type->value,
                 'document_type_label' => $doc->document_type->label(),

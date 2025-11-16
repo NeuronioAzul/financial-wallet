@@ -29,11 +29,11 @@ class TransactionController extends Controller
 
         $transactions = Transaction::where(function ($query) use ($user) {
             $query->where('sender_user_id', $user->id)
-                  ->orWhere('receiver_user_id', $user->id);
+                ->orWhere('receiver_user_id', $user->id);
         })
-        ->with(['senderUser', 'receiverUser'])
-        ->orderBy('created_at', 'desc')
-        ->paginate(20);
+            ->with(['senderUser', 'receiverUser'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(20);
 
         return response()->json([
             'data' => $transactions->items(),
@@ -55,12 +55,12 @@ class TransactionController extends Controller
         $transaction = Transaction::where('id', $id)
             ->where(function ($query) use ($user) {
                 $query->where('sender_user_id', $user->id)
-                      ->orWhere('receiver_user_id', $user->id);
+                    ->orWhere('receiver_user_id', $user->id);
             })
             ->with(['senderUser', 'receiverUser', 'logs'])
             ->first();
 
-        if (!$transaction) {
+        if (! $transaction) {
             return response()->json([
                 'message' => 'Transaction not found',
             ], 404);
@@ -100,7 +100,7 @@ class TransactionController extends Controller
         try {
             $wallet = $this->walletService->getUserWallet($request->user());
 
-            if (!$wallet) {
+            if (! $wallet) {
                 return response()->json([
                     'message' => 'Wallet not found',
                 ], 404);
@@ -138,7 +138,7 @@ class TransactionController extends Controller
         try {
             $senderWallet = $this->walletService->getUserWallet($request->user());
 
-            if (!$senderWallet) {
+            if (! $senderWallet) {
                 return response()->json([
                     'message' => 'Sender wallet not found',
                 ], 404);
@@ -147,7 +147,7 @@ class TransactionController extends Controller
             $receiver = User::where('email', $request->receiver_email)->first();
             $receiverWallet = $this->walletService->getUserWallet($receiver);
 
-            if (!$receiverWallet) {
+            if (! $receiverWallet) {
                 return response()->json([
                     'message' => 'Receiver wallet not found',
                 ], 404);
@@ -193,17 +193,17 @@ class TransactionController extends Controller
             $transaction = Transaction::where('id', $id)
                 ->where(function ($query) use ($user) {
                     $query->where('sender_user_id', $user->id)
-                          ->orWhere('receiver_user_id', $user->id);
+                        ->orWhere('receiver_user_id', $user->id);
                 })
                 ->first();
 
-            if (!$transaction) {
+            if (! $transaction) {
                 return response()->json([
                     'message' => 'Transaction not found',
                 ], 404);
             }
 
-            if (!$transaction->canBeReversed()) {
+            if (! $transaction->canBeReversed()) {
                 return response()->json([
                     'message' => 'Transaction cannot be reversed',
                 ], 422);

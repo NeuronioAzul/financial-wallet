@@ -14,9 +14,7 @@ class AddressController extends Controller
 {
     use AuthorizesRequests;
 
-    public function __construct(private AddressService $addressService)
-    {
-    }
+    public function __construct(private AddressService $addressService) {}
 
     public function index(): JsonResponse
     {

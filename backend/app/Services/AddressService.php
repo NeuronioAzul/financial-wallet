@@ -23,7 +23,7 @@ class AddressService
     public function updateAddress(Address $address, array $data): Address
     {
         // Se marcar como principal, desmarcar outros do mesmo usuário
-        if (($data['is_primary'] ?? false) && !$address->is_primary) {
+        if (($data['is_primary'] ?? false) && ! $address->is_primary) {
             $address->user->addresses()->update(['is_primary' => false]);
         }
 

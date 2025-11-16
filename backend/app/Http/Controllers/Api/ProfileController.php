@@ -9,9 +9,7 @@ use Illuminate\Http\JsonResponse;
 
 class ProfileController extends Controller
 {
-    public function __construct(private ProfileService $profileService)
-    {
-    }
+    public function __construct(private ProfileService $profileService) {}
 
     public function show(): JsonResponse
     {

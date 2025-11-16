@@ -14,9 +14,7 @@ class DocumentController extends Controller
 {
     use AuthorizesRequests;
 
-    public function __construct(private DocumentService $documentService)
-    {
-    }
+    public function __construct(private DocumentService $documentService) {}
 
     public function index(): JsonResponse
     {

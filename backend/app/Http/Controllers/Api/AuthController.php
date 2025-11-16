@@ -60,7 +60,7 @@ class AuthController extends Controller
                 $request->password
             );
 
-            if (!$result) {
+            if (! $result) {
                 return response()->json([
                     'message' => 'Invalid credentials',
                 ], 401);

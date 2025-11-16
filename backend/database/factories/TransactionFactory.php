@@ -15,7 +15,7 @@ class TransactionFactory extends Factory
     {
         return [
             'id' => Str::uuid(),
-            'transaction_code' => 'TXN-' . strtoupper(Str::random(8)) . '-' . time(),
+            'transaction_code' => 'TXN-'.strtoupper(Str::random(8)).'-'.time(),
             'type' => fake()->randomElement([
                 TransactionType::DEPOSIT,
                 TransactionType::TRANSFER,

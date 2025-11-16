@@ -12,7 +12,7 @@ enum DocumentType: string
 
     public function label(): string
     {
-        return match($this) {
+        return match ($this) {
             self::PHOTO => 'Foto (Selfie)',
             self::RG_FRONT => 'RG - Frente',
             self::RG_BACK => 'RG - Verso',

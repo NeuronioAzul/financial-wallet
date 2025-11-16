@@ -53,11 +53,11 @@ class AuthService
     {
         $user = User::where('email', $email)->first();
 
-        if (!$user || !Hash::check($password, $user->password)) {
+        if (! $user || ! Hash::check($password, $user->password)) {
             return null;
         }
 
-        if (!$user->isActive()) {
+        if (! $user->isActive()) {
             throw new \Exception('Account is not active');
         }
 

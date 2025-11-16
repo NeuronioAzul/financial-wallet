@@ -66,4 +66,3 @@ class PublicEndpointsTest extends TestCase
         $response->assertStatus(404);
     }
 }
-

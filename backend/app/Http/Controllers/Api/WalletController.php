@@ -20,7 +20,7 @@ class WalletController extends Controller
     {
         $wallet = $this->walletService->getUserWallet($request->user());
 
-        if (!$wallet) {
+        if (! $wallet) {
             return response()->json([
                 'message' => 'Wallet not found',
             ], 404);
@@ -45,7 +45,7 @@ class WalletController extends Controller
     {
         $wallet = $this->walletService->getUserWallet($request->user());
 
-        if (!$wallet) {
+        if (! $wallet) {
             return response()->json([
                 'message' => 'Wallet not found',
             ], 404);

@@ -13,9 +13,10 @@ use Tests\TestCase;
 class DocumentUploadTest extends TestCase
 {
     use RefreshDatabase;
+
     private function getFixturePath(string $filename): string
     {
-        return __DIR__ . '/../Fixtures/files/' . $filename;
+        return __DIR__.'/../Fixtures/files/'.$filename;
     }
 
     private function createUploadedFile(string $fixturePath): UploadedFile
@@ -150,7 +151,7 @@ class DocumentUploadTest extends TestCase
                     'has_rejected',
                     'has_pending',
                     'verification_status',
-                ]
+                ],
             ]);
     }
 }
