@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ArrowLeft, Search, Filter, ArrowUpRight, Plus, RotateCcw, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowLeft, Search, Filter, ArrowUpRight, ArrowDownLeft, Plus, RotateCcw, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 import { Card } from '@/components/ui/Card';
@@ -89,7 +89,8 @@ export const TransactionHistoryPage = () => {
     return false;
   };
 
-  const getTransactionIcon = (type: string | number) => {
+  const getTransactionIcon = (transaction: Transaction) => {
+    const type = transaction.type;
     const typeMap: Record<number, string> = {
       1: 'deposit',
       2: 'transfer',
@@ -98,12 +99,19 @@ export const TransactionHistoryPage = () => {
     
     const typeStr = typeof type === 'number' ? typeMap[type] : type;
     
+    // Para transferências, usa ícone diferente se for recebida ou enviada
+    if (typeStr === 'transfer') {
+      const isReceived = transaction.receiver_user_id === userId;
+      return isReceived 
+        ? <ArrowDownLeft size={24} className="text-green-600" /> 
+        : <ArrowUpRight size={24} className="text-blue-600" />;
+    }
+    
     const icons = {
-      transfer: <ArrowUpRight size={24} className="text-blue-600" />,
       deposit: <Plus size={24} className="text-green-600" />,
       reversal: <RotateCcw size={24} className="text-orange-600" />,
     };
-    return icons[typeStr as keyof typeof icons] || icons.deposit;
+    return icons[typeStr as keyof typeof icons] || <Plus size={24} className="text-green-600" />;
   };
 
   const getTransactionLabel = (type: string | number) => {
@@ -272,7 +280,7 @@ export const TransactionHistoryPage = () => {
                       className="flex items-center gap-4 p-4 hover:bg-gray-50 rounded-lg transition-colors border border-gray-100"
                     >
                       <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0">
-                        {getTransactionIcon(transaction.type)}
+                        {getTransactionIcon(transaction)}
                       </div>
 
                       <div className="flex-1 min-w-0">

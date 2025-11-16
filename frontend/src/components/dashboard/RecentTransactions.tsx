@@ -1,5 +1,5 @@
 import { useEffect, useState, useImperativeHandle, forwardRef } from 'react';
-import { ArrowUpRight, Plus, RotateCcw, Clock } from 'lucide-react';
+import { ArrowUpRight, ArrowDownLeft, Plus, RotateCcw, Clock } from 'lucide-react';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { transactionService, authService } from '@/services';
@@ -49,8 +49,8 @@ export const RecentTransactions = forwardRef<RecentTransactionsRef, Record<strin
     }
   };
 
-  const getTransactionIcon = (type: string | number) => {
-    // Mapear tipos numéricos do backend
+  const getTransactionIcon = (transaction: Transaction) => {
+    const type = transaction.type;
     const typeMap: Record<number, string> = {
       1: 'deposit',
       2: 'transfer',
@@ -59,15 +59,21 @@ export const RecentTransactions = forwardRef<RecentTransactionsRef, Record<strin
     
     const typeStr = typeof type === 'number' ? typeMap[type] : type;
     
+    // Para transferências, usa ícone diferente se for recebida ou enviada
+    if (typeStr === 'transfer') {
+      const isReceived = transaction.receiver_user_id === userId;
+      return isReceived ? <ArrowDownLeft size={20} /> : <ArrowUpRight size={20} />;
+    }
+    
     const icons = {
-      transfer: <ArrowUpRight size={20} />,
       deposit: <Plus size={20} />,
       reversal: <RotateCcw size={20} />,
     };
     return icons[typeStr as keyof typeof icons] || <Clock size={20} />;
   };
 
-  const getTransactionColor = (type: string | number) => {
+  const getTransactionColor = (transaction: Transaction) => {
+    const type = transaction.type;
     const typeMap: Record<number, string> = {
       1: 'deposit',
       2: 'transfer',
@@ -76,8 +82,13 @@ export const RecentTransactions = forwardRef<RecentTransactionsRef, Record<strin
     
     const typeStr = typeof type === 'number' ? typeMap[type] : type;
     
+    // Para transferências, usa cor verde se recebida, azul se enviada
+    if (typeStr === 'transfer') {
+      const isReceived = transaction.receiver_user_id === userId;
+      return isReceived ? 'text-green-600 bg-green-50' : 'text-blue-600 bg-blue-50';
+    }
+    
     const colors = {
-      transfer: 'text-blue-600 bg-blue-50',
       deposit: 'text-green-600 bg-green-50',
       reversal: 'text-orange-600 bg-orange-50',
     };
@@ -199,8 +210,8 @@ export const RecentTransactions = forwardRef<RecentTransactionsRef, Record<strin
               key={transaction.id}
               className="flex items-center gap-4 p-3 hover:bg-gray-50 rounded-lg transition-colors"
             >
-              <div className={clsx('w-12 h-12 rounded-full flex items-center justify-center', getTransactionColor(transaction.type))}>
-                {getTransactionIcon(transaction.type)}
+              <div className={clsx('w-12 h-12 rounded-full flex items-center justify-center', getTransactionColor(transaction))}>
+                {getTransactionIcon(transaction)}
               </div>
 
               <div className="flex-1 min-w-0">
