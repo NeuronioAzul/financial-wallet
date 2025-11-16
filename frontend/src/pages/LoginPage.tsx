@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -11,8 +11,15 @@ import { LoginRequest } from '@/types';
 
 export const LoginPage: React.FC = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, isAuthenticated } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      console.log('User already authenticated, redirecting...');
+      navigate('/dashboard', { replace: true });
+    }
+  }, [isAuthenticated, navigate]);
 
   const {
     register,
@@ -26,9 +33,10 @@ export const LoginPage: React.FC = () => {
     setIsLoading(true);
     try {
       await login(data);
-      navigate('/dashboard');
+      console.log('Login successful, navigating to dashboard...');
+      navigate('/dashboard', { replace: true });
     } catch (error) {
-      console.error(error);
+      console.error('Login error:', error);
     } finally {
       setIsLoading(false);
     }
