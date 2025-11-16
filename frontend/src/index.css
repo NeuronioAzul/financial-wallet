@@ -183,15 +183,88 @@
     outline-offset: 2px;
   }
   
-  /* Buttons - Enhance without changing layout */
+  /* Buttons and Primary Colors - Deep saturated colors */
   .high-contrast button {
     color: rgb(0 0 0) !important;
   }
   
   .high-contrast .btn-primary,
-  .high-contrast .bg-gradient-to-r {
-    background: rgb(0 61 97) !important; /* Ocean blue mais escuro */
+  .high-contrast .bg-ocean-blue,
+  .high-contrast .bg-primary {
+    background: rgb(0 40 80) !important; /* Ocean blue ultra dark */
     color: rgb(255 255 255) !important;
+  }
+  
+  .high-contrast .bg-gradient-to-r {
+    background: linear-gradient(to right, rgb(0 40 80), rgb(0 60 120)) !important;
+    color: rgb(255 255 255) !important;
+  }
+  
+  .high-contrast .text-ocean-blue,
+  .high-contrast .text-primary {
+    color: rgb(0 40 80) !important;
+  }
+  
+  /* Success/Green colors - Deep green */
+  .high-contrast .bg-green-50,
+  .high-contrast .bg-green-100 {
+    background-color: rgb(230 255 230) !important;
+    color: rgb(0 0 0) !important;
+  }
+  
+  .high-contrast .text-green-600,
+  .high-contrast .text-green-700,
+  .high-contrast .text-forest-green {
+    color: rgb(0 80 0) !important;
+  }
+  
+  .high-contrast .bg-forest-green {
+    background-color: rgb(0 80 0) !important;
+    color: rgb(255 255 255) !important;
+  }
+  
+  /* Warning/Yellow colors - Deep gold */
+  .high-contrast .bg-yellow-50,
+  .high-contrast .bg-yellow-100 {
+    background-color: rgb(255 250 230) !important;
+    color: rgb(0 0 0) !important;
+  }
+  
+  .high-contrast .text-yellow-600,
+  .high-contrast .text-yellow-700,
+  .high-contrast .text-golden-sand {
+    color: rgb(150 100 0) !important;
+  }
+  
+  /* Error/Red colors - Deep red */
+  .high-contrast .bg-red-50,
+  .high-contrast .bg-red-100 {
+    background-color: rgb(255 230 230) !important;
+    color: rgb(0 0 0) !important;
+  }
+  
+  .high-contrast .text-red-600,
+  .high-contrast .text-red-700,
+  .high-contrast .text-burgundy-red {
+    color: rgb(120 0 0) !important;
+  }
+  
+  .high-contrast .bg-burgundy-red {
+    background-color: rgb(120 0 0) !important;
+    color: rgb(255 255 255) !important;
+  }
+  
+  /* Info/Blue colors - Deep blue */
+  .high-contrast .bg-blue-50,
+  .high-contrast .bg-blue-100 {
+    background-color: rgb(230 240 255) !important;
+    color: rgb(0 0 0) !important;
+  }
+  
+  .high-contrast .text-blue-600,
+  .high-contrast .text-blue-700,
+  .high-contrast .text-royal-blue {
+    color: rgb(0 40 150) !important;
   }
   
   /* High Contrast Dark Mode - Pure black background */
@@ -226,7 +299,7 @@
   .dark.high-contrast .border-gray-300,
   .dark.high-contrast .border-gray-700,
   .dark.high-contrast .border-gray-800 {
-    border-color: rgb(255 255 255) !important;
+    border-color: rgb(200 200 200) !important;
   }
   
   /* Forms - Enhance contrast without changing structure */
@@ -235,7 +308,7 @@
   .dark.high-contrast textarea {
     background-color: rgb(30 30 30) !important;
     color: rgb(255 255 255) !important;
-    border-color: rgb(255 255 255) !important;
+    border-color: rgb(200 200 200) !important;
   }
   
   .dark.high-contrast input::placeholder,
@@ -248,23 +321,96 @@
   .dark.high-contrast input:focus,
   .dark.high-contrast select:focus,
   .dark.high-contrast textarea:focus {
-    outline: 2px solid rgb(255 255 255) !important;
+    outline: 2px solid rgb(100 180 255) !important;
     outline-offset: 2px;
   }
   
-  /* Buttons - Enhance without changing layout */
+  /* Buttons and Primary Colors - Bright saturated colors */
   .dark.high-contrast button {
     color: rgb(255 255 255) !important;
   }
   
   .dark.high-contrast .btn-primary,
+  .dark.high-contrast .bg-ocean-blue,
+  .dark.high-contrast .bg-primary {
+    background: rgb(70 130 220) !important; /* Bright ocean blue */
+    color: rgb(0 0 0) !important;
+  }
+  
   .dark.high-contrast .bg-gradient-to-r {
-    background: rgb(61 88 182) !important; /* Royal blue mais claro */
+    background: linear-gradient(to right, rgb(70 130 220), rgb(100 160 255)) !important;
+    color: rgb(0 0 0) !important;
+  }
+  
+  .dark.high-contrast .text-ocean-blue,
+  .dark.high-contrast .text-primary {
+    color: rgb(100 180 255) !important;
+  }
+  
+  /* Success/Green colors - Bright green */
+  .dark.high-contrast .bg-green-50,
+  .dark.high-contrast .bg-green-100 {
+    background-color: rgb(0 60 0) !important;
     color: rgb(255 255 255) !important;
   }
   
-  /* Cards - Enhance shadow for better depth perception */
+  .dark.high-contrast .text-green-600,
+  .dark.high-contrast .text-green-700,
+  .dark.high-contrast .text-forest-green {
+    color: rgb(100 255 100) !important;
+  }
+  
+  .dark.high-contrast .bg-forest-green {
+    background-color: rgb(80 200 80) !important;
+    color: rgb(0 0 0) !important;
+  }
+  
+  /* Warning/Yellow colors - Bright gold */
+  .dark.high-contrast .bg-yellow-50,
+  .dark.high-contrast .bg-yellow-100 {
+    background-color: rgb(80 60 0) !important;
+    color: rgb(255 255 255) !important;
+  }
+  
+  .dark.high-contrast .text-yellow-600,
+  .dark.high-contrast .text-yellow-700,
+  .dark.high-contrast .text-golden-sand {
+    color: rgb(255 220 100) !important;
+  }
+  
+  /* Error/Red colors - Bright red */
+  .dark.high-contrast .bg-red-50,
+  .dark.high-contrast .bg-red-100 {
+    background-color: rgb(80 0 0) !important;
+    color: rgb(255 255 255) !important;
+  }
+  
+  .dark.high-contrast .text-red-600,
+  .dark.high-contrast .text-red-700,
+  .dark.high-contrast .text-burgundy-red {
+    color: rgb(255 100 100) !important;
+  }
+  
+  .dark.high-contrast .bg-burgundy-red {
+    background-color: rgb(220 60 60) !important;
+    color: rgb(0 0 0) !important;
+  }
+  
+  /* Info/Blue colors - Bright blue */
+  .dark.high-contrast .bg-blue-50,
+  .dark.high-contrast .bg-blue-100 {
+    background-color: rgb(0 40 80) !important;
+    color: rgb(255 255 255) !important;
+  }
+  
+  .dark.high-contrast .text-blue-600,
+  .dark.high-contrast .text-blue-700,
+  .dark.high-contrast .text-royal-blue {
+    color: rgb(120 180 255) !important;
+  }
+  
+  /* Cards - Subtle border for depth */
   .dark.high-contrast .card {
-    box-shadow: 0 0 0 1px rgb(255 255 255 / 0.2) !important;
+    box-shadow: 0 0 0 1px rgb(200 200 200 / 0.3) !important;
   }
 }
