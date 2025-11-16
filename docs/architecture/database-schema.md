@@ -1,6 +1,6 @@
 # Database Schema Documentation
 
-Schema do banco de dados PostgreSQL 16 para o MVP da carteira financeira.
+Schema do banco de dados PostgreSQL 18 para o MVP da carteira financeira.
 
 ## 🏗️ Arquitetura
 
@@ -9,19 +9,43 @@ Este schema implementa uma solução completa de LGPD compliance com separação
 ## 📊 Tabelas Principais (Dados Ativos)
 
 ### `users`
+
 Cadastro de usuários ativos do sistema.
+
 - UUID v7 como chave primária
 - Email e documento (CPF/CNPJ) com unique constraints
 - Status: 1=active, 2=inactive, 3=blocked
 
+### `addresses`
+
+Endereços dos usuários (múltiplos por usuário).
+
+- UUID v7 como chave primária
+- Relacionamento N:1 com users
+- Campos: CEP, logradouro, número, complemento, bairro, cidade, estado, país
+
+### `user_documents`
+
+Documentos dos usuários (CPF, RG, CNH, etc.).
+
+- UUID v7 como chave primária
+- Relacionamento N:1 com users
+- Tipos: CPF, RG, CNH, passport, etc.
+- Status: pending, approved, rejected, expired
+- Armazenamento de arquivo (file_path)
+
 ### `wallets`
+
 Carteiras digitais dos usuários.
+
 - Uma carteira por usuário por moeda
 - Saldo com precisão decimal (15,2)
 - Relacionamento 1:N com users
 
 ### `transactions`
+
 Registro imutável de todas as transações (NUNCA são deletadas).
+
 - Tipos: 1=deposit, 2=transfer, 3=reversal
 - Status: 1=pending, 2=processing, 3=completed, 4=failed, 5=reversed
 - Campos desnormalizados para manter rastreabilidade mesmo após arquivamento
