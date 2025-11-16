@@ -224,7 +224,7 @@ export const RecentTransactions = forwardRef<RecentTransactionsRef, Record<strin
 
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-1">
-                  <p className="font-semibold text-gray-900 truncate">
+                  <div className="font-semibold text-gray-900 truncate">
                     {getTransactionLabel(transaction.type)}
                     {(transaction.type === 'transfer' || transaction.type === 2) && (() => {
                       const isReceived = transaction.receiver_user_id === userId;
@@ -258,7 +258,7 @@ export const RecentTransactions = forwardRef<RecentTransactionsRef, Record<strin
                         </span>
                       );
                     })()}
-                  </p>
+                  </div>
                   <span className={clsx('text-xs px-2 py-0.5 rounded-full', badge.color)}>
                     {badge.text}
                   </span>
