@@ -66,7 +66,7 @@ export const TransactionHistoryPage = () => {
       }
       
       setTransactions(filtered);
-      setTotalPages(response.total_pages || 1);
+      setTotalPages(response.meta.last_page || 1);
     } catch (error) {
       console.error('Error loading transactions:', error);
       toast.error('Erro ao carregar transações');
