@@ -272,7 +272,7 @@ export const RecentTransactions = forwardRef<RecentTransactionsRef, Record<strin
               </div>
 
               <div className="text-right flex-shrink-0">
-                <p className={clsx('text-lg font-bold mb-2', isPositive ? 'text-forest-green' : 'text-burgundy-red')}>
+                <p className={clsx('text-lg font-bold mb-2', isPositive ? 'text-green-600' : 'text-red-600')}>
                   {isPositive ? '+' : '-'} {formatCurrency(transaction.amount)}
                 </p>
                 

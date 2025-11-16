@@ -331,7 +331,7 @@ export const TransactionHistoryPage = () => {
                       </div>
 
                       <div className="text-right flex-shrink-0">
-                        <p className={clsx('text-xl font-bold', isPositive ? 'text-forest-green' : 'text-burgundy-red')}>
+                        <p className={clsx('text-xl font-bold', isPositive ? 'text-green-600' : 'text-red-600')}>
                           {isPositive ? '+' : '-'} {formatCurrency(transaction.amount)}
                         </p>
                       </div>
