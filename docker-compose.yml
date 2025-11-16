@@ -84,18 +84,18 @@ services:
 
   # Swagger UI for API Documentation
   swagger:
-    image: swaggerapi/swagger-ui:latest
+    build:
+      context: ./swagger
+      dockerfile: Dockerfile
     container_name: financial-wallet-swagger
-    restart: unless-stopped
     environment:
-      SWAGGER_JSON: /docs/swagger.yml
       TZ: America/Sao_Paulo
-    volumes:
-      - ./docs/api:/docs:ro
     ports:
       - "${SWAGGER_PORT:-8080}:8080"
     networks:
       - financial-wallet-network
+    restart: unless-stopped
+
 
 networks:
   financial-wallet-network:
