@@ -1,31 +1,53 @@
-# Frontend - React + Vite
+# Financial Wallet Frontend
 
-Interface web da carteira financeira.
+Frontend React da carteira digital desenvolvido com:
 
-## Stack
+- ⚛️ React 18 + TypeScript
+- ⚡ Vite
+- 🎨 TailwindCSS
+- 🔐 React Hook Form + Zod
+- 🌐 React Router v6
+- 📡 Axios
+- 🎯 Toast notifications
 
-- React.js 18
-- Vite
-- TailwindCSS
-- FontAwesome
+## Estrutura
 
-## Instalação
+```
+src/
+├── components/
+│   └── ui/           # Button, Input, Card, Modal
+├── contexts/         # AuthContext
+├── pages/            # LoginPage, Dashboard (em desenvolvimento)
+├── services/         # API client
+├── types/            # TypeScript interfaces
+└── utils/            # formatters, validations
+```
+
+## Desenvolvimento
 
 ```bash
-cd frontend
 npm install
-cp .env.example .env
 npm run dev
 ```
 
-## Build
+Acesse: http://localhost:3000
 
-```bash
-npm run build
-```
+## Design System
 
-## Testes
+- **Cores primárias:** #002a54 (azul), #e6c35f (dourado)
+- **Fonte:** Noto Sans
+- **Border radius:** 12-16px
+- **Transições:** cubic-bezier elastic
 
-```bash
-npm test
-```
+## API
+
+Backend: http://localhost:8000/api
+
+## Próximos Passos
+
+- [ ] Página de Registro
+- [ ] Dashboard completo
+- [ ] Transferência e Depósito
+- [ ] Histórico de transações
+- [ ] Perfil do usuário
+- [ ] Responsividade mobile
