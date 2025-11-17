@@ -377,6 +377,11 @@ export const TransactionHistoryPage = () => {
                                 </span>
                               );
                             })()}
+                            {(transaction.type === 'reversal' || transaction.type === 3) && transaction.original_transaction_id && (
+                              <span className="font-normal text-sm ml-1 text-amber-600">
+                                (Ref: {transaction.original_transaction_id.substring(0, 8)}...)
+                              </span>
+                            )}
                           </div>
                           <span className={clsx('text-xs px-2 py-0.5 rounded-full', badge.color)}>
                             {badge.text}
