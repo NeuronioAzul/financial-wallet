@@ -1,19 +1,19 @@
 # Financial Wallet Frontend
 
-Interface web da carteira digital desenvolvida com React 18, TypeScript, Vite e TailwindCSS.
+Web interface for the digital wallet system built with React 18, TypeScript, Vite, and TailwindCSS.
 
-## ⚛️ Stack
+## ⚛️ Tech Stack
 
 - **React 18.3** + **TypeScript 5.5**
 - **Vite 5.3** - Build tool
 - **TailwindCSS 3.4** - Styling
-- **React Router v6** - Roteamento
-- **React Hook Form** - Gerenciamento de formulários
-- **Zod** - Validação de schemas
-- **Axios** - Cliente HTTP
-- **React Hot Toast** - Notificações
-- **Lucide React** - Ícones
-- **Date-fns** - Manipulação de datas
+- **React Router v6** - Routing
+- **React Hook Form** - Form management
+- **Zod** - Schema validation
+- **Axios** - HTTP client
+- **React Hot Toast** - Notifications
+- **Lucide React** - Icons
+- **Date-fns** - Date manipulation
 
 ## 🎨 Design System
 
@@ -26,13 +26,13 @@ Interface web da carteira digital desenvolvida com React 18, TypeScript, Vite e 
 - **Success:** `#00610D`
 - **Danger:** `#610019`
 
-### Tipografia
+### Typography
 
-- **Fonte:** Noto Sans
+- **Font:** Noto Sans
 - **Border Radius:** 12-16px
-- **Transições:** Cubic-bezier elastic
+- **Transitions:** Cubic-bezier elastic
 
-Documentação completa: `../docs/design-system.md`
+Complete documentation: `../docs/design-system.md`
 
 ## 📁 Estrutura do Projeto
 
@@ -70,83 +70,77 @@ src/
 └── index.css          # Estilos globais
 ```
 
-## 🚀 Desenvolvimento
+## 🚀 Development
 
-### Pré-requisitos
+### Prerequisites
 
 - Node.js 18+
-- npm ou yarn
+- npm or yarn
 
-### Setup Local (sem Docker)
+### Local Setup (without Docker)
 
 ```bash
 cd frontend
 
-# Instalar dependências
+# Install dependencies
 npm install
 
-# Iniciar servidor de desenvolvimento
+# Start development server
 npm run dev
 
-# Build para produção
+# Build for production
 npm run build
 
-# Preview da build
+# Preview build
 npm run preview
 ```
 
-### Setup com Docker
+### Docker Setup
 
 ```bash
-# Da raiz do projeto
+# From project root
 docker compose up -d frontend
 
-# Ver logs
+# View logs
 docker compose logs -f frontend
 ```
 
-Acesse: <http://localhost:3000>
+Access: http://localhost:3000
 
-## 📄 Páginas Implementadas
+## 📄 Implemented Pages
 
 ### 1. LoginPage
-
-- Login com email/password
-- Validação com Zod
-- Link para registro e recuperação de senha
-- Redirecionamento automático após login
+- Login with email/password
+- Validation with Zod
+- Links to registration and password recovery
+- Automatic redirect after login
 
 ### 2. RegisterPage
-
-- Registro de novo usuário
-- Validação completa (nome, email, senha, confirmação)
-- Redirecionamento para login após registro
+- New user registration
+- Complete validation (name, email, password, confirmation)
+- Redirect to login after registration
 
 ### 3. ForgotPasswordPage
-
-- Recuperação de senha via email
-- Validação de email
+- Password recovery via email
+- Email validation
 
 ### 4. DashboardPage
-
-- Resumo financeiro com saldo
-- Ações rápidas (Depósito, Transferência)
-- Últimas transações
-- Modais de operações
+- Financial summary with balance
+- Quick actions (Deposit, Transfer)
+- Recent transactions
+- Operation modals
 
 ### 5. TransactionHistoryPage
-
-- Histórico completo de transações
-- Filtros por tipo e status
-- Paginação
-- Detalhes de cada transação
-- Tooltips com informações do remetente/destinatário
+- Complete transaction history
+- Filters by type and status
+- Pagination
+- Transaction details
+- Tooltips with sender/recipient information
 
 ### 6. ProfilePage
-
-- Visualização de dados do usuário
-- Edição de perfil
-- Atualização de informações
+- View user data
+- Edit profile
+- Update information
 
 ## 🧩 Componentes Principais
 
@@ -174,76 +168,74 @@ Acesse: <http://localhost:3000>
 - **Modal** - Modal base reutilizável
 - **Loading** - Spinner de carregamento
 
-## 🔐 Autenticação
+## 🔐 Authentication
 
 ### AuthContext
 
-Context global que gerencia:
-
-- Estado de autenticação
+Global context that manages:
+- Authentication state
 - Login/Logout
-- Registro
-- Token Bearer
-- Usuário autenticado
+- Registration
+- Bearer token
+- Authenticated user
 
-### Rotas Protegidas
+### Protected Routes
 
-Rotas que requerem autenticação redirecionam automaticamente para login.
+Routes requiring authentication automatically redirect to login.
 
-## 🌐 Integração com API
+## 🌐 API Integration
 
 ### apiClient (Axios)
 
-Cliente HTTP configurado com:
-
+HTTP client configured with:
 - Base URL: `http://localhost:8000/api`
-- Interceptors para tokens Bearer
-- Tratamento de erros
-- Timeout configurado
+- Interceptors for Bearer tokens
+- Error handling
+- Configured timeout
 
 ### Services
 
-- **authService** - Login, registro, logout, me
-- **walletService** - Consulta de carteira e saldo
-- **transactionService** - Depósitos, transferências, histórico
+- **authService** - Login, registration, logout, me
+- **walletService** - Wallet and balance queries
+- **transactionService** - Deposits, transfers, history
 
-## 🎯 Funcionalidades
+## 🎯 Features
 
-### Implementadas ✅
+### Implemented ✅
 
-- [x] Autenticação completa
-- [x] Dashboard com resumo
-- [x] Histórico de transações
-- [x] Filtros e paginação
-- [x] Depósitos
-- [x] Transferências
-- [x] Perfil do usuário
-- [x] Notificações toast
-- [x] Validação de formulários
-- [x] Design system completo
-- [x] Layout responsivo
+- [x] Complete authentication
+- [x] Dashboard with summary
+- [x] Transaction history
+- [x] Filters and pagination
+- [x] Deposits
+- [x] Transfers
+- [x] User profile
+- [x] Toast notifications
+- [x] Form validation
+- [x] Complete design system
+- [x] Responsive layout
 
-### Próximas Features 🔜
+### Future Features 🔜
 
-- [ ] Gerenciamento de endereços
-- [ ] Upload de documentos
-- [ ] Detalhes de transação em modal
-- [ ] Exportação de histórico
-- [ ] Gráficos e relatórios
+- [ ] Address management
+- [ ] Document upload
+- [ ] Transaction details modal
+- [ ] History export
+- [ ] Charts and reports
 - [ ] Dark mode
-- [ ] Testes E2E
+- [ ] E2E tests
 - [ ] PWA
 
-## 🛠️ Scripts Disponíveis
+## 🛠️ Available Scripts
 
 ```bash
-# Desenvolvimento
+# Development
 npm run dev
 
-# Build para produção
+# Production build
 npm run build
 
-# Preview da build
+# Build preview
 npm run preview
 
 # Lint
@@ -253,43 +245,43 @@ npm run lint
 npx tsc --noEmit
 ```
 
-## 📱 Responsividade
+## 📱 Responsive Design
 
-O layout é totalmente responsivo e otimizado para:
+Fully responsive layout optimized for:
 
 - 📱 Mobile (320px+)
 - 📱 Tablet (768px+)
 - 💻 Desktop (1024px+)
 - 🖥️ Large Desktop (1440px+)
 
-## 🔍 Validação de Formulários
+## 🔍 Form Validation
 
-Todos os formulários utilizam:
+All forms use:
 
-- **React Hook Form** para gerenciamento
-- **Zod** para schemas de validação
-- Mensagens de erro customizadas
-- Validação em tempo real
+- **React Hook Form** for management
+- **Zod** for validation schemas
+- Custom error messages
+- Real-time validation
 
-## 🎨 Customização
+## 🎨 Customization
 
 ### Tailwind Config
 
-Cores, fontes e espaçamentos customizados em `tailwind.config.js`.
+Custom colors, fonts, and spacing in `tailwind.config.js`.
 
-### CSS Global
+### Global CSS
 
-Estilos globais e reset em `src/index.css`.
+Global styles and reset in `src/index.css`.
 
-## 🌍 Variáveis de Ambiente
+## 🌍 Environment Variables
 
-Crie um arquivo `.env` na raiz do frontend:
+Create a `.env` file in the frontend root:
 
 ```bash
 VITE_API_URL=http://localhost:8000
 ```
 
-## 📚 Documentação Adicional
+## 📚 Additional Documentation
 
 - [Setup Guide](../docs/SETUP.md)
 - [Design System](../docs/design-system.md)
@@ -298,22 +290,22 @@ VITE_API_URL=http://localhost:8000
 
 ## 🐛 Troubleshooting
 
-### Problema: API não conecta
+### API Connection Issues
 
-Verifique se o backend está rodando e se a URL está correta em `.env`.
+Verify backend is running and URL is correct in `.env`.
 
-### Problema: Erros de CORS
+### CORS Errors
 
-Verifique as configurações de CORS no backend (`config/cors.php`).
+Check CORS settings in backend (`config/cors.php`).
 
-### Problema: Build falha
+### Build Failures
 
 ```bash
-# Limpar node_modules e reinstalar
+# Clear node_modules and reinstall
 rm -rf node_modules
 npm install
 ```
 
-## 📄 Licença
+## 📄 License
 
-Este projeto está sob a licença MIT.
+This project is licensed under the MIT License.
