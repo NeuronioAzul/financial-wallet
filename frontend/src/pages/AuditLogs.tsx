@@ -18,11 +18,18 @@ export default function AuditLogs() {
     try {
       setLoading(true);
       setError('');
+      console.log('Carregando audits - página:', page, 'perPage:', perPage);
       const response = await auditService.getAuditLogs(page, perPage);
+      console.log('Resposta da API:', response);
       setAudits(response.data);
       setMeta(response.meta);
     } catch (err: any) {
       console.error('Erro ao carregar audits:', err);
+      console.error('Detalhes do erro:', {
+        status: err.response?.status,
+        data: err.response?.data,
+        message: err.message,
+      });
       const errorMessage = err.response?.data?.message || err.message || 'Erro ao carregar logs de auditoria';
       setError(errorMessage);
       setAudits([]);
@@ -164,9 +171,23 @@ export default function AuditLogs() {
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#003161] mx-auto"></div>
               <p className="mt-4 text-gray-600">Carregando logs...</p>
             </div>
+          ) : error ? (
+            <div className="p-8 text-center">
+              <div className="text-red-500 text-5xl mb-4">⚠️</div>
+              <p className="text-gray-700 font-semibold mb-2">Erro ao carregar dados</p>
+              <p className="text-gray-500 text-sm">{error}</p>
+              <button
+                onClick={() => loadAudits(currentPage)}
+                className="mt-4 px-4 py-2 bg-[#003161] text-white rounded-lg hover:bg-[#00610D]"
+              >
+                Tentar Novamente
+              </button>
+            </div>
           ) : audits.length === 0 ? (
-            <div className="p-8 text-center text-gray-500">
-              Nenhum log de auditoria encontrado.
+            <div className="p-8 text-center">
+              <div className="text-gray-400 text-5xl mb-4">📋</div>
+              <p className="text-gray-700 font-semibold mb-2">Nenhum log encontrado</p>
+              <p className="text-gray-500 text-sm">Suas ações serão registradas aqui automaticamente.</p>
             </div>
           ) : (
             <>
