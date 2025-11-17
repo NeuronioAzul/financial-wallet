@@ -207,6 +207,7 @@ export const RecentTransactions = forwardRef<RecentTransactionsRef, Record<strin
   }
 
   return (
+    // list of last transactions
     <Card title="Últimas Transações" subtitle="5 transações mais recentes">
       <div className="space-y-3">
         {transactions.map((transaction) => {
