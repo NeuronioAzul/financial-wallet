@@ -5,28 +5,34 @@
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-18-336791?logo=postgresql)](https://postgresql.org)
 [![React](https://img.shields.io/badge/React-18-61DAFB?logo=react)](https://react.dev)
 [![Tests](https://img.shields.io/badge/Tests-Passing-success)](backend/tests)
+<!-- adicionar o release badge -->
+[![Release](https://img.shields.io/github/v/release/NeuronioAzul/financial-wallet?logo=github)](https://github.com/NeuronioAzul/financial-wallet/releases)
 
 Digital wallet system with complete transaction management, LGPD compliance, and professional design system.
 
 ## 🚀 Tech Stack
 
 **Backend**
+
 - PHP 8.4-FPM + Laravel 12 + Sanctum authentication
 - PostgreSQL 18 with UUID v7
 - Pest 3 testing framework
 
 **Frontend**
+
 - React 18 + TypeScript 5.5
 - Vite 5.3 + TailwindCSS 3.4
 - React Router v6 + React Hook Form + Zod
 
 **Infrastructure**
+
 - Docker + Docker Compose orchestration
 - Swagger UI for API documentation
 
 ## ✨ Features
 
 ### Backend (23 RESTful Endpoints)
+
 - ✅ User authentication with Laravel Sanctum
 - ✅ Real-time balance validation with concurrency control
 - ✅ Transaction management (deposits, transfers, reversals)
@@ -37,6 +43,7 @@ Digital wallet system with complete transaction management, LGPD compliance, and
 - ✅ UUID v7 for all entities
 
 ### Frontend
+
 - ✅ Authentication pages (login, register, password recovery)
 - ✅ Dashboard with financial summary
 - ✅ Transaction history with filters and pagination
@@ -88,21 +95,30 @@ cp .env.example .env
 ```
 
 **Access Points:**
-- Backend API: http://localhost:8000
-- Frontend: http://localhost:3000
-- Swagger UI: http://localhost:8080
+
+- Backend API: <http://localhost:8000>
+- Frontend: <http://localhost:3000>
+- Swagger UI: <http://localhost:8080>
 - PostgreSQL: localhost:5432
 
 **Test Credentials:**
+
 - Email: `joao@example.com` | Password: `password` (Balance: R$ 1,000.00)
 - Email: `maria@example.com` | Password: `password` (Balance: R$ 500.00)
 
 ## 🧪 Testing
 
+
+Run the PHPUnit backend tests with:
+
 ```bash
 # Run backend tests
 docker compose exec backend php artisan test
+```
 
+Or run all tests using the provided shell script:
+
+```bash
 # Or use the test script
 ./scripts/test.sh
 ```
@@ -116,6 +132,7 @@ type(scope): subject
 ```
 
 **Examples:**
+
 - `feat(auth): add jwt authentication`
 - `fix(wallet): correct balance calculation`
 - `docs: update api documentation`
@@ -203,12 +220,13 @@ docker compose down -v
 4. Push to the branch (`git push origin feat/new-feature`)
 5. Open a Pull Request
 
+## 👨🏻‍💻 Author
+
+> **Mauro Rocha Tavares**
+
+- Email: <mauro.rocha.t@gmail.com>
+- GitHub: [@NeuronioAzul](https://github.com/NeuronioAzul)
+
 ## 📄 License
 
 This project is licensed under the MIT License.
-
-## 👨‍💻 Author
-
-**Mauro Rocha Tavares**
-- Email: mauro.rocha.t@gmail.com
-- GitHub: [@NeuronioAzul](https://github.com/NeuronioAzul)
