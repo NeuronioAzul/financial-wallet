@@ -10,6 +10,8 @@
 
 Digital wallet system with complete transaction management, LGPD compliance, and professional design system.
 
+![alt text](docs/images/login-page.png)
+
 ## 🚀 Tech Stack
 
 **Backend**
