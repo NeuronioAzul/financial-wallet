@@ -1,125 +1,125 @@
-# Design System - Adriano Cobuccio
+# Design System - Financial Wallet
 
-## Paleta de Cores
+## Color Palette
 
-### Cores Principais
+### Primary Colors
 
-#### Ocean Blue (Azul Oceano)
-- **Uso**: Cor primária principal, elementos de destaque, fundos de cartões importantes
-- **Default**: `#003161` - Azul oceano profundo
+#### Ocean Blue
+- **Usage**: Main primary color, highlight elements, important card backgrounds
+- **Default**: `#003161` - Deep ocean blue
 - **Light**: `#3D58B6` - Royal blue
-- **Dark**: `#001F3D` - Azul oceano escuro
+- **Dark**: `#001F3D` - Dark ocean blue
 
-#### Forest Green (Verde Floresta)
-- **Uso**: Cor secundária, ações de sucesso, valores positivos
-- **Default**: `#00610D` - Verde floresta
-- **Light**: `#70E080` - Mint green (verde menta)
-- **Dark**: `#004008` - Verde floresta escuro
-
-#### Golden Sand (Dourado)
-- **Uso**: Cor de acento, destaques, elementos premium
-- **Default**: `#DAB655` - Dourado areia
-- **Light**: `#F0D685` - Dourado claro
-- **Dark**: `#B89640` - Dourado escuro
-
-### Cores Semânticas
-
-#### Success (Sucesso)
+#### Forest Green
+- **Usage**: Secondary color, success actions, positive values
 - **Default**: `#00610D` - Forest green
 - **Light**: `#70E080` - Mint green
-- **Uso**: Transações positivas, depósitos recebidos, confirmações
+- **Dark**: `#004008` - Dark forest green
 
-#### Danger (Perigo/Erro)
+#### Golden Sand
+- **Usage**: Accent color, highlights, premium elements
+- **Default**: `#DAB655` - Golden sand
+- **Light**: `#F0D685` - Light gold
+- **Dark**: `#B89640` - Dark gold
+
+### Semantic Colors
+
+#### Success
+- **Default**: `#00610D` - Forest green
+- **Light**: `#70E080` - Mint green
+- **Usage**: Positive transactions, received deposits, confirmations
+
+#### Danger (Error)
 - **Default**: `#610019` - Burgundy red
-- **Light**: `#8B0025` - Vermelho vinho claro
-- **Uso**: Erros, valores negativos, alertas críticos
+- **Light**: `#8B0025` - Light burgundy
+- **Usage**: Errors, negative values, critical alerts
 
-#### Royal Blue (Azul Real)
-- **Default**: `#3D58B6` - Azul royal
-- **Light**: `#5D78D6` - Azul royal claro
-- **Dark**: `#2D4896` - Azul royal escuro
-- **Uso**: Links, ações secundárias, informações
+#### Royal Blue
+- **Default**: `#3D58B6` - Royal blue
+- **Light**: `#5D78D6` - Light royal blue
+- **Dark**: `#2D4896` - Dark royal blue
+- **Usage**: Links, secondary actions, information
 
-### Cores Neutras
+### Neutral Colors
 
-#### Silver Gray (Cinza Prata)
-- **Default**: `#B3B6CA` - Cinza prata
-- **Light**: `#D3D6EA` - Cinza prata claro
-- **Dark**: `#9396AA` - Cinza prata escuro
-- **Uso**: Bordas, divisores, elementos desabilitados
+#### Silver Gray
+- **Default**: `#B3B6CA` - Silver gray
+- **Light**: `#D3D6EA` - Light silver gray
+- **Dark**: `#9396AA` - Dark silver gray
+- **Usage**: Borders, dividers, disabled elements
 
-#### Charcoal Gray (Cinza Carvão)
-- **Default**: `#686A75` - Cinza carvão
-- **Light**: `#888A95` - Cinza carvão claro
-- **Dark**: `#484A55` - Cinza carvão escuro
-- **Uso**: Textos secundários, ícones, placeholders
+#### Charcoal Gray
+- **Default**: `#686A75` - Charcoal gray
+- **Light**: `#888A95` - Light charcoal gray
+- **Dark**: `#484A55` - Dark charcoal gray
+- **Usage**: Secondary text, icons, placeholders
 
-## Classes Utilitárias
+## Utility Classes
 
-### Gradientes
+### Gradients
 
 ```css
 .gradient-primary   /* Ocean blue → Royal blue → Ocean blue dark */
 .gradient-success   /* Forest green → Mint green */
 .gradient-accent    /* Golden sand → Golden sand dark */
-.gradient-text      /* Ocean blue → Royal blue (para texto) */
+.gradient-text      /* Ocean blue → Royal blue (for text) */
 ```
 
-### Botões
+### Buttons
 
 ```css
-.btn-primary        /* Gradiente azul oceano/royal, texto branco */
-.btn-secondary      /* Gradiente verde floresta/mint, texto branco */
-.btn-outline        /* Borda azul oceano, hover com fundo */
+.btn-primary        /* Ocean blue/royal gradient, white text */
+.btn-secondary      /* Forest green/mint gradient, white text */
+.btn-outline        /* Ocean blue border, hover with background */
 ```
 
-### Componentes
+### Components
 
 ```css
-.card               /* Card branco com sombra */
-.input-field        /* Input com borda cinza prata, foco azul royal */
+.card               /* White card with shadow */
+.input-field        /* Input with silver gray border, royal blue focus */
 ```
 
-## Mapeamento de Uso
+## Usage Mapping
 
-### Telas de Autenticação
-- Fundo lado esquerdo: `gradient-primary` (Ocean blue → Royal blue)
-- Logo: `ocean-blue` com fundo `white/10`
-- Botões principais: `gradient-primary`
-- Links: `ocean-blue` com hover `ocean-blue/80`
+### Authentication Screens
+- Left background: `gradient-primary` (Ocean blue → Royal blue)
+- Logo: `ocean-blue` with `white/10` background
+- Main buttons: `gradient-primary`
+- Links: `ocean-blue` with `ocean-blue/80` hover
 
 ### Dashboard
-- WalletCard fundo: `gradient-primary`
-- Botão Depositar: Branco com texto `ocean-blue`
-- Botão Transferir: Branco com texto `ocean-blue`
-- Botão Histórico: Outline branco, hover inverte
+- WalletCard background: `gradient-primary`
+- Deposit button: White with `ocean-blue` text
+- Transfer button: White with `ocean-blue` text
+- History button: White outline, inverted on hover
 
-### Transações
-- Valores positivos: `forest-green` ou `mint-green`
-- Valores negativos: `burgundy-red`
-- Ícone recebido: `mint-green`
-- Ícone enviado: `royal-blue`
-- Ícone depósito: `mint-green`
-- Badge concluída: `forest-green` background claro
+### Transactions
+- Positive values: `forest-green` or `mint-green`
+- Negative values: `burgundy-red`
+- Received icon: `mint-green`
+- Sent icon: `royal-blue`
+- Deposit icon: `mint-green`
+- Completed badge: `forest-green` light background
 
-## Acessibilidade
+## Accessibility
 
-### Contraste de Cores
-- Ocean blue (#003161) em branco: ✅ AAA (Excelente)
-- Forest green (#00610D) em branco: ✅ AAA (Excelente)
-- Royal blue (#3D58B6) em branco: ✅ AA (Bom)
-- Golden sand (#DAB655) em ocean-blue: ✅ AAA (Excelente)
+### Color Contrast
+- Ocean blue (#003161) on white: ✅ AAA (Excellent)
+- Forest green (#00610D) on white: ✅ AAA (Excellent)
+- Royal blue (#3D58B6) on white: ✅ AA (Good)
+- Golden sand (#DAB655) on ocean-blue: ✅ AAA (Excellent)
 
-### Recomendações
-- Sempre usar texto branco sobre cores escuras (ocean-blue, forest-green)
-- Usar cores complementares para garantir legibilidade
-- Manter elementos interativos com contraste mínimo de 4.5:1
-- Usar ícones junto com cores para indicar estados (não confiar só na cor)
+### Recommendations
+- Always use white text on dark colors (ocean-blue, forest-green)
+- Use complementary colors to ensure readability
+- Maintain minimum 4.5:1 contrast for interactive elements
+- Use icons along with colors to indicate states (don't rely on color alone)
 
-## Referência Rápida Tailwind
+## Quick Tailwind Reference
 
 ```javascript
-// Cores no Tailwind
+// Colors in Tailwind
 bg-ocean-blue
 bg-forest-green
 bg-golden-sand
@@ -128,7 +128,7 @@ bg-mint-green
 bg-silver-gray
 bg-charcoal-gray
 
-// Com variações
+// With variations
 bg-ocean-blue-light
 bg-ocean-blue-dark
 text-forest-green
