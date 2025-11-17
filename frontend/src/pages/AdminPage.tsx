@@ -3,6 +3,7 @@ import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 import { Users, TrendingUp, Shield, Search, Filter, Download, UserCheck, UserX, Lock } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { isAdmin } from '@/types';
 import api from '@/services/api';
 import toast from 'react-hot-toast';
 
@@ -19,7 +20,7 @@ interface UserData {
   name: string;
   email: string;
   document: string;
-  role: 'admin' | 'customer';
+  roles: string[];
   status: 'active' | 'inactive' | 'suspended';
   wallet?: {
     balance: string;
@@ -56,7 +57,10 @@ export const AdminPage: React.FC = () => {
   const [statusFilter, setStatusFilter] = useState<string>('all');
 
   useEffect(() => {
-    if (user?.role !== 'admin') {
+    console.log('AdminPage - User data:', user);
+    console.log('AdminPage - Is admin:', isAdmin(user));
+    
+    if (!isAdmin(user)) {
       toast.error('Acesso negado. Apenas administradores podem acessar esta página.');
       navigate('/dashboard');
       return;
@@ -90,7 +94,7 @@ export const AdminPage: React.FC = () => {
           name: 'João Silva',
           email: 'joao@example.com',
           document: '123.456.789-00',
-          role: 'customer',
+          roles: ['customer'],
           status: 'active',
           wallet: { balance: '1000.00', status: 'active' },
           created_at: '2025-01-15T10:00:00Z'
@@ -100,7 +104,7 @@ export const AdminPage: React.FC = () => {
           name: 'Maria Santos',
           email: 'maria@example.com',
           document: '987.654.321-00',
-          role: 'customer',
+          roles: ['customer'],
           status: 'active',
           wallet: { balance: '500.00', status: 'active' },
           created_at: '2025-01-20T14:30:00Z'
