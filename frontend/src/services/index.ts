@@ -76,8 +76,9 @@ export const profileService = {
 
   getAddress: async (): Promise<any> => {
     try {
-      const response = await api.get<{ data: any }>('/v1/address');
-      return response.data.data;
+      const response = await api.get<{ data: any[] }>('/v1/addresses');
+      // Return the first address or null if array is empty
+      return response.data.data?.[0] || null;
     } catch (error: any) {
       // Return null if address not found (404), rethrow other errors
       if (error.response?.status === 404) {
@@ -88,12 +89,12 @@ export const profileService = {
   },
 
   createAddress: async (data: any): Promise<any> => {
-    const response = await api.post<{ data: any }>('/v1/address', data);
+    const response = await api.post<{ data: any }>('/v1/addresses', data);
     return response.data.data;
   },
 
-  updateAddress: async (data: any): Promise<any> => {
-    const response = await api.put<{ data: any }>('/v1/address', data);
+  updateAddress: async (id: string, data: any): Promise<any> => {
+    const response = await api.put<{ data: any }>(`/v1/addresses/${id}`, data);
     return response.data.data;
   },
 
