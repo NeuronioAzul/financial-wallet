@@ -13,7 +13,8 @@ class AuditSeeder extends Seeder
      */
     public function run(): void
     {
-        $users = User::limit(2)->get();
+        // Get ALL users
+        $users = User::all();
 
         foreach ($users as $user) {
             // Create audit logs for user creation
