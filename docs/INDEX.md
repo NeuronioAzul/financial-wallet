@@ -34,10 +34,13 @@ Complete index of all documentation files in the Financial Wallet project.
 
 | File | Description |
 |------|-------------|
+| [features/admin-dashboard-api.md](./features/admin-dashboard-api.md) | Admin Dashboard API endpoints with role protection |
 | [features/changelog-detalhado.md](./features/changelog-detalhado.md) | Detailed changelog (Portuguese) |
 | [features/document-upload-backend.md](./features/document-upload-backend.md) | Document upload backend configuration |
 | [features/profile-feature.md](./features/profile-feature.md) | Profile feature implementation |
 | [features/laravel-auditing.md](./features/laravel-auditing.md) | Laravel Auditing implementation and documentation |
+| [features/role-based-access-control.md](./features/role-based-access-control.md) | RBAC with Spatie Permission (Admin/Customer) |
+| [features/admin-implementation.md](./features/admin-implementation.md) | Complete admin feature implementation guide |
 
 ## 📖 Guides
 

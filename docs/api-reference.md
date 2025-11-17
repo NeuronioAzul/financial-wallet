@@ -39,7 +39,18 @@ These endpoints don't require authentication:
 
 ### Protected Endpoints
 
-All other endpoints require a valid Bearer token.
+All endpoints except public ones require a valid Bearer token.
+
+### Admin-Only Endpoints
+
+These endpoints require both authentication AND admin role:
+
+- `GET /api/v1/admin/users` - List all users
+- `GET /api/v1/admin/users/{user}` - View specific user
+- `PATCH /api/v1/admin/users/{user}/suspend` - Suspend user
+- `PATCH /api/v1/admin/users/{user}/activate` - Activate user
+- `GET /api/v1/admin/stats` - Dashboard statistics
+- `GET /api/v1/admin/transactions` - All transactions
 
 ## 📝 API Reference
 
@@ -121,12 +132,14 @@ Content-Type: application/json
 ```
 
 **Success Response (200):**
+
 ```json
 {
   "user": {
     "id": "01234567-89ab-cdef-0123-456789abcdef",
     "name": "John Doe",
-    "email": "john@example.com"
+    "email": "john@example.com",
+    "roles": ["customer"]
   },
   "token": "2|AbCdEfGhIjKlMnOpQrStUvWxYz..."
 }
@@ -165,6 +178,7 @@ Authorization: Bearer {token}
 ```
 
 **Success Response (200):**
+
 ```json
 {
   "id": "01234567-89ab-cdef-0123-456789abcdef",
@@ -172,6 +186,7 @@ Authorization: Bearer {token}
   "email": "john@example.com",
   "document": "12345678900",
   "status": "active",
+  "roles": ["customer"],
   "created_at": "2024-01-01T00:00:00Z"
 }
 ```
@@ -640,6 +655,232 @@ Content-Type: multipart/form-data
 ```json
 {
   "message": "Too many requests. Please try again later."
+}
+```
+
+---
+
+## 🛡️ Admin Endpoints
+
+### Admin Overview
+
+Admin endpoints require both authentication and admin role. Access is restricted to users with the `admin` role.
+
+**Authentication:** Bearer Token + Admin Role  
+**Error Response (403):** If user is not admin
+
+```json
+{
+  "message": "Acesso negado. Apenas administradores podem acessar este recurso."
+}
+```
+
+### List All Users
+
+Get paginated list of all users in the system.
+
+```http
+GET /api/v1/admin/users
+Authorization: Bearer {admin_token}
+```
+
+**Query Parameters:**
+
+- `status` (optional): Filter by status (active, inactive, blocked)
+- `search` (optional): Search by name, email, or document
+- `per_page` (optional): Items per page (default: 15)
+
+**Success Response (200):**
+
+```json
+{
+  "current_page": 1,
+  "data": [
+    {
+      "id": "01234567-89ab-cdef-0123-456789abcdef",
+      "name": "João Silva",
+      "email": "joao@example.com",
+      "document": "12345678901",
+      "status": 1,
+      "roles": ["admin"],
+      "wallet": {
+        "id": "wallet-uuid",
+        "balance": "1000.00",
+        "currency": "BRL",
+        "status": "active"
+      },
+      "created_at": "2025-01-15T10:00:00Z"
+    }
+  ],
+  "per_page": 15,
+  "total": 150
+}
+```
+
+### View Specific User
+
+Get detailed information about a specific user.
+
+```http
+GET /api/v1/admin/users/{user}
+Authorization: Bearer {admin_token}
+```
+
+**Success Response (200):**
+
+```json
+{
+  "id": "01234567-89ab-cdef-0123-456789abcdef",
+  "name": "João Silva",
+  "email": "joao@example.com",
+  "document": "12345678901",
+  "phone": "11987654321",
+  "status": 1,
+  "wallet": {
+    "id": "wallet-uuid",
+    "balance": "1000.00",
+    "currency": "BRL",
+    "status": "active"
+  },
+  "addresses": [],
+  "documents": [],
+  "created_at": "2025-01-15T10:00:00Z"
+}
+```
+
+### Suspend User
+
+Suspend a user account (cannot suspend another admin).
+
+```http
+PATCH /api/v1/admin/users/{user}/suspend
+Authorization: Bearer {admin_token}
+```
+
+**Success Response (200):**
+
+```json
+{
+  "message": "Usuário suspenso com sucesso.",
+  "user": {
+    "id": "01234567-89ab-cdef-0123-456789abcdef",
+    "name": "Maria Santos",
+    "status": 3
+  }
+}
+```
+
+**Error Response (403):** If trying to suspend an admin
+
+```json
+{
+  "message": "Não é possível suspender um administrador."
+}
+```
+
+### Activate User
+
+Activate a suspended user account.
+
+```http
+PATCH /api/v1/admin/users/{user}/activate
+Authorization: Bearer {admin_token}
+```
+
+**Success Response (200):**
+
+```json
+{
+  "message": "Usuário ativado com sucesso.",
+  "user": {
+    "id": "01234567-89ab-cdef-0123-456789abcdef",
+    "name": "Maria Santos",
+    "status": 1
+  }
+}
+```
+
+### Get Dashboard Statistics
+
+Get admin dashboard statistics.
+
+```http
+GET /api/v1/admin/stats
+Authorization: Bearer {admin_token}
+```
+
+**Success Response (200):**
+
+```json
+{
+  "users": {
+    "total": 150,
+    "active": 140,
+    "inactive": 5,
+    "blocked": 5
+  },
+  "transactions": {
+    "total": 1250,
+    "today": 25,
+    "this_month": 380,
+    "total_volume": "125000.00",
+    "volume_today": "2500.00",
+    "volume_this_month": "38000.00"
+  },
+  "wallets": {
+    "total_balance": "45000.00"
+  }
+}
+```
+
+### List All Transactions
+
+Get all transactions with filters (admin view).
+
+```http
+GET /api/v1/admin/transactions
+Authorization: Bearer {admin_token}
+```
+
+**Query Parameters:**
+
+- `type` (optional): Filter by type (transfer, deposit, reversal)
+- `status` (optional): Filter by status (pending, completed, failed)
+- `date_from` (optional): Start date (Y-m-d)
+- `date_to` (optional): End date (Y-m-d)
+- `user_id` (optional): Filter by user UUID
+- `per_page` (optional): Items per page (default: 15)
+
+**Success Response (200):**
+
+```json
+{
+  "current_page": 1,
+  "data": [
+    {
+      "id": "transaction-uuid",
+      "type": "transfer",
+      "amount": "100.00",
+      "status": "completed",
+      "wallet": {
+        "user": {
+          "id": "user-uuid",
+          "name": "João Silva",
+          "email": "joao@example.com"
+        }
+      },
+      "relatedWallet": {
+        "user": {
+          "id": "user-uuid-2",
+          "name": "Maria Santos",
+          "email": "maria@example.com"
+        }
+      },
+      "created_at": "2025-01-20T14:30:00Z"
+    }
+  ],
+  "per_page": 15,
+  "total": 1250
 }
 ```
 

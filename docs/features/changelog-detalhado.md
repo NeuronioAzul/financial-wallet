@@ -4,9 +4,9 @@
 
 Este documento descreve todas as features e componentes implementados no projeto Financial Wallet MVP.
 
-**Status:** ✅ MVP Completo (Backend + Frontend)  
+**Status:** ✅ MVP Completo (Backend + Frontend + Admin)  
 **Período:** Novembro 2024 - Novembro 2025  
-**Stack:** Laravel 12 + React 18 + PostgreSQL 18 + Docker
+**Stack:** Laravel 12 + React 18 + PostgreSQL 18 + Docker + Spatie Permission
 
 ---
 
@@ -91,12 +91,17 @@ grupo-adriano/
 #### Sistema
 
 10. **personal_access_tokens** - Tokens Sanctum
-11. **cache** - Cache do Laravel
-12. **jobs** - Filas assíncronas
+11. **roles** - Roles (Spatie Permission)
+12. **permissions** - Permissions (Spatie Permission)
+13. **model_has_roles** - User-role assignments (UUID-compatible)
+14. **model_has_permissions** - Direct user permissions
+15. **role_has_permissions** - Role-permission assignments
+16. **cache** - Cache do Laravel
+17. **jobs** - Filas assíncronas
 
 ### Features do Banco
 
-- ✅ **UUID v7** em todas as tabelas principais
+- ✅ **UUID v7** em todas as tabelas principais (model_has_roles e model_has_permissions adaptados)
 - ✅ **Function archive_user()** para arquivamento LGPD
 - ✅ **Triggers** para updated_at automático
 - ✅ **Views** para consultas otimizadas
@@ -399,10 +404,12 @@ Validações completas com mensagens customizadas:
 - [x] Transferências
 - [x] Estornos
 - [x] Histórico de transações
+- [x] Role-based access control (Spatie Permission)
+- [x] Admin dashboard (user management, statistics)
 - [x] Auditoria LGPD
 - [x] Rate limiting
 - [x] Validações completas
-- [x] Testes automatizados
+- [x] Testes automatizados (145 testes, 423 assertions)
 
 ### Frontend
 
@@ -410,10 +417,13 @@ Validações completas com mensagens customizadas:
 - [x] Registro
 - [x] Recuperação de senha
 - [x] Dashboard
+- [x] Admin dashboard (Admin only)
 - [x] Histórico de transações
 - [x] Perfil do usuário
 - [x] Depósito
 - [x] Transferência
+- [x] Terms and Privacy pages
+- [x] Role badges (Admin/Customer)
 - [x] Design system
 - [x] Validação de formulários
 - [x] Notificações toast

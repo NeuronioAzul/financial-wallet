@@ -13,6 +13,7 @@ import { StyleGuidePage } from '@/pages/StyleGuidePage';
 import { TermsPage } from '@/pages/TermsPage';
 import { PrivacyPage } from '@/pages/PrivacyPage';
 import { AdminPage } from '@/pages/AdminPage';
+import { AdminDashboardPage } from '@/pages/AdminDashboardPage';
 import AuditLogs from '@/pages/AuditLogs';
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -66,6 +67,14 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <AdminPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/dashboard"
+        element={
+          <ProtectedRoute>
+            <AdminDashboardPage />
           </ProtectedRoute>
         }
       />

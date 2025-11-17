@@ -62,6 +62,16 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
 
 // Admin routes
 Route::prefix('v1/admin')->middleware(['auth:sanctum', 'admin'])->group(function () {
+    // Dashboard
+    Route::get('/dashboard/overview', [\App\Http\Controllers\Api\Admin\DashboardController::class, 'overview']);
+    Route::get('/dashboard/transactions-chart', [\App\Http\Controllers\Api\Admin\DashboardController::class, 'transactionsChart']);
+    Route::get('/dashboard/transactions-by-type', [\App\Http\Controllers\Api\Admin\DashboardController::class, 'transactionsByType']);
+    Route::get('/dashboard/user-growth', [\App\Http\Controllers\Api\Admin\DashboardController::class, 'userGrowth']);
+    Route::get('/dashboard/top-users', [\App\Http\Controllers\Api\Admin\DashboardController::class, 'topUsers']);
+    Route::get('/dashboard/recent-activity', [\App\Http\Controllers\Api\Admin\DashboardController::class, 'recentActivity']);
+    Route::get('/dashboard/wallet-stats', [\App\Http\Controllers\Api\Admin\DashboardController::class, 'walletStats']);
+    Route::get('/dashboard/transaction-stats', [\App\Http\Controllers\Api\Admin\DashboardController::class, 'transactionStats']);
+
     // User management
     Route::get('/users', [\App\Http\Controllers\Api\Admin\UserController::class, 'index']);
     Route::get('/users/{user}', [\App\Http\Controllers\Api\Admin\UserController::class, 'show']);

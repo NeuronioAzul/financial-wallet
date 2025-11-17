@@ -142,6 +142,22 @@ Access: http://localhost:3000
 - Edit profile
 - Update information
 
+### 7. AdminPage (Admin only)
+- User management dashboard
+- View all users with search and filters
+- Suspend/activate users
+- Dashboard statistics (users, transactions, volume)
+- View all transactions
+- Role-based access control
+
+### 8. TermsPage
+- Terms and conditions
+- LGPD compliance information
+
+### 9. PrivacyPage
+- Privacy policy
+- Data protection information
+
 ## 🧩 Componentes Principais
 
 ### Layout
@@ -204,12 +220,15 @@ HTTP client configured with:
 ### Implemented ✅
 
 - [x] Complete authentication
+- [x] Role-based access control (Admin/Customer)
 - [x] Dashboard with summary
+- [x] Admin dashboard with user management
 - [x] Transaction history
 - [x] Filters and pagination
 - [x] Deposits
 - [x] Transfers
 - [x] User profile
+- [x] Terms and Privacy pages
 - [x] Toast notifications
 - [x] Form validation
 - [x] Complete design system

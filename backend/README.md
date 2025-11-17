@@ -52,6 +52,13 @@ RESTful API for the digital wallet system built with Laravel 12, PHP 8.4, and Po
 - ✅ Transaction history
 - ✅ Full compliance
 
+### Admin & Permissions
+- ✅ Role-based access control (Spatie Permission)
+- ✅ Admin dashboard with statistics
+- ✅ User management (list, suspend, activate)
+- ✅ View all transactions
+- ✅ Two-tier system: admin & customer
+
 ## 🛠️ Setup
 
 ```bash
@@ -144,7 +151,18 @@ POST /api/v1/transactions/transfer     # Make transfer
 POST /api/v1/transactions/{id}/reverse # Reverse transaction
 ```
 
-**Total:** 23 RESTful endpoints
+#### Admin (Admin role required)
+
+```http
+GET   /api/v1/admin/users              # List all users
+GET   /api/v1/admin/users/{user}       # View specific user
+PATCH /api/v1/admin/users/{user}/suspend   # Suspend user
+PATCH /api/v1/admin/users/{user}/activate  # Activate user
+GET   /api/v1/admin/stats              # Dashboard statistics
+GET   /api/v1/admin/transactions       # All transactions
+```
+
+**Total:** 29 RESTful endpoints (23 regular + 6 admin)
 
 Complete documentation: http://localhost:8080 (Swagger UI)
 
