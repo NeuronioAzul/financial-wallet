@@ -8,6 +8,17 @@
 [![Coverage](https://img.shields.io/badge/Coverage-44.6%25-orange)](backend/tests)
 [![Release](https://img.shields.io/github/v/release/NeuronioAzul/financial-wallet?logo=github)](https://github.com/NeuronioAzul/financial-wallet/releases)
 
+## Métricas do Sistema
+
+![Endpoints](https://img.shields.io/badge/API_Endpoints-29-blue)
+![Database Tables](https://img.shields.io/badge/Database_Tables-17-green)
+![Models](https://img.shields.io/badge/Models-7-purple)
+![Controllers](https://img.shields.io/badge/Controllers-9-orange)
+![Services](https://img.shields.io/badge/Services-5-red)
+![Enums](https://img.shields.io/badge/Enums-6-yellow)
+![Pages](https://img.shields.io/badge/Pages-9-cyan)
+![Components](https://img.shields.io/badge/Components-15+-teal)
+
 Digital wallet system with complete transaction management, LGPD compliance, and professional design system.
 
 ## Login Page
