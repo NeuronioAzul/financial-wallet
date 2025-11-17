@@ -58,3 +58,4 @@ frontend/.vite/
 *.temp
 .cache/
 .devdbrc
+docs/development/devdb-connection-guide.md
