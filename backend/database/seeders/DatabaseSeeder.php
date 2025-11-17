@@ -29,7 +29,6 @@ class DatabaseSeeder extends Seeder
             'phone' => '11987654321',
             'status' => UserStatus::ACTIVE,
             'theme_mode' => 'light',
-            'contrast_mode' => 'normal',
             'email_verified_at' => now(),
         ]);
 
@@ -51,7 +50,6 @@ class DatabaseSeeder extends Seeder
             'phone' => '11912345678',
             'status' => UserStatus::ACTIVE,
             'theme_mode' => 'dark',
-            'contrast_mode' => 'high',
             'email_verified_at' => now(),
         ]);
 
