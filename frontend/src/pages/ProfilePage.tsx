@@ -780,12 +780,13 @@ export const ProfilePage = () => {
                     <button
                       onClick={openSelfieModal}
                       disabled={uploadingDocument}
-                      className={`px-4 py-2 text-sm font-medium rounded-lg border-2 transition-colors
+                      className={`px-4 py-2 text-sm font-medium rounded-lg border-2 transition-all flex items-center gap-2
                         ${uploadingDocument 
                           ? 'bg-gray-100 border-gray-200 text-gray-400 cursor-not-allowed' 
-                          : 'bg-white border-indigo-500 text-indigo-600 hover:bg-indigo-500 hover:text-white'
+                          : 'bg-white border-gray-300 text-gray-700 hover:border-gray-400 hover:shadow-sm'
                         }`}
                     >
+                      <span className="w-2 h-2 rounded-full bg-indigo-500 flex-shrink-0"></span>
                       Foto/Selfie
                     </button>
 
@@ -793,12 +794,13 @@ export const ProfilePage = () => {
                     <button
                       onClick={() => openDocumentModal('rg')}
                       disabled={uploadingDocument}
-                      className={`px-4 py-2 text-sm font-medium rounded-lg border-2 transition-colors
+                      className={`px-4 py-2 text-sm font-medium rounded-lg border-2 transition-all flex items-center gap-2
                         ${uploadingDocument 
                           ? 'bg-gray-100 border-gray-200 text-gray-400 cursor-not-allowed' 
-                          : 'bg-white border-blue-500 text-blue-600 hover:bg-blue-500 hover:text-white'
+                          : 'bg-white border-gray-300 text-gray-700 hover:border-gray-400 hover:shadow-sm'
                         }`}
                     >
+                      <span className="w-2 h-2 rounded-full bg-blue-500 flex-shrink-0"></span>
                       RG
                     </button>
 
@@ -806,12 +808,13 @@ export const ProfilePage = () => {
                     <button
                       onClick={() => openDocumentModal('cnh')}
                       disabled={uploadingDocument}
-                      className={`px-4 py-2 text-sm font-medium rounded-lg border-2 transition-colors
+                      className={`px-4 py-2 text-sm font-medium rounded-lg border-2 transition-all flex items-center gap-2
                         ${uploadingDocument 
                           ? 'bg-gray-100 border-gray-200 text-gray-400 cursor-not-allowed' 
-                          : 'bg-white border-purple-500 text-purple-600 hover:bg-purple-500 hover:text-white'
+                          : 'bg-white border-gray-300 text-gray-700 hover:border-gray-400 hover:shadow-sm'
                         }`}
                     >
+                      <span className="w-2 h-2 rounded-full bg-purple-500 flex-shrink-0"></span>
                       CNH
                     </button>
 
@@ -819,12 +822,13 @@ export const ProfilePage = () => {
                     <button
                       onClick={() => openDocumentModal('cpf')}
                       disabled={uploadingDocument}
-                      className={`px-4 py-2 text-sm font-medium rounded-lg border-2 transition-colors
+                      className={`px-4 py-2 text-sm font-medium rounded-lg border-2 transition-all flex items-center gap-2
                         ${uploadingDocument 
                           ? 'bg-gray-100 border-gray-200 text-gray-400 cursor-not-allowed' 
-                          : 'bg-white border-green-500 text-green-600 hover:bg-green-500 hover:text-white'
+                          : 'bg-white border-gray-300 text-gray-700 hover:border-gray-400 hover:shadow-sm'
                         }`}
                     >
+                      <span className="w-2 h-2 rounded-full bg-green-500 flex-shrink-0"></span>
                       CPF
                     </button>
 
@@ -832,12 +836,13 @@ export const ProfilePage = () => {
                     <button
                       onClick={() => openDocumentModal('comprovante_residencia')}
                       disabled={uploadingDocument}
-                      className={`px-4 py-2 text-sm font-medium rounded-lg border-2 transition-colors
+                      className={`px-4 py-2 text-sm font-medium rounded-lg border-2 transition-all flex items-center gap-2
                         ${uploadingDocument 
                           ? 'bg-gray-100 border-gray-200 text-gray-400 cursor-not-allowed' 
-                          : 'bg-white border-amber-500 text-amber-600 hover:bg-amber-500 hover:text-white'
+                          : 'bg-white border-gray-300 text-gray-700 hover:border-gray-400 hover:shadow-sm'
                         }`}
                     >
+                      <span className="w-2 h-2 rounded-full bg-amber-500 flex-shrink-0"></span>
                       Comp. Residência
                     </button>
 
@@ -845,12 +850,13 @@ export const ProfilePage = () => {
                     <button
                       onClick={() => openDocumentModal('outros')}
                       disabled={uploadingDocument}
-                      className={`px-4 py-2 text-sm font-medium rounded-lg border-2 transition-colors
+                      className={`px-4 py-2 text-sm font-medium rounded-lg border-2 transition-all flex items-center gap-2
                         ${uploadingDocument 
                           ? 'bg-gray-100 border-gray-200 text-gray-400 cursor-not-allowed' 
-                          : 'bg-white border-gray-500 text-gray-600 hover:bg-gray-500 hover:text-white'
+                          : 'bg-white border-gray-300 text-gray-700 hover:border-gray-400 hover:shadow-sm'
                         }`}
                     >
+                      <span className="w-2 h-2 rounded-full bg-gray-500 flex-shrink-0"></span>
                       Outros
                     </button>
                   </div>
