@@ -10,6 +10,8 @@ import { DashboardPage } from '@/pages/DashboardPage';
 import { TransactionHistoryPage } from '@/pages/TransactionHistoryPage';
 import { ProfilePage } from '@/pages/ProfilePage';
 import { StyleGuidePage } from '@/pages/StyleGuidePage';
+import { TermsPage } from '@/pages/TermsPage';
+import { PrivacyPage } from '@/pages/PrivacyPage';
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
@@ -31,6 +33,8 @@ function AppRoutes() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+      <Route path="/terms" element={<TermsPage />} />
+      <Route path="/privacy" element={<PrivacyPage />} />
       <Route
         path="/dashboard"
         element={

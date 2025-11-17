@@ -65,7 +65,7 @@ export const RegisterPage: React.FC = () => {
   return (
     <div className="flex min-h-screen">
       {/* Left Side - Branding */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-primary to-primary-light items-center justify-center p-12">
+      <div className="hidden lg:flex lg:w-1/2 bg-ocean-blue-dark items-center justify-center p-12">
         <div className="max-w-md text-white">
           <div className="mb-8 flex items-center gap-3">
             <div className="rounded-2xl bg-white/10 p-3 backdrop-blur-sm">
@@ -236,13 +236,13 @@ export const RegisterPage: React.FC = () => {
               />
               <label htmlFor="terms" className="text-sm text-gray-700 cursor-pointer">
                 Eu aceito os{' '}
-                <a href="#" className="text-primary hover:text-primary/80 font-medium">
+                <Link to="/terms" target="_blank" className="text-royal-blue hover:text-royal-blue/70 font-medium">
                   termos e condições
-                </a>{' '}
+                </Link>{' '}
                 e a{' '}
-                <a href="#" className="text-primary hover:text-primary/80 font-medium">
+                <Link to="/privacy" target="_blank" className="text-royal-blue hover:text-royal-blue/70 font-medium">
                   política de privacidade
-                </a>
+                </Link>
               </label>
             </div>
             {errors.terms && (
@@ -259,7 +259,7 @@ export const RegisterPage: React.FC = () => {
 
             <p className="text-center text-sm text-gray-600">
               Já tem uma conta?{' '}
-              <Link to="/login" className="font-medium text-primary hover:text-primary/80">
+              <Link to="/login" className="font-medium text-royal-blue hover:text-royal-blue/70">
                 Fazer login
               </Link>
             </p>
@@ -267,7 +267,7 @@ export const RegisterPage: React.FC = () => {
             <div className="text-center mt-4">
               <Link
                 to="/login"
-                className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-primary/80"
+                className="inline-flex items-center gap-2 text-sm font-medium text-royal-blue hover:text-royal-blue/70"
               >
                 <ArrowLeft size={16} />
                 Voltar para login

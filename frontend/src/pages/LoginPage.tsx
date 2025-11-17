@@ -46,7 +46,7 @@ export const LoginPage: React.FC = () => {
   return (
     <div className="flex min-h-screen">
       {/* Left Side - Branding */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-primary to-primary-light items-center justify-center p-12">
+      <div className="hidden lg:flex lg:w-1/2 bg-ocean-blue-dark items-center justify-center p-12">
         <div className="max-w-md text-white">
           <div className="mb-8 flex items-center gap-3">
             <div className="rounded-2xl bg-white/10 p-3 backdrop-blur-sm">
@@ -150,7 +150,7 @@ export const LoginPage: React.FC = () => {
               </div>
               <Link
                 to="/forgot-password"
-                className="text-sm font-medium text-primary hover:text-primary/80"
+                className="text-sm font-medium text-royal-blue hover:text-royal-blue/70"
               >
                 Esqueci minha senha
               </Link>
@@ -158,7 +158,7 @@ export const LoginPage: React.FC = () => {
 
             <Button
               type="submit"
-              className="w-full bg-golden-sand text-gray-900 font-bold hover:bg-golden-sand-dark hover:shadow-lg transition-all"
+              className="w-full bg-golden-sand-dark text-gray-900 font-bold hover:bg-golden-sand-dark hover:shadow-lg transition-all"
               disabled={isLoading}
             >
               {isLoading ? 'Entrando...' : 'Entrar'}
@@ -166,7 +166,7 @@ export const LoginPage: React.FC = () => {
 
             <p className="text-center text-sm text-gray-600">
               Não tem uma conta?{' '}
-              <Link to="/register" className="font-medium text-primary hover:text-primary/80">
+              <Link to="/register" className="font-medium text-royal-blue hover:text-royal-blue/70">
                 Criar conta
               </Link>
             </p>

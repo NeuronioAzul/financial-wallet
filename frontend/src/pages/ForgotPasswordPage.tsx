@@ -48,7 +48,7 @@ export const ForgotPasswordPage: React.FC = () => {
   return (
     <div className="flex min-h-screen">
       {/* Left Side - Branding */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-primary to-primary-light items-center justify-center p-12">
+      <div className="hidden lg:flex lg:w-1/2 bg-ocean-blue-dark items-center justify-center p-12">
         <div className="max-w-md text-white">
           <div className="mb-8 flex items-center gap-3">
             <div className="rounded-2xl bg-white/10 p-3 backdrop-blur-sm">
@@ -120,7 +120,7 @@ export const ForgotPasswordPage: React.FC = () => {
                 <div className="text-center">
                   <Link
                     to="/login"
-                    className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-primary/80"
+                    className="inline-flex items-center gap-2 text-sm font-medium text-royal-blue hover:text-royal-blue/70"
                   >
                     <ArrowLeft size={16} />
                     Voltar para login
