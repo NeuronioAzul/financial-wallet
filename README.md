@@ -4,8 +4,8 @@
 [![PHP](https://img.shields.io/badge/PHP-8.4-777BB4?logo=php)](https://php.net)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-18-336791?logo=postgresql)](https://postgresql.org)
 [![React](https://img.shields.io/badge/React-18-61DAFB?logo=react)](https://react.dev)
-[![Tests](https://img.shields.io/badge/Tests-Passing-success)](backend/tests)
-<!-- adicionar o release badge -->
+[![Tests](https://img.shields.io/badge/Tests-137_Passing-success)](backend/tests)
+[![Coverage](https://img.shields.io/badge/Coverage-44.6%25-orange)](backend/tests)
 [![Release](https://img.shields.io/github/v/release/NeuronioAzul/financial-wallet?logo=github)](https://github.com/NeuronioAzul/financial-wallet/releases)
 
 Digital wallet system with complete transaction management, LGPD compliance, and professional design system.
