@@ -27,6 +27,9 @@ class AuthService
                 'status' => UserStatus::ACTIVE,
             ]);
 
+            // Assign customer role by default
+            $user->assignRole('customer');
+
             // Create default wallet (BRL)
             $wallet = Wallet::create([
                 'user_id' => $user->id,

@@ -59,3 +59,18 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
     Route::get('/audits', [\App\Http\Controllers\Api\AuditController::class, 'index']);
     Route::get('/audits/{id}', [\App\Http\Controllers\Api\AuditController::class, 'show']);
 });
+
+// Admin routes
+Route::prefix('v1/admin')->middleware(['auth:sanctum', 'admin'])->group(function () {
+    // User management
+    Route::get('/users', [\App\Http\Controllers\Api\Admin\UserController::class, 'index']);
+    Route::get('/users/{user}', [\App\Http\Controllers\Api\Admin\UserController::class, 'show']);
+    Route::patch('/users/{user}/suspend', [\App\Http\Controllers\Api\Admin\UserController::class, 'suspend']);
+    Route::patch('/users/{user}/activate', [\App\Http\Controllers\Api\Admin\UserController::class, 'activate']);
+
+    // Statistics
+    Route::get('/stats', [\App\Http\Controllers\Api\Admin\StatsController::class, 'index']);
+
+    // Transactions overview
+    Route::get('/transactions', [\App\Http\Controllers\Api\Admin\TransactionController::class, 'index']);
+});
