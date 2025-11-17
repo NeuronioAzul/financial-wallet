@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LogOut, User, ChevronDown, FileText, Shield } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { isAdmin } from "@/types";
 import { clsx } from "clsx";
 
 export const DashboardHeader: React.FC = () => {
@@ -13,7 +14,8 @@ export const DashboardHeader: React.FC = () => {
     return name.charAt(0).toUpperCase();
   };
 
-  const getRoleBadge = (role: string) => {
+  const getRoleBadge = (roles: string[]) => {
+    const isAdminUser = roles?.includes('admin');
     const badges = {
       admin: {
         text: "Administrador",
@@ -21,10 +23,10 @@ export const DashboardHeader: React.FC = () => {
       },
       customer: { text: "Cliente", color: "bg-ocean-blue/10 text-ocean-blue" },
     };
-    return badges[role as keyof typeof badges] || badges.customer;
+    return isAdminUser ? badges.admin : badges.customer;
   };
 
-  const badge = user ? getRoleBadge(user.role) : null;
+  const badge = user ? getRoleBadge(user.roles) : null;
 
   return (
     <header className="bg-white shadow-sm sticky top-0 z-40">
@@ -100,7 +102,7 @@ export const DashboardHeader: React.FC = () => {
                     <User size={16} />
                     Meu Perfil
                   </button>
-                  {user?.role === 'admin' && (
+                  {isAdmin(user) && (
                     <button
                       onClick={() => {
                         navigate("/admin");

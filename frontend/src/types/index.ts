@@ -3,12 +3,20 @@ export interface User {
   name: string;
   email: string;
   document: string;
-  role: 'admin' | 'customer';
+  roles: string[];
   status: 'active' | 'inactive' | 'suspended';
   theme_mode?: 'light' | 'dark';
   created_at: string;
   updated_at: string;
 }
+
+export const isAdmin = (user: User | null): boolean => {
+  return user?.roles?.includes('admin') ?? false;
+};
+
+export const isCustomer = (user: User | null): boolean => {
+  return user?.roles?.includes('customer') ?? false;
+};
 
 export interface Wallet {
   id: string;

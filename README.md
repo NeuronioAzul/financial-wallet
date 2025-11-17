@@ -10,7 +10,14 @@
 
 Digital wallet system with complete transaction management, LGPD compliance, and professional design system.
 
+## Login Page
+
 ![alt text](docs/images/login-page.png)
+
+## Admin Dashboard
+
+![alt text](docs/images/admin-dashboard.png)
+
 
 ## 🚀 Tech Stack
 

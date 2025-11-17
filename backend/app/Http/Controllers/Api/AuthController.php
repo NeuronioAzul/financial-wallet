@@ -73,6 +73,7 @@ class AuthController extends Controller
                         'id' => $result['user']->id,
                         'name' => $result['user']->name,
                         'email' => $result['user']->email,
+                        'roles' => $result['user']->getRoleNames(),
                     ],
                     'token' => $result['token'],
                 ],
@@ -112,6 +113,7 @@ class AuthController extends Controller
                 'document' => $user->document,
                 'phone' => $user->phone,
                 'status' => $user->status->label(),
+                'roles' => $user->getRoleNames(),
                 'created_at' => $user->created_at,
             ],
         ]);
