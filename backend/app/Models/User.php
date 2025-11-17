@@ -28,7 +28,6 @@ class User extends Authenticatable
         'phone',
         'status',
         'theme_mode',
-        'contrast_mode',
     ];
 
     /**

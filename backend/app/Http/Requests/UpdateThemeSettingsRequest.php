@@ -23,7 +23,6 @@ class UpdateThemeSettingsRequest extends FormRequest
     {
         return [
             'theme_mode' => ['sometimes', 'string', 'in:light,dark'],
-            'contrast_mode' => ['sometimes', 'string', 'in:normal,high'],
         ];
     }
 
@@ -36,7 +35,6 @@ class UpdateThemeSettingsRequest extends FormRequest
     {
         return [
             'theme_mode.in' => 'O modo de tema deve ser "light" ou "dark"',
-            'contrast_mode.in' => 'O modo de contraste deve ser "normal" ou "high"',
         ];
     }
 }

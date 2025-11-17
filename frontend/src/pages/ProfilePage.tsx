@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ArrowLeft, User, MapPin, FileText, Lock, Save, Eye, EyeOff, Settings, Moon, Sun, Contrast, Check, Upload, Trash2, Download, Camera, X, AlertCircle, CheckCircle } from 'lucide-react';
+import { ArrowLeft, User, MapPin, FileText, Lock, Save, Eye, EyeOff, Settings, Moon, Sun, Check, Upload, Trash2, Download, Camera, X, AlertCircle, CheckCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
@@ -45,7 +45,7 @@ type PasswordFormData = z.infer<typeof passwordSchema>;
 export const ProfilePage = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { theme, contrast, setTheme, setContrast } = useTheme();
+  const { theme, setTheme } = useTheme();
   const [activeTab, setActiveTab] = useState<'profile' | 'address' | 'documents' | 'security' | 'settings'>('profile');
   const [loadingProfile, setLoadingProfile] = useState(false);
   const [loadingAddress, setLoadingAddress] = useState(false);
@@ -1135,68 +1135,11 @@ export const ProfilePage = () => {
                 </div>
               </div>
 
-              <div className="border-t border-gray-200 pt-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                  <Contrast size={20} />
-                  Contraste
-                </h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <button
-                    onClick={() => setContrast('normal')}
-                    className={`p-4 rounded-lg border-2 transition-all ${
-                      contrast === 'normal'
-                        ? 'border-primary bg-primary/5 shadow-md'
-                        : 'border-gray-200 bg-white hover:border-gray-300'
-                    }`}
-                  >
-                    <div className="flex items-center gap-3 mb-2">
-                      <div className="p-2 rounded-lg bg-gray-100">
-                        <div className="w-5 h-5 rounded border-2 border-gray-400"></div>
-                      </div>
-                      <span className="font-medium text-gray-900">Contraste Normal</span>
-                      {contrast === 'normal' && (
-                        <div className="ml-auto p-1 bg-primary rounded-full">
-                          <Check size={16} className="text-white" />
-                        </div>
-                      )}
-                    </div>
-                    <p className="text-sm text-gray-600 text-left">
-                      Aparência padrão com cores balanceadas
-                    </p>
-                  </button>
-
-                  <button
-                    onClick={() => setContrast('high')}
-                    className={`p-4 rounded-lg border-2 transition-all ${
-                      contrast === 'high'
-                        ? 'border-primary bg-primary/5 shadow-md'
-                        : 'border-gray-200 bg-white hover:border-gray-300'
-                    }`}
-                  >
-                    <div className="flex items-center gap-3 mb-2">
-                      <div className="p-2 rounded-lg bg-gray-900">
-                        <div className="w-5 h-5 rounded border-2 border-white"></div>
-                      </div>
-                      <span className="font-medium text-gray-900">Alto Contraste</span>
-                      {contrast === 'high' && (
-                        <div className="ml-auto p-1 bg-primary rounded-full">
-                          <Check size={16} className="text-white" />
-                        </div>
-                      )}
-                    </div>
-                    <p className="text-sm text-gray-600 text-left">
-                      Cores mais vibrantes para melhor visibilidade e acessibilidade
-                    </p>
-                  </button>
-                </div>
-              </div>
-
               <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
                 <p className="text-sm text-blue-800 mb-2 font-medium">ℹ️ Sobre as configurações de aparência</p>
                 <ul className="text-xs text-blue-700 space-y-1">
                   <li>• As configurações são salvas automaticamente no seu navegador</li>
                   <li>• O modo escuro pode ajudar a reduzir o cansaço visual</li>
-                  <li>• O alto contraste melhora a acessibilidade para pessoas com baixa visão</li>
                 </ul>
               </div>
             </div>

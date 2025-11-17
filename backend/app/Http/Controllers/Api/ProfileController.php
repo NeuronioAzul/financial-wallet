@@ -44,7 +44,6 @@ class ProfileController extends Controller
             'message' => 'Theme settings updated successfully',
             'data' => [
                 'theme_mode' => $user->theme_mode,
-                'contrast_mode' => $user->contrast_mode,
             ],
         ]);
     }

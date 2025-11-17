@@ -107,9 +107,8 @@ export const profileService = {
 
   updateThemeSettings: async (data: {
     theme_mode?: 'light' | 'dark';
-    contrast_mode?: 'normal' | 'high';
-  }): Promise<{ theme_mode: string; contrast_mode: string }> => {
-    const response = await api.patch<{ data: { theme_mode: string; contrast_mode: string } }>(
+  }): Promise<{ theme_mode: string }> => {
+    const response = await api.patch<{ data: { theme_mode: string } }>(
       '/v1/profile/theme-settings',
       data
     );
