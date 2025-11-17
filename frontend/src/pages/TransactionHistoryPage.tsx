@@ -6,6 +6,7 @@ import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { UserTooltip } from '@/components/ui/UserTooltip';
+import ReverseTransactionModal from '@/components/modals/ReverseTransactionModal';
 import { transactionService, authService } from '@/services';
 import { Transaction } from '@/types';
 import { formatCurrency } from '@/utils/formatters';
@@ -24,6 +25,9 @@ export const TransactionHistoryPage = () => {
   const [filterStatus, setFilterStatus] = useState<string>('all');
   const [showFilters, setShowFilters] = useState(false);
   const [userId, setUserId] = useState<string>('');
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
+  const [reversingId, setReversingId] = useState<string | null>(null);
 
   useEffect(() => {
     loadTransactions();
@@ -78,9 +82,14 @@ export const TransactionHistoryPage = () => {
   const isPositiveTransaction = (transaction: Transaction): boolean => {
     const type = transaction.type;
     
-    // Depósitos e estornos são sempre positivos
-    if (type === 'deposit' || type === 1 || type === 'reversal' || type === 3) {
+    // Depósitos são sempre positivos
+    if (type === 'deposit' || type === 1) {
       return true;
+    }
+    
+    // Estornos são sempre negativos (saída)
+    if (type === 'reversal' || type === 3) {
+      return false;
     }
     
     // Para transferências, verifica se o usuário é o destinatário
@@ -139,14 +148,24 @@ export const TransactionHistoryPage = () => {
     return labels[typeStr as keyof typeof labels] || String(type);
   };
 
-  const getStatusBadge = (status: string) => {
+  const getStatusBadge = (status: string | number) => {
+    // Mapeia números para strings (1=pending, 2=failed, 3=completed, 4=reversed)
+    const statusMap: Record<number, string> = {
+      1: 'pending',
+      2: 'failed',
+      3: 'completed',
+      4: 'reversed',
+    };
+    
+    const statusStr = typeof status === 'number' ? statusMap[status] : status;
+    
     const badges = {
       completed: { text: 'Concluída', color: 'bg-forest-green/10 text-forest-green' },
       pending: { text: 'Pendente', color: 'bg-golden-sand/20 text-golden-sand-dark' },
       failed: { text: 'Falhou', color: 'bg-burgundy-red/10 text-burgundy-red' },
       reversed: { text: 'Estornada', color: 'bg-silver-gray text-charcoal-gray' },
     };
-    return badges[status as keyof typeof badges] || badges.completed;
+    return badges[statusStr as keyof typeof badges] || badges.completed;
   };
 
   const handleSearch = () => {
@@ -159,6 +178,50 @@ export const TransactionHistoryPage = () => {
     setFilterStatus('all');
     setSearchTerm('');
     setCurrentPage(1);
+  };
+
+  const canReverse = (transaction: Transaction): boolean => {
+    const isTransfer = transaction.type === 'transfer' || transaction.type === 2;
+    const isCompleted = transaction.status === 'completed' || transaction.status === 3;
+    const notReversed = transaction.status !== 'reversed' && transaction.status !== 4;
+    const isParticipant = transaction.sender_user_id === userId || transaction.receiver_user_id === userId;
+    
+    return isTransfer && isCompleted && notReversed && isParticipant && userId !== '';
+  };
+
+  const openReverseModal = (transaction: Transaction) => {
+    setSelectedTransaction(transaction);
+    setModalOpen(true);
+  };
+
+  const closeReverseModal = () => {
+    setModalOpen(false);
+    setSelectedTransaction(null);
+  };
+
+  const handleReverseConfirm = async (reason: string) => {
+    if (!selectedTransaction) return;
+
+    setReversingId(selectedTransaction.id);
+    try {
+      await transactionService.reverse(selectedTransaction.id, reason);
+
+      const isSender = selectedTransaction.sender_user_id === userId;
+      toast.success(
+        isSender
+          ? 'Transferência estornada com sucesso!'
+          : 'Transferência devolvida com sucesso!'
+      );
+
+      closeReverseModal();
+      loadTransactions();
+    } catch (error: any) {
+      toast.error(
+        error.response?.data?.message || 'Erro ao processar solicitação'
+      );
+    } finally {
+      setReversingId(null);
+    }
   };
 
   return (
@@ -331,9 +394,39 @@ export const TransactionHistoryPage = () => {
                       </div>
 
                       <div className="text-right flex-shrink-0">
-                        <p className={clsx('text-xl font-bold', isPositive ? 'text-green-600' : 'text-red-600')}>
+                        <p className={clsx('text-xl font-bold mb-2', isPositive ? 'text-green-600' : 'text-red-600')}>
                           {isPositive ? '+' : '-'} {formatCurrency(transaction.amount)}
                         </p>
+                        
+                        {canReverse(transaction) && (
+                          <div className="flex gap-2 justify-end">
+                            {/* Botão de Estornar (para quem enviou) */}
+                            {transaction.sender_user_id === userId && (
+                              <Button
+                                variant="outline"
+                                onClick={() => openReverseModal(transaction)}
+                                isLoading={reversingId === transaction.id}
+                                className="text-xs px-3 py-1.5 border-amber-600 text-amber-600 hover:bg-amber-50"
+                              >
+                                <RotateCcw size={14} />
+                                Estornar
+                              </Button>
+                            )}
+
+                            {/* Botão de Devolver (para quem recebeu) */}
+                            {transaction.receiver_user_id === userId && (
+                              <Button
+                                variant="outline"
+                                onClick={() => openReverseModal(transaction)}
+                                isLoading={reversingId === transaction.id}
+                                className="text-xs px-3 py-1.5 border-blue-600 text-blue-600 hover:bg-blue-50"
+                              >
+                                <RotateCcw size={14} />
+                                Devolver
+                              </Button>
+                            )}
+                          </div>
+                        )}
                       </div>
                     </div>
                   );
@@ -369,6 +462,22 @@ export const TransactionHistoryPage = () => {
             </>
           )}
         </Card>
+
+        {/* Modal de Confirmação */}
+        {selectedTransaction && (
+          <ReverseTransactionModal
+            isOpen={modalOpen}
+            onClose={closeReverseModal}
+            onConfirm={handleReverseConfirm}
+            transaction={{
+              id: selectedTransaction.id,
+              amount: selectedTransaction.amount,
+              type: String(selectedTransaction.type),
+              isSender: selectedTransaction.sender_user_id === userId,
+            }}
+            isLoading={reversingId === selectedTransaction.id}
+          />
+        )}
       </main>
     </div>
   );

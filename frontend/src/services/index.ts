@@ -60,9 +60,10 @@ export const transactionService = {
     return response.data.data;
   },
 
-  reverse: async (transactionId: string): Promise<Transaction> => {
+  reverse: async (transactionId: string, reason?: string): Promise<Transaction> => {
     const response = await api.post<{ data: Transaction }>(
-      `/v1/transactions/${transactionId}/reverse`
+      `/v1/transactions/${transactionId}/reverse`,
+      { reason }
     );
     return response.data.data;
   },

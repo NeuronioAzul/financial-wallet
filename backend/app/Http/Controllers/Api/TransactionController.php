@@ -203,15 +203,30 @@ class TransactionController extends Controller
                 ], 404);
             }
 
-            if (! $transaction->canBeReversed()) {
+            // Determine reversal type based on who is requesting
+            $isSender = $transaction->sender_user_id === $user->id;
+            $isReceiver = $transaction->receiver_user_id === $user->id;
+
+            // Validate permissions
+            if ($isSender && ! $transaction->canBeReversedBySender($user->id)) {
                 return response()->json([
-                    'message' => 'Transaction cannot be reversed',
+                    'message' => 'You cannot reverse this transaction',
                 ], 422);
             }
 
+            if ($isReceiver && ! $transaction->canBeReversedByReceiver($user->id)) {
+                return response()->json([
+                    'message' => 'You cannot refund this transaction',
+                ], 422);
+            }
+
+            // Set reversal type
+            $reversalType = $isSender ? 'sender_request' : 'receiver_refusal';
+
             $reversalTransaction = $this->transactionService->reverse(
                 $transaction,
-                $request->reason
+                $request->reason ?? '',
+                $reversalType
             );
 
             return response()->json([

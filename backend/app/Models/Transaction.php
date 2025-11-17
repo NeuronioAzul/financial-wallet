@@ -146,4 +146,40 @@ class Transaction extends Model implements Auditable
             && ! $this->reversed_at
             && ! $this->reversal()->exists();
     }
+
+    /**
+     * Check if transaction can be reversed by sender.
+     */
+    public function canBeReversedBySender(string $userId): bool
+    {
+        // Only transfers can be reversed by sender
+        if ($this->type !== TransactionType::TRANSFER) {
+            return false;
+        }
+
+        // Must be the sender
+        if ($this->sender_user_id !== $userId) {
+            return false;
+        }
+
+        return $this->canBeReversed();
+    }
+
+    /**
+     * Check if transaction can be reversed by receiver (refund).
+     */
+    public function canBeReversedByReceiver(string $userId): bool
+    {
+        // Only transfers can be refused by receiver
+        if ($this->type !== TransactionType::TRANSFER) {
+            return false;
+        }
+
+        // Must be the receiver
+        if ($this->receiver_user_id !== $userId) {
+            return false;
+        }
+
+        return $this->canBeReversed();
+    }
 }

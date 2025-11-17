@@ -34,7 +34,7 @@ export interface Transaction {
   type: 'transfer' | 'deposit' | 'reversal' | 1 | 2 | 3; // Backend pode retornar string ou number
   amount: string;
   description: string | null;
-  status: 'pending' | 'completed' | 'failed' | 'reversed';
+  status: 'pending' | 'completed' | 'failed' | 'reversed' | 1 | 2 | 3 | 4; // Backend pode retornar string ou number (1=pending, 2=failed, 3=completed, 4=reversed);
   sender_user_id?: string;
   receiver_user_id?: string;
   recipient_wallet_id?: string;

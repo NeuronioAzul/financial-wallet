@@ -137,14 +137,19 @@ class TransactionService
 
     /**
      * Reverse a transaction.
+     *
+     * @param  string  $reversalType  'sender_request' or 'receiver_refusal'
      */
-    public function reverse(Transaction $originalTransaction, string $reason): Transaction
+    public function reverse(Transaction $originalTransaction, string $reason, string $reversalType = 'sender_request'): Transaction
     {
-        return DB::transaction(function () use ($originalTransaction, $reason) {
+        return DB::transaction(function () use ($originalTransaction, $reason, $reversalType) {
             // Validate transaction can be reversed
             if (! $originalTransaction->canBeReversed()) {
                 throw new \Exception('Transaction cannot be reversed');
             }
+
+            // Format reversal reason based on type
+            $formattedReason = $this->formatReversalReason($reason, $reversalType);
 
             // Get wallets involved
             $walletsToLock = collect([
@@ -189,7 +194,7 @@ class TransactionService
                 'amount' => $originalTransaction->amount,
                 'currency' => $originalTransaction->currency,
                 'reversed_transaction_id' => $originalTransaction->id,
-                'reversal_reason' => $reason,
+                'reversal_reason' => $formattedReason,
             ]);
 
             // Log reversal creation
@@ -227,6 +232,20 @@ class TransactionService
     private function generateTransactionCode(): string
     {
         return 'TXN-'.strtoupper(Str::random(10)).'-'.now()->format('YmdHis');
+    }
+
+    /**
+     * Format reversal reason based on type.
+     */
+    private function formatReversalReason(string $reason, string $reversalType): string
+    {
+        $prefix = match ($reversalType) {
+            'sender_request' => 'Estorno solicitado pelo remetente',
+            'receiver_refusal' => 'Devolução solicitada pelo destinatário',
+            default => 'Estorno',
+        };
+
+        return $reason ? "{$prefix}: {$reason}" : $prefix;
     }
 
     /**
