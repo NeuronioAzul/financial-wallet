@@ -1,0 +1,32 @@
+docs: reorganize documentation with standardized structure
+
+BREAKING CHANGE: Documentation files have been renamed and reorganized
+
+- Renamed all docs to kebab-case (SETUP.md → setup-guide.md, etc)
+- Organized docs into logical folders:
+  * architecture/ - Architecture and design docs
+  * development/ - Development tools and guides  
+  * features/ - Feature-specific documentation
+  * guides/ - Long-form tutorials
+  * releases/ - Release notes
+- Updated all internal links in:
+  * README.md
+  * docs/README.md
+  * docs/api-reference.md
+  * backend/README.md
+  * frontend/README.md
+  * .github/copilot-instructions.md
+- Created documentation index files:
+  * docs/INDEX.md - Complete file listing
+  * DOCUMENTATION.md - Quick reference guide
+
+Files renamed:
+- SETUP.md → setup-guide.md
+- ARCHITECTURE.md → architecture.md
+- API.md → api-reference.md
+- O-QUE-FOI-FEITO.md → features/changelog-detalhado.md
+- implementation-journey.md → guides/implementation-journey.md
+- RELEASE-NOTES-v1.0.0.md → releases/release-notes-v1.0.0.md
++ 8 more files reorganized into subdirectories
+
+All documentation links have been updated. No broken links remain.

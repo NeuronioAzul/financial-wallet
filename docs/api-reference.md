@@ -711,8 +711,8 @@ curl -X GET http://localhost:8000/api/v1/wallet/balance \
 
 - [Backend Documentation](../backend/README.md)
 - [Swagger Specification](../swagger/swagger.yml)
-- [Setup Guide](./SETUP.md)
-- [Architecture Overview](./ARCHITECTURE.md)
+- [Setup Guide](./setup-guide.md)
+- [Architecture Overview](./architecture.md)
 
 ---
 

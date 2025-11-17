@@ -5,22 +5,23 @@ Complete technical documentation for the Financial Wallet project.
 ## 📚 Quick Navigation
 
 ### 🚀 Getting Started
-- **[Setup Guide](./SETUP.md)** - Complete development environment setup
+- **[Setup Guide](./setup-guide.md)** - Complete development environment setup
 - **[Quick Start](../README.md#quick-start)** - Get up and running in minutes
 - **[Contributing](../CONTRIBUTING.md)** - How to contribute to the project
 
 ### 🏗️ Architecture & Design
-- **[Architecture Overview](./ARCHITECTURE.md)** - System architecture and design decisions
+- **[Architecture Overview](./architecture.md)** - System architecture and design decisions
 - **[Database Schema](./architecture/database-schema.md)** - PostgreSQL schema and LGPD compliance
 - **[Design System](./design-system.md)** - UI/UX design system and color palette
 
 ### 📖 Technical Documentation
-- **[API Reference](./API.md)** - Complete REST API documentation
+- **[API Reference](./api-reference.md)** - Complete REST API documentation
 - **[Backend Documentation](../backend/README.md)** - Laravel API documentation
 - **[Frontend Documentation](../frontend/README.md)** - React application documentation
 
 ### 📝 Project Information
 - **[Changelog](../CHANGELOG.md)** - Version history and changes
+- **[Release Notes](./releases/release-notes-v1.0.0.md)** - Version 1.0.0 release notes
 - **[Commit Convention](../.github/COMMIT_CONVENTION.md)** - Git commit standards
 
 ---
@@ -30,20 +31,30 @@ Complete technical documentation for the Financial Wallet project.
 ```
 docs/
 ├── README.md                    # This file - Documentation index
-├── SETUP.md                     # Development environment setup
-├── ARCHITECTURE.md              # System architecture overview
-├── API.md                       # API reference guide
+├── setup-guide.md               # Development environment setup
+├── architecture.md              # System architecture overview
+├── api-reference.md             # API reference guide
 ├── design-system.md             # Design system documentation
+├── db_schema_mvp.sql            # SQL schema file
 ├── architecture/
 │   ├── database-schema.md       # Database schema documentation
-│   └── laravel-installation.md  # Laravel setup details
-├── DOCKER-HOT-RELOAD.md         # Docker hot reload configuration
-├── DOCUMENT_UPLOAD_BACKEND_CONFIG.md  # Document upload setup
-├── high-contrast-implementation.md    # Accessibility features
-├── implementation-journey.md    # Development journey
-├── profile-feature.md           # Profile feature documentation
-├── test-fixtures.md             # Test data fixtures
-└── testes-resumo.md             # Test summary (PT-BR)
+│   └── laravel-setup.md         # Laravel setup details
+├── development/
+│   ├── docker-hot-reload.md     # Docker hot reload configuration
+│   ├── lovable-prompts.md       # Lovable AI prompts
+│   ├── prompts-historico.md     # Historical prompts
+│   ├── test-fixtures.md         # Test data fixtures
+│   └── tests-summary.md         # Test summary (PT-BR)
+├── features/
+│   ├── changelog-detalhado.md   # Detailed changelog (PT-BR)
+│   ├── document-upload-backend.md  # Document upload setup
+│   └── profile-feature.md       # Profile feature documentation
+├── guides/
+│   └── implementation-journey.md  # Development journey
+├── releases/
+│   └── release-notes-v1.0.0.md  # Version 1.0.0 release notes
+└── images/
+    └── login-page.png           # Screenshot
 ```
 
 ---
@@ -52,8 +63,8 @@ docs/
 
 ### For New Developers
 
-1. Start with [Setup Guide](./SETUP.md)
-2. Read [Architecture Overview](./ARCHITECTURE.md)
+1. Start with [Setup Guide](./setup-guide.md)
+2. Read [Architecture Overview](./architecture.md)
 3. Review [Commit Convention](../.github/COMMIT_CONVENTION.md)
 4. Check [Contributing Guidelines](../CONTRIBUTING.md)
 
@@ -61,21 +72,21 @@ docs/
 
 1. [Frontend Documentation](../frontend/README.md)
 2. [Design System](./design-system.md)
-3. [API Reference](./API.md)
-4. [Architecture - Frontend](./ARCHITECTURE.md#frontend-architecture)
+3. [API Reference](./api-reference.md)
+4. [Architecture - Frontend](./architecture.md#frontend-architecture)
 
 ### For Backend Developers
 
 1. [Backend Documentation](../backend/README.md)
 2. [Database Schema](./architecture/database-schema.md)
-3. [API Reference](./API.md)
-4. [Architecture - Backend](./ARCHITECTURE.md#backend-architecture)
+3. [API Reference](./api-reference.md)
+4. [Architecture - Backend](./architecture.md#backend-architecture)
 
 ### For DevOps/Infrastructure
 
-1. [Setup Guide](./SETUP.md)
-2. [Architecture - Deployment](./ARCHITECTURE.md#deployment-architecture)
-3. [Docker Configuration](./DOCKER-HOT-RELOAD.md)
+1. [Setup Guide](./setup-guide.md)
+2. [Architecture - Deployment](./architecture.md#deployment-architecture)
+3. [Docker Configuration](./development/docker-hot-reload.md)
 4. Root `docker-compose.yml`
 
 ---
@@ -83,9 +94,11 @@ docs/
 ## 📖 Core Documentation
 
 ### Setup Guide
-**File:** [SETUP.md](./SETUP.md)
+
+**File:** [setup-guide.md](./setup-guide.md)
 
 Complete guide for setting up the development environment including:
+
 - Prerequisites and requirements
 - Initial setup steps
 - Git configuration and commit hooks
@@ -94,9 +107,11 @@ Complete guide for setting up the development environment including:
 - Service access information
 
 ### Architecture Overview
-**File:** [ARCHITECTURE.md](./ARCHITECTURE.md)
+
+**File:** [architecture.md](./architecture.md)
 
 Comprehensive architecture documentation covering:
+
 - System architecture (3-tier design)
 - Backend layered architecture
 - Frontend component architecture
@@ -107,9 +122,11 @@ Comprehensive architecture documentation covering:
 - Scalability considerations
 
 ### API Reference
-**File:** [API.md](./API.md)
+
+**File:** [api-reference.md](./api-reference.md)
 
 Complete REST API documentation including:
+
 - Authentication flow
 - All 23 endpoints with examples
 - Request/response formats
@@ -119,9 +136,11 @@ Complete REST API documentation including:
 - Interactive Swagger UI link
 
 ### Database Schema
+
 **File:** [architecture/database-schema.md](./architecture/database-schema.md)
 
 PostgreSQL database schema documentation:
+
 - Table structures (active and historical)
 - LGPD compliance design
 - UUID v7 implementation
@@ -130,9 +149,11 @@ PostgreSQL database schema documentation:
 - Technical decisions rationale
 
 ### Design System
+
 **File:** [design-system.md](./design-system.md)
 
 UI/UX design system documentation:
+
 - Ocean Blue color palette
 - Typography and fonts
 - Component styles

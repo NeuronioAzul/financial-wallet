@@ -222,12 +222,14 @@ Request → FormRequest → Controller → Service → Model → Database
 
 ### Documentação
 
-- Setup: `docs/SETUP.md`
+- Setup: `docs/setup-guide.md`
 - Backend: `backend/README.md`
 - Frontend: `frontend/README.md`
 - Database: `docs/architecture/database-schema.md`
 - Design: `docs/design-system.md`
-- Features: `docs/O-QUE-FOI-FEITO.md`
+- Features: `docs/features/changelog-detalhado.md`
+- API: `docs/api-reference.md`
+- Architecture: `docs/architecture.md`
 
 ### Boas Práticas
 

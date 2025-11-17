@@ -283,7 +283,7 @@ VITE_API_URL=http://localhost:8000
 
 ## 📚 Additional Documentation
 
-- [Setup Guide](../docs/SETUP.md)
+- [Setup Guide](../docs/setup-guide.md)
 - [Design System](../docs/design-system.md)
 - [Backend API](../backend/README.md)
 - [Swagger UI](http://localhost:8080)

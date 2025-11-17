@@ -143,11 +143,13 @@ A git hook automatically validates all commits. See [Commit Convention](.github/
 
 ## 📚 Documentation
 
-- [Setup Guide](./docs/SETUP.md) - Complete development environment setup
+- [Documentation Overview](./docs/documentation-overview.md) - Complete documentation guide
+- [Setup Guide](./docs/setup-guide.md) - Complete development environment setup
 - [Backend Documentation](./backend/README.md) - Laravel API documentation
 - [Frontend Documentation](./frontend/README.md) - React application documentation
 - [Database Schema](./docs/architecture/database-schema.md) - PostgreSQL schema and design
 - [Design System](./docs/design-system.md) - Color palette and UI components
+- [API Reference](./docs/api-reference.md) - Complete REST API documentation
 - [API Documentation](http://localhost:8080) - Swagger UI (when running)
 - [Commit Convention](.github/COMMIT_CONVENTION.md) - Git commit standards
 

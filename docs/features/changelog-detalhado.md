@@ -300,9 +300,9 @@ Validações completas com mensagens customizadas:
 
 1. **README.md** - Visão geral do projeto
 2. **docs/README.md** - Índice da documentação
-3. **docs/SETUP.md** - Setup completo
-4. **docs/O-QUE-FOI-FEITO.md** - Este arquivo
-5. **docs/implementation-journey.md** - Jornada de implementação
+3. **docs/setup-guide.md** - Setup completo
+4. **docs/features/changelog-detalhado.md** - Este arquivo
+5. **docs/guides/implementation-journey.md** - Jornada de implementação
 6. **docs/architecture/database-schema.md** - Schema do banco
 7. **docs/design-system.md** - Design system
 8. **swagger/swagger.yml** - Documentação OpenAPI completa

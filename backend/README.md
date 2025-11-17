@@ -245,6 +245,6 @@ All dates/times are in **America/Sao_Paulo** (UTC-3).
 
 ## 📚 Additional Documentation
 
-- [Setup Guide](../docs/SETUP.md)
+- [Setup Guide](../docs/setup-guide.md)
 - [Database Schema](../docs/architecture/database-schema.md)
 - [Swagger UI](http://localhost:8080)
