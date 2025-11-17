@@ -57,9 +57,6 @@ export const AdminPage: React.FC = () => {
   const [statusFilter, setStatusFilter] = useState<string>('all');
 
   useEffect(() => {
-    console.log('AdminPage - User data:', user);
-    console.log('AdminPage - Is admin:', isAdmin(user));
-    
     if (!isAdmin(user)) {
       toast.error('Acesso negado. Apenas administradores podem acessar esta página.');
       navigate('/dashboard');

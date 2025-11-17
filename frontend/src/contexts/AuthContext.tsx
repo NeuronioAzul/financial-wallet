@@ -44,14 +44,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const login = async (data: LoginRequest) => {
     try {
-      console.log('Attempting login...');
       const response = await authService.login(data);
-      console.log('Login response received:', response);
-      console.log('User roles from backend:', response.user.roles);
       localStorage.setItem('wallet_token', response.token);
       localStorage.setItem('wallet_user', JSON.stringify(response.user));
       setUser(response.user);
-      console.log('User state updated:', response.user);
       toast.success('Login realizado com sucesso!');
     } catch (error: unknown) {
       console.error('Login failed:', error);
