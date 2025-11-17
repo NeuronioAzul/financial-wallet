@@ -447,8 +447,8 @@ export const ProfilePage = () => {
   const onAddressSubmit = async (data: AddressFormData) => {
     setLoadingAddress(true);
     try {
-      if (address) {
-        await profileService.updateAddress(data);
+      if (address?.id) {
+        await profileService.updateAddress(address.id, data);
         toast.success('Endereço atualizado com sucesso!');
       } else {
         await profileService.createAddress(data);
