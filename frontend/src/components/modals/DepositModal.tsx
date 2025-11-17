@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { X, Plus, Check } from 'lucide-react';
+import { Plus, Check } from 'lucide-react';
 import { Modal } from '@/components/ui/Modal';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
@@ -74,20 +74,10 @@ export const DepositModal: React.FC<DepositModalProps> = ({
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={handleClose} title="">
+    <Modal isOpen={isOpen} onClose={handleClose} title="Novo Depósito">
       <div className="relative">
-        <button
-          onClick={handleClose}
-          className="absolute right-0 top-0 p-2 text-gray-400 hover:text-gray-600 transition-colors"
-        >
-          <X size={24} />
-        </button>
-
         {step === 'form' && (
           <>
-            <h2 className="text-2xl font-bold gradient-text mb-2">
-              Novo Depósito
-            </h2>
             <p className="text-gray-600 mb-6">
               Adicione saldo à sua carteira
             </p>
