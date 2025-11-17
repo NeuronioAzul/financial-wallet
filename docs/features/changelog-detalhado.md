@@ -283,7 +283,7 @@ Validações completas com mensagens customizadas:
 
 ## 🧪 Testes
 
-### Backend (Pest PHP)
+### Backend ( PHPUnit - 145 testes)
 
 - ✅ **Feature Tests** - Testes de integração dos endpoints
 - ✅ **Unit Tests** - Testes unitários dos services

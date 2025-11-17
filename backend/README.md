@@ -7,38 +7,44 @@ RESTful API for the digital wallet system built with Laravel 12, PHP 8.4, and Po
 - **PHP 8.4** + **Laravel 12**
 - **PostgreSQL 18** with UUID v7
 - **Laravel Sanctum** for authentication
-- **Pest 3** for testing
+- **PHPUnit 12** for testing
 - **Docker** for development
 
 ## 📋 Features
 
 ### Authentication
+
 - ✅ User registration with CPF validation
 - ✅ Login with email/password
 - ✅ Logout with token revocation
 - ✅ `/me` endpoint for authenticated user
 
 ### User Profile
+
 - ✅ View profile
 - ✅ Update profile data
 - ✅ Complete validation
 
 ### Addresses
+
 - ✅ Full CRUD operations
 - ✅ Multiple addresses per user
 - ✅ ZIP code validation
 
 ### Documents
+
 - ✅ Document upload (CPF, RG, CNH, etc.)
 - ✅ Approval status
 - ✅ List and query
 
 ### Digital Wallet
+
 - ✅ Wallet query
 - ✅ Balance query
 - ✅ Ownership validation
 
 ### Transactions
+
 - ✅ Deposits
 - ✅ User-to-user transfers
 - ✅ Reversals (chargebacks)
@@ -47,12 +53,14 @@ RESTful API for the digital wallet system built with Laravel 12, PHP 8.4, and Po
 - ✅ Real-time balance validation
 
 ### LGPD & Audit
+
 - ✅ User archiving
 - ✅ Audit log
 - ✅ Transaction history
 - ✅ Full compliance
 
 ### Admin & Permissions
+
 - ✅ Role-based access control (Spatie Permission)
 - ✅ Admin dashboard with statistics
 - ✅ User management (list, suspend, activate)
@@ -164,7 +172,7 @@ GET   /api/v1/admin/transactions       # All transactions
 
 **Total:** 29 RESTful endpoints (23 regular + 6 admin)
 
-Complete documentation: http://localhost:8080 (Swagger UI)
+Complete documentation: <http://localhost:8080> (Swagger UI)
 
 ## 🔄 Comandos Úteis
 

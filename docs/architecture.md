@@ -56,7 +56,7 @@ Financial Wallet is a monorepo-based digital wallet system following a modern th
 **Backend:**
 - PHP 8.4 with Laravel 12
 - Laravel Sanctum for authentication
-- Pest 3 for testing
+- PHPUnit 12 for testing
 - PostgreSQL 18 database
 
 **Infrastructure:**

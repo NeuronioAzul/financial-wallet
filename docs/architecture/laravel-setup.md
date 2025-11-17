@@ -8,7 +8,7 @@
 - **Framework:** Laravel 12.38.1
 - **PHP:** 8.4
 - **Banco:** PostgreSQL 16
-- **Testes:** Pest 3.8.4 + Pest Laravel Plugin 3.2.0
+- **Testes:** PHPUnit 12
 - **Dependências:** 111 pacotes instalados
 
 ### Estrutura Criada
@@ -35,7 +35,8 @@ backend/
 ├── tests/
 │   ├── Feature/
 │   ├── Unit/
-│   └── Pest.php
+│   ├── CreateApplication.php
+│   └── TestCase.php
 ├── .env
 ├── .env.example
 ├── composer.json
@@ -78,7 +79,7 @@ Duration: 0.15s
 4. **Controllers e Routes** para API REST
 5. **Services e Repositories** para lógica de negócio
 6. **Validações** com Form Requests
-7. **Testes** unitários e de integração com Pest
+7. **Testes** unitários e de integração com PHPUnit
 8. **Middlewares** de segurança e autenticação
 9. **Observabilidade** (logs, auditoria, laradumps)
 

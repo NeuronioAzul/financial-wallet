@@ -55,7 +55,7 @@ que os usuários possam realizar transferência de saldo e depósito.
 - Frontend (React.js, tailwindcss, fontawesome)
 - Docker
 - GitHub Actions para CI/CD
-- Pest para testes unitários e de integração
+- PHPUnit para testes unitários e de integração
 - Swagger para documentação da API
 
 
@@ -90,8 +90,8 @@ métodos em inglês, seguindo boas práticas de programação.
 ### O que será um diferencial a ser implementado
 
 - Uso de Docker (Criação do Dockerfile e docker-compose.yml para subir a aplicação com todos os serviços necessários de forma simples no ambiente local)
-- Testes de integração (Usar Pest) Use TDD baby steps criando testes para as principais funcionalidades
-- Testes unitários (Usar Pest) Use TDD baby steps criando testes para as principais funcionalidades
+- Testes de integração (Usar PHPUnit) Use TDD baby steps criando testes para as principais funcionalidades
+- Testes unitários (Usar PHPUnit) Use TDD baby steps criando testes para as principais funcionalidades
 - Documentação da API (Usar Swagger) criar container docker para rodar o swagger
 - Observabilidade
     - Logs: 

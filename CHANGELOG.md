@@ -28,7 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Rate limiting (60 requests/minute)
 - UUID v7 for all entities
 - 23 RESTful API endpoints
-- Complete test suite with Pest
+- Complete test suite with PHPUnit 12
 - Swagger/OpenAPI documentation
 
 #### Frontend

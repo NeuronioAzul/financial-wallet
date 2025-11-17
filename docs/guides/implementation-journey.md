@@ -27,7 +27,7 @@ Este documento descreve a jornada completa de implementação de uma **API REST 
 - **Backend:** Laravel 12 + Sanctum para APIs
 - **Banco de Dados:** PostgreSQL 18 com UUID v7
 - **Containerização:** Docker Compose
-- **Testes:** Pest PHP com RefreshDatabase
+- **Testes:** PHPUnit com RefreshDatabase
 - **Padrão:** Request → Service → Controller → Response JSON
 
 ---
@@ -333,7 +333,7 @@ RateLimiter::for('api', function (Request $request) {
 
 ---
 
-### **Fase 8: Testing (Pest PHP)**
+### **Fase 8: Testing (PHPUnit)**
 
 #### 18 Feature Tests (100% Pass Rate)
 
@@ -377,11 +377,21 @@ test('user can deposit money', function () {
 **Solução:**
 
 ```php
-// tests/Pest.php
-pest()->extend(Tests\TestCase::class)
-    ->use(RefreshDatabase::class)
-    ->in('Feature', 'Unit');
+// tests/TestCase.php
+<?php
+
+namespace Tests;
+
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+
+abstract class TestCase extends BaseTestCase
+{
+    use CreatesApplication, RefreshDatabase;
+}
 ```
+
+**Solução:** Configurar RefreshDatabase no TestCase base para que todos os testes herdem automaticamente.
 
 ---
 
@@ -561,10 +571,10 @@ docker-compose exec backend php artisan migrate:fresh --seed
 docker-compose exec backend php artisan route:list --path=api
 
 # Rodar testes
-docker-compose exec backend php vendor/bin/pest
+docker-compose exec backend php vendor/bin/phpunit
 
 # Rodar teste específico
-docker-compose exec backend php vendor/bin/pest --filter="user can login"
+docker-compose exec backend php vendor/bin/phpunit --filter="user can login"
 ```
 
 ### Teste da API
@@ -661,10 +671,10 @@ Implementar desde o início previne abuso e facilita compliance com SLAs.
 Para dúvidas ou problemas:
 
 1. Verifique os logs: `docker-compose logs -f backend`
-2. Execute os testes: `docker-compose exec backend php vendor/bin/pest`
+2. Execute os testes: `docker-compose exec backend php vendor/bin/phpunit`
 3. Consulte este documento
 4. Revise os códigos de exemplo nos testes
 
 ---
 
-**Desenvolvido com ❤️ usando Laravel 12 + PostgreSQL 18 + Docker**
+**Desenvolvido com 🧠 usando Laravel 12 + PostgreSQL 18 + Docker**

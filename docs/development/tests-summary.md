@@ -22,7 +22,7 @@
 - `WalletController.php` - GET /wallet, /wallet/balance
 - `TransactionController.php` - GET /transactions, /transactions/{id} + POST /deposit, /transfer, /{id}/reverse
 
-### 4. Testes Pest (6 arquivos)
+### 4. Testes PHPUnit (6 arquivos)
 
 - `tests/Feature/AuthTest.php` - 8 testes de autenticação
 - `tests/Feature/WalletTest.php` - 3 testes de carteira
@@ -73,7 +73,7 @@ Todas as migrations de tabelas com UUID precisam ter a linha `DB::statement()` r
 ## 🎯 Próximos Passos
 
 1. Remover linhas `DB::statement()` das migrations
-2. Executar testes novamente: `php vendor/bin/pest`
+2. Executar testes novamente: `php vendor/bin/PHPUnit` ou `docker compose exec backend php artisan test`
 3. Verificar todos os testes passando
 4. Executar migration:fresh + seed no ambiente de dev
 5. Testar endpoints via Postman/Insomnia

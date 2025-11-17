@@ -100,7 +100,7 @@ docs: update api documentation
 **O que faz:**
 
 - ✅ Verifica se os containers estão rodando
-- ✅ Executa testes do backend com Pest
+- ✅ Executa testes do backend com PHPUnit
 - ✅ Exibe resultados formatados
 - ✅ Retorna código de saída apropriado
 

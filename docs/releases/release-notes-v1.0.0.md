@@ -38,7 +38,7 @@ Este é o primeiro release oficial do **Financial Wallet MVP**, uma carteira dig
 - Laravel 12 + PHP 8.4
 - Laravel Sanctum (autenticação)
 - PostgreSQL 18 (UUID v7)
-- Pest 3 (testes)
+- PHPUnit 12 (testes)
 - Docker
 
 ### Frontend

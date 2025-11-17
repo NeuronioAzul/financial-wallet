@@ -41,7 +41,7 @@ Digital wallet system with complete transaction management, LGPD compliance, and
 
 - PHP 8.4-FPM + Laravel 12 + Sanctum authentication
 - PostgreSQL 18 with UUID v7
-- Pest 3 testing framework
+- PHPUnit 12 testing framework
 
 **Frontend**
 
@@ -137,7 +137,6 @@ cp .env.example .env
 
 ## 🧪 Testing
 
-
 Run the PHPUnit backend tests with:
 
 ```bash
@@ -205,7 +204,7 @@ A git hook automatically validates all commits. See [Commit Convention](.github/
 - **Backend:** ✅ MVP Complete (23 endpoints)
 - **Frontend:** ✅ MVP Complete (6 pages)
 - **Database:** ✅ Schema with LGPD compliance
-- **Tests:** ✅ Backend tested with Pest
+- **Tests:** ✅ Backend tested with PHPUnit 12
 - **Docker:** ✅ Full containerized environment
 - **API Docs:** ✅ Swagger documentation
 

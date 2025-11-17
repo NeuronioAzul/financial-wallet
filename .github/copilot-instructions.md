@@ -9,7 +9,7 @@ Sistema de carteira digital desenvolvido com Laravel 12, React 18 e PostgreSQL 1
 **Backend:**
 - Laravel 12 + PHP 8.4 + Sanctum
 - PostgreSQL 18 (UUID v7)
-- Pest 3 (testes)
+- PHPUnit 12 (testes)
 - Docker
 
 **Frontend:**
