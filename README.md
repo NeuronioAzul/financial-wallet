@@ -6,220 +6,209 @@
 [![React](https://img.shields.io/badge/React-18-61DAFB?logo=react)](https://react.dev)
 [![Tests](https://img.shields.io/badge/Tests-Passing-success)](backend/tests)
 
-Carteira digital completa desenvolvida com Laravel 12, React.js 18 e PostgreSQL 18.
+Digital wallet system with complete transaction management, LGPD compliance, and professional design system.
 
-## 🚀 Tecnologias
+## 🚀 Tech Stack
 
-- **Backend:** PHP 8.4-FPM + Laravel 12 + Sanctum
-- **Frontend:** React.js 18 + TypeScript + Vite + TailwindCSS
-- **Database:** PostgreSQL 18 com UUID v7
-- **Infrastructure:** Docker + Docker Compose
-- **Tests:** Pest (backend) + ESLint (frontend)
-- **API Docs:** Swagger UI
+**Backend**
+- PHP 8.4-FPM + Laravel 12 + Sanctum authentication
+- PostgreSQL 18 with UUID v7
+- Pest 3 testing framework
 
-## 📋 Funcionalidades
+**Frontend**
+- React 18 + TypeScript 5.5
+- Vite 5.3 + TailwindCSS 3.4
+- React Router v6 + React Hook Form + Zod
 
-### ✅ Implementado (MVP Completo)
+**Infrastructure**
+- Docker + Docker Compose orchestration
+- Swagger UI for API documentation
 
-#### Backend
+## ✨ Features
 
-- ✅ Cadastro e autenticação de usuários (Sanctum)
-- ✅ Transferências entre usuários com concurrency control
-- ✅ Depósitos na carteira
-- ✅ Reversão de transações (estornos)
-- ✅ Validação de saldo em tempo real
-- ✅ Gerenciamento de perfil do usuário
-- ✅ Gerenciamento de endereços
-- ✅ Gerenciamento de documentos (CPF, RG, CNH, etc.)
-- ✅ Auditoria LGPD completa
+### Backend (23 RESTful Endpoints)
+- ✅ User authentication with Laravel Sanctum
+- ✅ Real-time balance validation with concurrency control
+- ✅ Transaction management (deposits, transfers, reversals)
+- ✅ User profile and address management
+- ✅ Document management (CPF, RG, CNH, passport)
+- ✅ Complete LGPD compliance and audit trail
 - ✅ Rate limiting (60 req/min)
-- ✅ UUID v7 em todas as entidades
-- ✅ 23 endpoints RESTful
-- ✅ Histórico completo de transações
-- ✅ Compliance LGPD
+- ✅ UUID v7 for all entities
 
-#### Frontend
+### Frontend
+- ✅ Authentication pages (login, register, password recovery)
+- ✅ Dashboard with financial summary
+- ✅ Transaction history with filters and pagination
+- ✅ User profile management
+- ✅ Deposit and transfer modals
+- ✅ Ocean Blue design system
+- ✅ Form validation with Zod
+- ✅ Responsive layout
 
-- ✅ Páginas de Login e Registro
-- ✅ Recuperação de senha
-- ✅ Dashboard com resumo financeiro
-- ✅ Histórico de transações com filtros e paginação
-- ✅ Página de perfil do usuário
-- ✅ Modais de depósito e transferência
-- ✅ Design system completo (Ocean Blue theme)
-- ✅ Componentes reutilizáveis (UI components)
-- ✅ Validação de formulários com Zod
-- ✅ Notificações toast
-- ✅ Layout responsivo
-
-## 🏗️ Estrutura do Projeto
+## 📁 Project Structure
 
 ```text
-grupo-adriano/
-├── .docker/          # Configurações Docker
-├── .github/          # CI/CD workflows
-├── backend/          # API Laravel
-├── frontend/         # Interface React
-├── docs/             # Documentação
-├── scripts/          # Scripts de automação
+financial-wallet/
+├── .docker/              # Docker configurations
+├── .github/              # GitHub workflows and conventions
+├── backend/              # Laravel 12 API
+│   ├── app/
+│   │   ├── Http/Controllers/Api/
+│   │   ├── Models/
+│   │   ├── Services/
+│   │   └── Enums/
+│   ├── database/migrations/
+│   ├── routes/api.php
+│   └── tests/
+├── frontend/             # React 18 SPA
+│   └── src/
+│       ├── components/
+│       ├── pages/
+│       ├── services/
+│       └── contexts/
+├── docs/                 # Documentation
+├── scripts/              # Automation scripts
+├── swagger/              # OpenAPI specifications
 └── docker-compose.yml
 ```
 
 ## ⚡ Quick Start
 
 ```bash
-# 1. Clone o repositório
-git clone <repository-url>
-cd grupo-adriano
+# Clone the repository
+git clone https://github.com/NeuronioAzul/financial-wallet.git
+cd financial-wallet
 
-# 2. Configure o ambiente
+# Configure environment
 cp .env.example .env
 
-# 3. Inicie o ambiente de desenvolvimento
+# Start development environment
 ./scripts/inicia-ambiente-dev.sh
 ```
 
-Acesse:
-
-- Backend API: <http://localhost:8000>
-- Frontend: <http://localhost:3000>
-- Swagger: <http://localhost:8080>
+**Access Points:**
+- Backend API: http://localhost:8000
+- Frontend: http://localhost:3000
+- Swagger UI: http://localhost:8080
 - PostgreSQL: localhost:5432
 
-## 🧪 Testes
+**Test Credentials:**
+- Email: `joao@example.com` | Password: `password` (Balance: R$ 1,000.00)
+- Email: `maria@example.com` | Password: `password` (Balance: R$ 500.00)
+
+## 🧪 Testing
 
 ```bash
-# Backend
-cd /home/mauro/projects/grupo-adriano/backend && docker compose exec backend php artisan test
+# Run backend tests
+docker compose exec backend php artisan test
 
-# Ou use o script
+# Or use the test script
 ./scripts/test.sh
 ```
 
-## 📋 Commit Guidelines
+## 📋 Git Commit Convention
 
-Este projeto usa o padrão Airbnb para commits:
+This project follows the Airbnb commit convention:
 
 ```bash
 type(scope): subject
 ```
 
-**Exemplos:**
-
+**Examples:**
 - `feat(auth): add jwt authentication`
 - `fix(wallet): correct balance calculation`
 - `docs: update api documentation`
 
-Ver [Commit Convention](.github/COMMIT_CONVENTION.md) para detalhes completos.
+A git hook automatically validates all commits. See [Commit Convention](.github/COMMIT_CONVENTION.md) for details.
 
-Um git hook valida automaticamente todos os commits.
+## 📚 Documentation
 
-## 📚 Documentação
+- [Setup Guide](./docs/SETUP.md) - Complete development environment setup
+- [Backend Documentation](./backend/README.md) - Laravel API documentation
+- [Frontend Documentation](./frontend/README.md) - React application documentation
+- [Database Schema](./docs/architecture/database-schema.md) - PostgreSQL schema and design
+- [Design System](./docs/design-system.md) - Color palette and UI components
+- [API Documentation](http://localhost:8080) - Swagger UI (when running)
+- [Commit Convention](.github/COMMIT_CONVENTION.md) - Git commit standards
 
-- [Setup Guide](./docs/SETUP.md)
-- [Backend](./backend/README.md)
-- [Frontend](./frontend/README.md)
-- [Database Schema](./docs/architecture/database-schema.md)
-- [Design System](./docs/design-system.md)
-- [Implementation Journey](./docs/implementation-journey.md)
-- [API Documentation (Swagger)](http://localhost:8080)
-- [Commit Convention](.github/COMMIT_CONVENTION.md)
+## 🔒 Security
 
-## 🔒 Segurança
-
-- Autenticação via Laravel Sanctum (tokens Bearer)
-- Hashing de senhas com BCrypt
-- Validação de entrada em todas as requisições
-- Rate limiting (60 requisições/minuto)
-- CORS configurado
-- Proteção CSRF
-- UUID v7 para IDs (não sequenciais)
+- Laravel Sanctum for authentication (Bearer tokens)
+- BCrypt password hashing
+- Input validation on all requests
+- Rate limiting (60 requests/minute)
+- CORS configuration
+- CSRF protection
+- UUID v7 for non-sequential IDs
+- Row locking for transaction safety
 
 ## 🐳 Docker Services
 
 | Service | Container | Port | Description |
 |---------|-----------|------|-------------|
-| Backend | financial-wallet-backend | 8000 | API Laravel + PHP 8.4 |
+| Backend | financial-wallet-backend | 8000 | Laravel 12 API + PHP 8.4 |
 | Frontend | financial-wallet-frontend | 3000 | React 18 + Vite |
 | PostgreSQL | financial-wallet-db | 5432 | PostgreSQL 18 |
 | Swagger | financial-wallet-swagger | 8080 | API Documentation |
 
-## 📊 Status do Projeto
+## 📊 Project Status
 
-- **Backend:** ✅ MVP Completo
-- **Frontend:** ✅ MVP Completo
-- **Database:** ✅ Schema implementado com LGPD
-- **Tests:** ✅ Backend testado
-- **Docker:** ✅ Ambiente containerizado
-- **API Docs:** ✅ Swagger atualizado
+- **Backend:** ✅ MVP Complete (23 endpoints)
+- **Frontend:** ✅ MVP Complete (6 pages)
+- **Database:** ✅ Schema with LGPD compliance
+- **Tests:** ✅ Backend tested with Pest
+- **Docker:** ✅ Full containerized environment
+- **API Docs:** ✅ Swagger documentation
 
-## 🛠️ Comandos Úteis
+## 🛠️ Useful Commands
 
 ```bash
-# Iniciar ambiente completo
+# Start complete environment
 ./scripts/inicia-ambiente-dev.sh
 
-# Executar testes backend
+# Run backend tests
 ./scripts/test.sh
 
-# Ver logs
-docker compose logs -f
+# View logs
+docker compose logs -f [backend|frontend|postgres]
 
-# Acessar container backend
+# Access containers
 docker compose exec backend bash
-
-# Acessar container frontend
 docker compose exec frontend sh
 
-# Parar ambiente
+# Stop environment
 docker compose down
 
-# Limpar volumes (⚠️ apaga dados)
+# Remove volumes (⚠️ deletes data)
 docker compose down -v
 ```
 
-## 📈 Próximos Passos
+## 🚀 Roadmap
 
-- [ ] Implementar notificações em tempo real (WebSockets)
-- [ ] Adicionar suporte a múltiplas moedas
-- [ ] Implementar 2FA (autenticação de dois fatores)
-- [ ] Dashboard administrativo
-- [ ] Relatórios e exportação de dados
-- [ ] Testes E2E no frontend
+- [ ] Real-time notifications (WebSockets)
+- [ ] Multi-currency support
+- [ ] Two-factor authentication (2FA)
+- [ ] Administrative dashboard
+- [ ] Reports and data export
+- [ ] Frontend E2E tests
 - [ ] CI/CD pipeline
-- [ ] Deploy em produção
+- [ ] Production deployment
 
-## 👥 Contribuindo
+## 👥 Contributing
 
-1. Fork o projeto
-2. Crie uma branch para sua feature (`git checkout -b feat/nova-feature`)
-3. Commit suas mudanças seguindo o padrão Airbnb
-4. Push para a branch (`git push origin feat/nova-feature`)
-5. Abra um Pull Request
+1. Fork the project
+2. Create a feature branch (`git checkout -b feat/new-feature`)
+3. Commit using the Airbnb convention
+4. Push to the branch (`git push origin feat/new-feature`)
+5. Open a Pull Request
 
-## 📄 Licença
+## 📄 License
 
-Este projeto está sob a licença MIT.
+This project is licensed under the MIT License.
 
-## 👨‍💻 Autor
+## 👨‍💻 Author
 
 **Mauro Rocha Tavares**
-
 - Email: mauro.rocha.t@gmail.com
 - GitHub: [@NeuronioAzul](https://github.com/NeuronioAzul)
-
-- Senhas hasheadas com bcrypt
-- UUID v7 para IDs
-- Validação de dados no backend
-- Proteção contra SQL injection
-- Audit trail completo
-- Compliance LGPD
-
-## 👥 Usuários de Teste
-
-- **Email:** <joao@example.com> | **Senha:** password
-- **Email:** <maria@example.com> | **Senha:** password
-
-## 📄 Licença
-
-Este projeto é um MVP para teste técnico.
