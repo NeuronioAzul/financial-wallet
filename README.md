@@ -25,10 +25,15 @@ Digital wallet system with complete transaction management, LGPD compliance, and
 
 ![alt text](docs/images/login-page.png)
 
-## Admin Dashboard
+## Admin
+
+### Dashboard
 
 ![alt text](docs/images/admin-dashboard.png)
 
+### Painel
+
+![alt text](docs/images/admin-painel.png)
 
 ## 🚀 Tech Stack
 
