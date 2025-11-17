@@ -57,3 +57,4 @@ frontend/.vite/
 *.tmp
 *.temp
 .cache/
+.devdbrc
