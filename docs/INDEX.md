@@ -41,6 +41,7 @@ Complete index of all documentation files in the Financial Wallet project.
 | [features/laravel-auditing.md](./features/laravel-auditing.md) | Laravel Auditing implementation and documentation |
 | [features/role-based-access-control.md](./features/role-based-access-control.md) | RBAC with Spatie Permission (Admin/Customer) |
 | [features/admin-implementation.md](./features/admin-implementation.md) | Complete admin feature implementation guide |
+| [features/transaction-rules.md](./features/transaction-rules.md) | Transaction business rules (deposit, transfer, reversal) |
 
 ## 📖 Guides
 

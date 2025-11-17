@@ -17,11 +17,17 @@ class TransactionService
      */
     public function deposit(Wallet $wallet, float $amount, ?string $description = null): Transaction
     {
+        // Validate amount is positive
+        if ($amount <= 0) {
+            throw new \Exception('Deposit amount must be positive');
+        }
+
         return DB::transaction(function () use ($wallet, $amount, $description) {
             // Lock wallet for update
             $wallet = Wallet::where('id', $wallet->id)->lockForUpdate()->first();
 
             $previousBalance = $wallet->balance;
+            // Add amount to balance (works correctly even if balance is negative)
             $newBalance = $previousBalance + $amount;
 
             // Create transaction
@@ -75,7 +81,15 @@ class TransactionService
 
             // Validate sender balance
             if (! $senderWallet->hasSufficientBalance($amount)) {
-                throw new \Exception('Insufficient balance');
+                throw new \Exception(
+                    sprintf(
+                        'Insufficient balance. Available: %s %s, Required: %s %s',
+                        number_format($senderWallet->balance, 2, ',', '.'),
+                        $senderWallet->currency,
+                        number_format($amount, 2, ',', '.'),
+                        $senderWallet->currency
+                    )
+                );
             }
 
             $senderPreviousBalance = $senderWallet->balance;
@@ -156,10 +170,8 @@ class TransactionService
             $senderPreviousBalance = $senderWallet?->balance;
             $senderNewBalance = $senderWallet ? $senderPreviousBalance + $originalTransaction->amount : null;
 
-            // Validate receiver has sufficient balance for reversal
-            if ($receiverNewBalance < 0) {
-                throw new \Exception('Receiver has insufficient balance for reversal');
-            }
+            // Note: Reversal is allowed even if it results in negative balance
+            // This ensures all transactions can be reversed for inconsistency or user request
 
             // Create reversal transaction
             $reversalTransaction = Transaction::create([
