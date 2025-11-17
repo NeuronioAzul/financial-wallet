@@ -1,63 +1,62 @@
-# Setup do Ambiente de Desenvolvimento
+# Development Environment Setup
 
-Guia completo para configurar o ambiente de desenvolvimento do projeto Financial Wallet.
+Complete guide to configure the Financial Wallet development environment.
 
-## 📋 Pré-requisitos
+## 📋 Prerequisites
 
-- **Docker** (versão 20.10+)
-- **Docker Compose** (versão 2.0+)
-- **Git** (versão 2.0+)
-- **Node.js** 18+ (opcional, para desenvolvimento local do frontend)
-- **PHP** 8.4+ (opcional, para desenvolvimento local do backend)
+- **Docker** (version 20.10+)
+- **Docker Compose** (version 2.0+)
+- **Git** (version 2.0+)
+- **Node.js** 18+ (optional, for local frontend development)
+- **PHP** 8.4+ (optional, for local backend development)
 
-## 🚀 Setup Inicial
+## 🚀 Initial Setup
 
 ```bash
-# 1. Clone o repositório
-git clone <repository-url>
-cd grupo-adriano
+# Clone the repository
+git clone https://github.com/NeuronioAzul/financial-wallet.git
+cd financial-wallet
 
-# 2. Configure o Git (commit template + hooks)
+# Configure Git (commit template + hooks)
 ./scripts/setup-git.sh
 
-# 3. Configure o ambiente
+# Configure environment
 cp .env.example .env
 
-# 4. Inicie o ambiente Docker
+# Start Docker environment
 ./scripts/inicia-ambiente-dev.sh
 ```
 
-## 📝 Configuração do Git
+## 📝 Git Configuration
 
 ### Commit Message Hook
 
-Um git hook valida automaticamente todos os commits seguindo o padrão Airbnb.
+A git hook automatically validates all commits following the Airbnb convention.
 
-**Localização:** `.git/hooks/commit-msg`
+**Location:** `.git/hooks/commit-msg`
 
-**O que valida:**
-
-- ✅ Formato correto: `type(scope): subject`
-- ✅ Type válido (feat, fix, docs, etc)
-- ✅ Subject em lowercase
-- ✅ Sem ponto final no subject
-- ✅ Header com max 72 caracteres
+**Validation:**
+- ✅ Correct format: `type(scope): subject`
+- ✅ Valid type (feat, fix, docs, etc)
+- ✅ Subject in lowercase
+- ✅ No period at the end of subject
+- ✅ Header max 72 characters
 
 ### Commit Template
 
-Template automático ao executar `git commit`:
+Automatic template when running `git commit`:
 
 ```bash
-# Configure (já feito pelo script setup-git.sh)
+# Already configured by setup-git.sh
 git config commit.template .gitmessage
 
-# Ao fazer commit, você verá o template com guidelines
+# When committing, you'll see the template with guidelines
 git commit
 ```
 
-## 🎯 Exemplos de Commits
+## 🎯 Commit Examples
 
-### Válidos ✅
+### Valid ✅
 
 ```bash
 git commit -m "feat(auth): add jwt authentication"
@@ -69,96 +68,95 @@ git commit -m "test(wallet): add deposit unit tests"
 git commit -m "chore(deps): update laravel to 12.1"
 ```
 
-### Inválidos ❌
+### Invalid ❌
 
 ```bash
-git commit -m "Added new feature"          # Falta type
-git commit -m "feat(Auth): Add feature"    # Uppercase
-git commit -m "feat: Add feature."         # Ponto final
-git commit -m "FEAT: add feature"          # Type uppercase
+git commit -m "Added new feature"          # Missing type
+git commit -m "feat(Auth): Add feature"    # Uppercase scope
+git commit -m "feat: Add feature."         # Period at end
+git commit -m "FEAT: add feature"          # Uppercase type
 ```
 
-## 🛠️ Comandos Úteis
+## 🛠️ Useful Commands
 
 ```bash
-# Iniciar ambiente completo
+# Start complete environment
 ./scripts/inicia-ambiente-dev.sh
 
-# Executar testes backend
-cd /home/mauro/projects/grupo-adriano/backend && docker compose exec backend php artisan test
-
-# Ou use o script
+# Run backend tests
+docker compose exec backend php artisan test
+# Or use the script
 ./scripts/test.sh
 
-# Ver logs de todos os serviços
+# View logs (all services)
 docker compose logs -f
 
-# Ver logs de um serviço específico
+# View logs (specific service)
 docker compose logs -f backend
 docker compose logs -f frontend
 docker compose logs -f postgres
 
-# Acessar container backend
+# Access backend container
 docker compose exec backend bash
 
-# Acessar container frontend
+# Access frontend container
 docker compose exec frontend sh
 
-# Executar migrations
+# Run migrations
 docker compose exec backend php artisan migrate
 
-# Executar seeders
+# Run seeders
 docker compose exec backend php artisan db:seed
 
-# Limpar cache do Laravel
+# Clear Laravel cache
 docker compose exec backend php artisan optimize:clear
 
-# Parar ambiente
+# Stop environment
 docker compose down
 
-# Parar e remover volumes (⚠️ apaga dados)
+# Stop and remove volumes (⚠️ deletes data)
 docker compose down -v
 ```
 
 ## 🐛 Troubleshooting
 
-### Problema: Permissões de arquivo (Backend)
+### File Permission Issues (Backend)
 
-Se você encontrar erros de permissão no Laravel:
+If you encounter permission errors in Laravel:
 
 ```bash
-# Corrigir permissões do storage e cache
+# Fix storage and cache permissions
 docker compose exec -u root backend chown -R www-data:www-data /var/www/html/storage
 docker compose exec -u root backend chmod -R 775 /var/www/html/storage
 ```
 
-### Problema: PostgreSQL não conecta
+### PostgreSQL Connection Issues
 
 ```bash
-# Verificar se o container está rodando
+# Check if container is running
 docker compose ps postgres
 
-# Verificar logs do PostgreSQL
+# Check PostgreSQL logs
 docker compose logs postgres
 
-# Reiniciar o serviço
+# Restart service
 docker compose restart postgres
 ```
 
-### Problema: Frontend não atualiza
+### Frontend Not Updating
 
 ```bash
-# Limpar node_modules e reinstalar
+# Clear node_modules and reinstall
 docker compose exec frontend rm -rf node_modules
 docker compose exec frontend npm install
 
-# Reiniciar o serviço
+# Restart service
 docker compose restart frontend
 ```
 
-### Problema: Porta já em uso
+### Port Already in Use
 
-Se alguma porta estiver em uso, edite o arquivo `.env` e mude as portas:
+If a port is already in use, edit the `.env` file and change the ports:
 
 ```bash
 BACKEND_PORT=8001  # default: 8000
@@ -167,64 +165,62 @@ SWAGGER_PORT=8081  # default: 8080
 DB_PORT=5433       # default: 5432
 ```
 
-### Problema: Migrations falham
+### Migration Failures
 
 ```bash
-# Resetar banco de dados
+# Reset database
 docker compose exec backend php artisan migrate:fresh
 
-# Resetar e popular com dados de teste
+# Reset and populate with test data
 docker compose exec backend php artisan migrate:fresh --seed
 ```
 
-## 🔍 Verificação de Saúde
+## 🔍 Health Check
 
-Após iniciar o ambiente, verifique se tudo está funcionando:
+After starting the environment, verify everything is working:
 
 ```bash
-# Health check da API
+# API health check
 curl http://localhost:8000/api/health
 
-# Verificar se todos os containers estão rodando
+# Verify all containers are running
 docker compose ps
 
-# Verificar logs do backend
+# Check backend logs
 docker compose logs backend | tail -20
 
-# Verificar logs do frontend
+# Check frontend logs
 docker compose logs frontend | tail -20
 ```
 
-## 🌐 Acesso aos Serviços
+## 🌐 Service Access
 
-Após iniciar o ambiente, os serviços estarão disponíveis em:
+After starting the environment, services are available at:
 
-| Serviço | URL | Descrição |
-|---------|-----|-----------|
-| Frontend | <http://localhost:3000> | Interface React |
-| Backend API | <http://localhost:8000> | API Laravel |
-| Swagger UI | <http://localhost:8080> | Documentação da API |
-| PostgreSQL | localhost:5432 | Banco de dados |
+| Service | URL | Description |
+|---------|-----|-------------|
+| Frontend | http://localhost:3000 | React interface |
+| Backend API | http://localhost:8000 | Laravel API |
+| Swagger UI | http://localhost:8080 | API documentation |
+| PostgreSQL | localhost:5432 | Database |
 
-### Credenciais de Teste
+### Test Credentials
 
-**Usuário 1:**
-
+**User 1:**
 - Email: `joao@example.com`
-- Senha: `password`
-- Saldo inicial: R$ 1.000,00
+- Password: `password`
+- Initial balance: R$ 1,000.00
 
-**Usuário 2:**
-
+**User 2:**
 - Email: `maria@example.com`
-- Senha: `password`
-- Saldo inicial: R$ 500,00
+- Password: `password`
+- Initial balance: R$ 500.00
 
-## 📚 Documentação Adicional
+## 📚 Additional Documentation
 
-- [README Principal](../README.md) - Visão geral do projeto
-- [Commit Convention](../.github/COMMIT_CONVENTION.md) - Guia completo de commits
-- [Backend README](../backend/README.md) - Documentação do backend
-- [Frontend README](../frontend/README.md) - Documentação do frontend
-- [Database Schema](./architecture/database-schema.md) - Schema do banco de dados
-- [Design System](./design-system.md) - Paleta de cores e componentes
+- [Main README](../README.md) - Project overview
+- [Commit Convention](../.github/COMMIT_CONVENTION.md) - Complete commit guide
+- [Backend README](../backend/README.md) - Backend documentation
+- [Frontend README](../frontend/README.md) - Frontend documentation
+- [Database Schema](./architecture/database-schema.md) - Database schema
+- [Design System](./design-system.md) - Color palette and components

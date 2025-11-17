@@ -1,63 +1,56 @@
 # Backend - Financial Wallet API
 
-API REST da carteira financeira digital desenvolvida com Laravel 12, PHP 8.4 e PostgreSQL 18.
+RESTful API for the digital wallet system built with Laravel 12, PHP 8.4, and PostgreSQL 18.
 
-## 🚀 Stack
+## 🚀 Tech Stack
 
 - **PHP 8.4** + **Laravel 12**
-- **PostgreSQL 18** com UUID v7
-- **Laravel Sanctum** para autenticação
-- **Pest 3** para testes
-- **Docker** para desenvolvimento
+- **PostgreSQL 18** with UUID v7
+- **Laravel Sanctum** for authentication
+- **Pest 3** for testing
+- **Docker** for development
 
-## 📋 Funcionalidades
+## 📋 Features
 
-### Autenticação
+### Authentication
+- ✅ User registration with CPF validation
+- ✅ Login with email/password
+- ✅ Logout with token revocation
+- ✅ `/me` endpoint for authenticated user
 
-- ✅ Registro de usuários com validação de CPF
-- ✅ Login com email/password
-- ✅ Logout com revogação de tokens
-- ✅ Endpoint `/me` para usuário autenticado
+### User Profile
+- ✅ View profile
+- ✅ Update profile data
+- ✅ Complete validation
 
-### Perfil do Usuário
+### Addresses
+- ✅ Full CRUD operations
+- ✅ Multiple addresses per user
+- ✅ ZIP code validation
 
-- ✅ Visualizar perfil
-- ✅ Atualizar dados do perfil
-- ✅ Validação completa
+### Documents
+- ✅ Document upload (CPF, RG, CNH, etc.)
+- ✅ Approval status
+- ✅ List and query
 
-### Endereços
+### Digital Wallet
+- ✅ Wallet query
+- ✅ Balance query
+- ✅ Ownership validation
 
-- ✅ CRUD completo de endereços
-- ✅ Múltiplos endereços por usuário
-- ✅ Validação de CEP
+### Transactions
+- ✅ Deposits
+- ✅ User-to-user transfers
+- ✅ Reversals (chargebacks)
+- ✅ Complete history
+- ✅ Concurrency control with row locking
+- ✅ Real-time balance validation
 
-### Documentos
-
-- ✅ Upload de documentos (CPF, RG, CNH, etc.)
-- ✅ Status de aprovação
-- ✅ Listagem e consulta
-
-### Carteira Digital
-
-- ✅ Consulta de carteira
-- ✅ Consulta de saldo
-- ✅ Validação de propriedade
-
-### Transações
-
-- ✅ Depósitos
-- ✅ Transferências entre usuários
-- ✅ Estornos (reversões)
-- ✅ Histórico completo
-- ✅ Concurrency control com row locking
-- ✅ Validação de saldo em tempo real
-
-### LGPD & Auditoria
-
-- ✅ Arquivamento de usuários
-- ✅ Log de auditoria
-- ✅ Histórico de transações
-- ✅ Compliance completo
+### LGPD & Audit
+- ✅ User archiving
+- ✅ Audit log
+- ✅ Transaction history
+- ✅ Full compliance
 
 ## 🛠️ Setup
 
@@ -75,85 +68,85 @@ docker compose exec backend php artisan db:seed
 docker compose exec backend php artisan optimize:clear
 ```
 
-## 🧪 Testes
+## 🧪 Tests
 
 ```bash
-# Executar todos os testes
-cd /home/mauro/projects/grupo-adriano/backend && docker compose exec backend php artisan test
+# Run all tests
+docker compose exec backend php artisan test
 
-# Testes com cobertura
-cd /home/mauro/projects/grupo-adriano/backend && docker compose exec backend php artisan test --coverage
+# Run with coverage
+docker compose exec backend php artisan test --coverage
 
-# Testes específicos
-cd /home/mauro/projects/grupo-adriano/backend && docker compose exec backend php artisan test --filter=AuthTest
+# Run specific test
+docker compose exec backend php artisan test --filter=AuthTest
 ```
 
 ## 📖 API Endpoints
 
-### Públicos
+### Public Routes
 
 ```http
 GET  /api/health          # Health check
-POST /api/v1/register     # Registro
+POST /api/v1/register     # User registration
 POST /api/v1/login        # Login
 ```
 
-### Autenticados (requer token Bearer)
+### Authenticated Routes (Bearer token required)
 
-#### Auth
+#### Authentication
 
 ```http
 POST /api/v1/logout       # Logout
-GET  /api/v1/me           # Usuário autenticado
+GET  /api/v1/me           # Get authenticated user
 ```
 
 #### Profile
 
 ```http
-GET  /api/v1/profile      # Ver perfil
-PUT  /api/v1/profile      # Atualizar perfil
+GET  /api/v1/profile      # View profile
+PUT  /api/v1/profile      # Update profile
 ```
 
 #### Addresses
 
 ```http
-GET    /api/v1/addresses         # Listar endereços
-POST   /api/v1/addresses         # Criar endereço
-GET    /api/v1/addresses/{id}    # Ver endereço
-PUT    /api/v1/addresses/{id}    # Atualizar endereço
-DELETE /api/v1/addresses/{id}    # Deletar endereço
+GET    /api/v1/addresses         # List addresses
+POST   /api/v1/addresses         # Create address
+GET    /api/v1/addresses/{id}    # View address
+PUT    /api/v1/addresses/{id}    # Update address
+DELETE /api/v1/addresses/{id}    # Delete address
 ```
 
 #### Documents
 
 ```http
-GET    /api/v1/documents          # Listar documentos
-POST   /api/v1/documents          # Upload documento
-GET    /api/v1/documents/status   # Status dos documentos
-GET    /api/v1/documents/{id}     # Ver documento
-DELETE /api/v1/documents/{id}     # Deletar documento
+GET    /api/v1/documents          # List documents
+POST   /api/v1/documents          # Upload document
+GET    /api/v1/documents/status   # Document status
+GET    /api/v1/documents/{id}     # View document
+DELETE /api/v1/documents/{id}     # Delete document
 ```
 
 #### Wallet
 
 ```http
-GET /api/v1/wallet          # Ver carteira
-GET /api/v1/wallet/balance  # Ver saldo
+GET /api/v1/wallet          # View wallet
+GET /api/v1/wallet/balance  # View balance
 ```
 
 #### Transactions
 
 ```http
-GET  /api/v1/transactions              # Histórico
-GET  /api/v1/transactions/{id}         # Detalhes
-POST /api/v1/transactions/deposit      # Depósito
-POST /api/v1/transactions/transfer     # Transferência
-POST /api/v1/transactions/{id}/reverse # Estorno
+GET  /api/v1/transactions              # Transaction history
+GET  /api/v1/transactions/{id}         # Transaction details
+POST /api/v1/transactions/deposit      # Make deposit
+POST /api/v1/transactions/transfer     # Make transfer
+POST /api/v1/transactions/{id}/reverse # Reverse transaction
 ```
 
-**Total:** 23 endpoints RESTful
+**Total:** 23 RESTful endpoints
 
-Documentação completa: <http://localhost:8080> (Swagger UI)
+Complete documentation: http://localhost:8080 (Swagger UI)
 
 ## 🔄 Comandos Úteis
 
@@ -190,13 +183,13 @@ php artisan migrate:fresh --seed
 
 ### Models (7)
 
-- **User** - Usuários
-- **Address** - Endereços
-- **UserDocument** - Documentos
-- **Wallet** - Carteiras
-- **Transaction** - Transações
-- **TransactionLog** - Logs
-- **LgpdAuditLog** - Auditoria
+- **User** - System users
+- **Address** - User addresses
+- **UserDocument** - User documents
+- **Wallet** - Digital wallets
+- **Transaction** - Financial transactions
+- **TransactionLog** - Transaction logs
+- **LgpdAuditLog** - LGPD audit trail
 
 ### Enums (6)
 
@@ -207,7 +200,7 @@ php artisan migrate:fresh --seed
 - **DocumentType** - CPF, RG, CNH, passport, etc.
 - **ArchiveReason** - user_request, lgpd_compliance, etc.
 
-Schema completo: `docs/architecture/database-schema.md`
+Complete schema: `docs/architecture/database-schema.md`
 
 ## 🏗️ Arquitetura
 
@@ -226,33 +219,32 @@ Request → Route → FormRequest → Controller → Service → Model → Datab
 - **Models** (`app/Models/`) - Entidades do domínio
 - **Enums** (`app/Enums/`) - Constantes tipadas
 
-## 🔐 Segurança
+## 🔐 Security
 
-- ✅ Laravel Sanctum (tokens Bearer)
-- ✅ Hashing BCrypt de senhas
-- ✅ Validação em todos os endpoints
+- ✅ Laravel Sanctum (Bearer tokens)
+- ✅ BCrypt password hashing
+- ✅ Validation on all endpoints
 - ✅ Rate limiting (60 req/min)
-- ✅ CORS configurado
+- ✅ CORS configured
 - ✅ CSRF protection
-- ✅ UUID v7 (não sequenciais)
-- ✅ Row locking em transações
+- ✅ UUID v7 (non-sequential)
+- ✅ Row locking for transactions
 
-## 📝 Configuração
+## 📝 Configuration
 
-Principais arquivos de configuração:
+Main configuration files:
 
-- `config/database.php` - Configuração do PostgreSQL
-- `config/sanctum.php` - Configuração do Sanctum
-- `config/cors.php` - Configuração de CORS
-- `.env` - Variáveis de ambiente
+- `config/database.php` - PostgreSQL configuration
+- `config/sanctum.php` - Sanctum configuration
+- `config/cors.php` - CORS configuration
+- `.env` - Environment variables
 
 ## 🌍 Timezone
 
-Todas as datas/horas estão em **America/Sao_Paulo** (UTC-3).
+All dates/times are in **America/Sao_Paulo** (UTC-3).
 
-## 📚 Documentação Adicional
+## 📚 Additional Documentation
 
 - [Setup Guide](../docs/SETUP.md)
 - [Database Schema](../docs/architecture/database-schema.md)
-- [Implementation Journey](../docs/implementation-journey.md)
 - [Swagger UI](http://localhost:8080)

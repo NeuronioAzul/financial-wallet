@@ -1,125 +1,125 @@
 # Database Schema Documentation
 
-Schema do banco de dados PostgreSQL 18 para o MVP da carteira financeira.
+PostgreSQL 18 database schema for the Financial Wallet MVP.
 
-## 🏗️ Arquitetura
+## 🏗️ Architecture
 
-Este schema implementa uma solução completa de LGPD compliance com separação de dados ativos e históricos.
+This schema implements a complete LGPD compliance solution with separation of active and historical data.
 
-## 📊 Tabelas Principais (Dados Ativos)
+## 📊 Main Tables (Active Data)
 
 ### `users`
 
-Cadastro de usuários ativos do sistema.
+Active user registration.
 
-- UUID v7 como chave primária
-- Email e documento (CPF/CNPJ) com unique constraints
+- UUID v7 as primary key
+- Email and document (CPF/CNPJ) with unique constraints
 - Status: 1=active, 2=inactive, 3=blocked
 
 ### `addresses`
 
-Endereços dos usuários (múltiplos por usuário).
+User addresses (multiple per user).
 
-- UUID v7 como chave primária
-- Relacionamento N:1 com users
-- Campos: CEP, logradouro, número, complemento, bairro, cidade, estado, país
+- UUID v7 as primary key
+- N:1 relationship with users
+- Fields: ZIP code, street, number, complement, neighborhood, city, state, country
 
 ### `user_documents`
 
-Documentos dos usuários (CPF, RG, CNH, etc.).
+User documents (CPF, RG, CNH, etc.).
 
-- UUID v7 como chave primária
-- Relacionamento N:1 com users
-- Tipos: CPF, RG, CNH, passport, etc.
+- UUID v7 as primary key
+- N:1 relationship with users
+- Types: CPF, RG, CNH, passport, etc.
 - Status: pending, approved, rejected, expired
-- Armazenamento de arquivo (file_path)
+- File storage (file_path)
 
 ### `wallets`
 
-Carteiras digitais dos usuários.
+Digital wallets.
 
-- Uma carteira por usuário por moeda
-- Saldo com precisão decimal (15,2)
-- Relacionamento 1:N com users
+- One wallet per user per currency
+- Balance with decimal precision (15,2)
+- 1:N relationship with users
 
 ### `transactions`
 
-Registro imutável de todas as transações (NUNCA são deletadas).
+Immutable record of all transactions (NEVER deleted).
 
-- Tipos: 1=deposit, 2=transfer, 3=reversal
+- Types: 1=deposit, 2=transfer, 3=reversal
 - Status: 1=pending, 2=processing, 3=completed, 4=failed, 5=reversed
-- Campos desnormalizados para manter rastreabilidade mesmo após arquivamento
+- Denormalized fields to maintain traceability after archiving
 
-## 📜 Tabelas de Histórico (LGPD Compliance)
+## 📜 Historical Tables (LGPD Compliance)
 
 ### `users_history`
-Snapshot completo de usuários arquivados.
-- Mantém todos os dados originais
-- Metadados de arquivamento (razão, quem arquivou, IP)
-- Imutável para auditoria
+Complete snapshot of archived users.
+- Maintains all original data
+- Archiving metadata (reason, who archived, IP)
+- Immutable for audit
 
 ### `wallets_history`
-Histórico de carteiras arquivadas.
+Historical archived wallets.
 
-## 🔍 Tabelas de Auditoria
+## 🔍 Audit Tables
 
 ### `transaction_logs`
-Audit trail de mudanças de status em transações.
+Audit trail of transaction status changes.
 
 ### `lgpd_audit_log`
-Log de todas as ações relacionadas a dados pessoais.
+Log of all actions related to personal data.
 
-## ⚙️ Funcionalidades Especiais
+## ⚙️ Special Features
 
 ### Function `archive_user()`
-Arquiva usuário de forma atômica:
-1. Copia dados para `users_history`
-2. Copia carteiras para `wallets_history`
-3. Registra em `lgpd_audit_log`
-4. Remove dados ativos
+Atomically archives user:
+1. Copies data to `users_history`
+2. Copies wallets to `wallets_history`
+3. Records in `lgpd_audit_log`
+4. Removes active data
 
 ### Triggers
-- `update_updated_at` - Atualiza timestamp automaticamente
+- `update_updated_at` - Automatically updates timestamp
 
 ### Views
-- `v_user_balances` - Saldos consolidados
-- `v_transaction_summary` - Resumo de transações
-- `v_archived_users_summary` - Estatísticas de arquivamento
+- `v_user_balances` - Consolidated balances
+- `v_transaction_summary` - Transaction summary
+- `v_archived_users_summary` - Archiving statistics
 
-## 🎯 Decisões Técnicas
+## 🎯 Technical Decisions
 
 **UUID v7:**
-- Ordenação temporal nativa
-- Performance superior em índices
-- IDs menores e mais eficientes
+- Native temporal ordering
+- Superior index performance
+- Smaller and more efficient IDs
 
-**Status como SMALLINT:**
+**Status as SMALLINT:**
 - 2 bytes vs strings
-- Melhor performance
-- Documentado via comentários SQL
+- Better performance
+- Documented via SQL comments
 
-**Separação Ativo/Histórico:**
-- Tabelas principais limpas e rápidas
-- Unique constraints funcionam sem workarounds
-- Compliance LGPD total
-- Auditoria completa e imutável
+**Active/Historical Separation:**
+- Clean and fast main tables
+- Unique constraints work without workarounds
+- Full LGPD compliance
+- Complete and immutable audit
 
-## 📝 Motivos de Arquivamento
+## 📝 Archiving Reasons
 
 ```
-1 = user_request      (solicitação do usuário)
-2 = lgpd_compliance   (direito ao esquecimento)
-3 = account_closure   (encerramento de conta)
-4 = fraud_detection   (detecção de fraude)
-5 = inactivity        (inatividade prolongada)
-6 = administrative    (motivo administrativo)
+1 = user_request      (user's request)
+2 = lgpd_compliance   (right to be forgotten)
+3 = account_closure   (account closure)
+4 = fraud_detection   (fraud detection)
+5 = inactivity        (prolonged inactivity)
+6 = administrative    (administrative reason)
 ```
 
-## 🧪 Dados de Teste
+## 🧪 Test Data
 
-Usuários pré-cadastrados:
-- **João Silva** - joao@example.com (saldo: R$ 1.000,00)
-- **Maria Santos** - maria@example.com (saldo: R$ 500,00)
+Pre-registered users:
+- **João Silva** - joao@example.com (balance: R$ 1,000.00)
+- **Maria Santos** - maria@example.com (balance: R$ 500.00)
 
-Senha: `password` (hash bcrypt)
+Password: `password` (bcrypt hash)
 
