@@ -12,6 +12,7 @@ import { ProfilePage } from '@/pages/ProfilePage';
 import { StyleGuidePage } from '@/pages/StyleGuidePage';
 import { TermsPage } from '@/pages/TermsPage';
 import { PrivacyPage } from '@/pages/PrivacyPage';
+import AuditLogs from '@/pages/AuditLogs';
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
@@ -56,6 +57,14 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <ProfilePage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/audit-logs"
+        element={
+          <ProtectedRoute>
+            <AuditLogs />
           </ProtectedRoute>
         }
       />

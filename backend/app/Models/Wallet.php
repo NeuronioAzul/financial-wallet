@@ -8,10 +8,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Wallet extends Model
+class Wallet extends Model implements Auditable
 {
     use HasFactory, HasUuidV7;
+    use \OwenIt\Auditing\Auditable;
 
     /**
      * The attributes that are mass assignable.

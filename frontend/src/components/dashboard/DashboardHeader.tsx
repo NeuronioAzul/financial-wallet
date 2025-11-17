@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { LogOut, User, ChevronDown } from "lucide-react";
+import { LogOut, User, ChevronDown, FileText } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { clsx } from "clsx";
 
@@ -99,6 +99,16 @@ export const DashboardHeader: React.FC = () => {
                   >
                     <User size={16} />
                     Meu Perfil
+                  </button>
+                  <button
+                    onClick={() => {
+                      navigate("/audit-logs");
+                      setIsMenuOpen(false);
+                    }}
+                    className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2"
+                  >
+                    <FileText size={16} />
+                    Logs de Auditoria
                   </button>
                   <button
                     onClick={() => {

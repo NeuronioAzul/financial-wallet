@@ -10,10 +10,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Transaction extends Model
+class Transaction extends Model implements Auditable
 {
     use HasFactory, HasUuidV7;
+    use \OwenIt\Auditing\Auditable;
 
     /**
      * The attributes that are mass assignable.

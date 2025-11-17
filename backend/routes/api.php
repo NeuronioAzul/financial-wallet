@@ -54,4 +54,8 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
     Route::post('/transactions/{id}/reverse', [\App\Http\Controllers\Api\TransactionController::class, 'reverse']);
     Route::get('/transactions', [\App\Http\Controllers\Api\TransactionController::class, 'index']);
     Route::get('/transactions/{id}', [\App\Http\Controllers\Api\TransactionController::class, 'show']);
+
+    // Audit Logs
+    Route::get('/audits', [\App\Http\Controllers\Api\AuditController::class, 'index']);
+    Route::get('/audits/{id}', [\App\Http\Controllers\Api\AuditController::class, 'show']);
 });

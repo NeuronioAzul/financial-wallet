@@ -37,6 +37,7 @@ Complete index of all documentation files in the Financial Wallet project.
 | [features/changelog-detalhado.md](./features/changelog-detalhado.md) | Detailed changelog (Portuguese) |
 | [features/document-upload-backend.md](./features/document-upload-backend.md) | Document upload backend configuration |
 | [features/profile-feature.md](./features/profile-feature.md) | Profile feature implementation |
+| [features/laravel-auditing.md](./features/laravel-auditing.md) | Laravel Auditing implementation and documentation |
 
 ## 📖 Guides
 
