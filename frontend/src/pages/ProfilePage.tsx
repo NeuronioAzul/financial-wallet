@@ -218,48 +218,48 @@ export const ProfilePage = () => {
   };
 
   const getGroupInfo = (groupKey: string) => {
-    const info: Record<string, { icon: string; title: string; color: string; bgColor: string }> = {
+    const info: Record<string, { icon: any; title: string; color: string; bgColor: string }> = {
       photo: {
-        icon: '📸',
+        icon: User,
         title: 'Foto/Selfie',
-        color: 'text-indigo-700',
-        bgColor: 'bg-indigo-100'
+        color: 'text-gray-700',
+        bgColor: 'bg-gray-50'
       },
       rg: {
-        icon: '🪪',
+        icon: FileText,
         title: 'RG',
-        color: 'text-blue-700',
-        bgColor: 'bg-blue-100'
+        color: 'text-gray-700',
+        bgColor: 'bg-gray-50'
       },
       cnh: {
-        icon: '🚗',
+        icon: FileText,
         title: 'CNH',
-        color: 'text-purple-700',
-        bgColor: 'bg-purple-100'
+        color: 'text-gray-700',
+        bgColor: 'bg-gray-50'
       },
       cpf: {
-        icon: '📋',
+        icon: FileText,
         title: 'CPF',
-        color: 'text-green-700',
-        bgColor: 'bg-green-100'
+        color: 'text-gray-700',
+        bgColor: 'bg-gray-50'
       },
       comprovante_residencia: {
-        icon: '📍',
+        icon: MapPin,
         title: 'Comprovante de Residência',
-        color: 'text-amber-700',
-        bgColor: 'bg-amber-100'
+        color: 'text-gray-700',
+        bgColor: 'bg-gray-50'
       },
       cartao_credito: {
-        icon: '💳',
+        icon: FileText,
         title: 'Cartão de Crédito',
-        color: 'text-pink-700',
-        bgColor: 'bg-pink-100'
+        color: 'text-gray-700',
+        bgColor: 'bg-gray-50'
       },
       outros: {
-        icon: '📄',
+        icon: FileText,
         title: 'Outros Documentos',
         color: 'text-gray-700',
-        bgColor: 'bg-gray-100'
+        bgColor: 'bg-gray-50'
       }
     };
     return info[groupKey];
@@ -786,7 +786,7 @@ export const ProfilePage = () => {
                           : 'bg-white border-indigo-500 text-indigo-600 hover:bg-indigo-500 hover:text-white'
                         }`}
                     >
-                      📸 Foto/Selfie
+                      Foto/Selfie
                     </button>
 
                     {/* RG */}
@@ -901,7 +901,12 @@ export const ProfilePage = () => {
                           {/* Group Header */}
                           <div className={`${groupInfo.bgColor} px-4 py-3 border-b border-gray-200`}>
                             <div className="flex items-center gap-3">
-                              <span className="text-2xl">{groupInfo.icon}</span>
+                              <div className={`p-2 rounded-lg bg-white border border-gray-200`}>
+                                {typeof groupInfo.icon === 'function' 
+                                  ? <groupInfo.icon size={20} className={groupInfo.color} />
+                                  : <FileText size={20} className={groupInfo.color} />
+                                }
+                              </div>
                               <div className="flex-1">
                                 <h5 className={`text-sm font-semibold ${groupInfo.color}`}>
                                   {groupInfo.title}
@@ -927,8 +932,8 @@ export const ProfilePage = () => {
                               >
                                 <div className="flex items-center gap-3 flex-1 min-w-0">
                                   <div className="flex-shrink-0">
-                                    <div className={`p-2 rounded-lg ${groupInfo.bgColor}`}>
-                                      <FileText size={20} className={groupInfo.color} />
+                                    <div className="p-2 rounded-lg bg-gray-100 border border-gray-200">
+                                      <FileText size={20} className="text-gray-600" />
                                     </div>
                                   </div>
                                   <div className="flex-1 min-w-0">
@@ -971,7 +976,7 @@ export const ProfilePage = () => {
                                       href={doc.file_url}
                                       target="_blank"
                                       rel="noopener noreferrer"
-                                      className="p-2 text-ocean-blue hover:bg-ocean-blue/10 rounded-lg transition-colors"
+                                      className="p-2 text-ocean-blue dark:text-royal-blue hover:bg-ocean-blue/10 dark:hover:bg-royal-blue/20 rounded-lg transition-colors"
                                       title="Download"
                                     >
                                       <Download size={18} />
@@ -979,7 +984,7 @@ export const ProfilePage = () => {
                                   )}
                                   <button
                                     onClick={() => handleDeleteDocument(doc.id)}
-                                    className="p-2 text-burgundy-red hover:bg-burgundy-red/10 rounded-lg transition-colors"
+                                    className="p-2 text-burgundy-red dark:text-red-400 hover:bg-burgundy-red/10 dark:hover:bg-red-400/20 rounded-lg transition-colors"
                                     title="Excluir"
                                   >
                                     <Trash2 size={18} />
