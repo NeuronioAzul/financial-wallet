@@ -2,16 +2,11 @@ openapi: 3.0.3
 info:
   title: Financial Wallet API
   description: |
-    API REST da carteira financeira digital desenvolvida com Laravel 12 e PostgreSQL 18.
+    API REST da carteira financeira digital desenvolvida com Laravel 12, React + Typescript e PostgreSQL 18.
     
-    ## Autenticação
-    A API utiliza Laravel Sanctum para autenticação. Após o login, caso não autentique sozinho, você receberá um token Bearer que deve ser incluído no header `Authorization` de todas as requisições protegidas.
-    
-    ## Timezone
-    America/Sao_Paulo (UTC-3).
-    
-    ## Formato de IDs
-    A API utiliza UUID v7
+    ## Autenticação: 
+    Esse Swagger foi customizado para guardar o token Bearer no local storage do navegador, facilitando testes de endpoints protegidos. 
+    Após o login, o token será automaticamente incluído nos headers das requisições subsequentes.
 
   version: 1.0.0
   contact:

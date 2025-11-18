@@ -35,6 +35,10 @@ Digital wallet system with complete transaction management, LGPD compliance, and
 
 ![alt text](docs/images/admin-painel.png)
 
+### Swagger with Customized UI
+
+![alt text](docs/images/swagger-login-action.gif)
+
 ## 🚀 Tech Stack
 
 **Backend**
