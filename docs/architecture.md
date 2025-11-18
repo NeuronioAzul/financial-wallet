@@ -531,6 +531,6 @@ User → Frontend → Backend → Validation
 
 ---
 
-**Last Updated:** 2024-11-17  
+**Last Updated:** 2025-11-17  
 **Version:** 1.0.0  
 **Maintained by:** Mauro Rocha Tavares

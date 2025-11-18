@@ -345,7 +345,7 @@ This documentation is maintained alongside the codebase. When making changes:
 3. Include doc updates in pull requests
 4. Keep examples up to date
 
-**Last Updated:** 2024-11-17  
+**Last Updated:** 2025-11-17  
 **Documentation Version:** 1.0.0
 
 ---

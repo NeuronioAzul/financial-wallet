@@ -62,13 +62,13 @@ O Laravel já está gerando UUIDs v7 corretamente através do trait `HasUuidV7` 
 
 Todas as migrations de tabelas com UUID precisam ter a linha `DB::statement()` removida:
 
-1. `2024_11_15_000001_create_users_table.php` (linha 34)
-2. `2024_11_15_000002_create_users_history_table.php`
-3. `2024_11_15_000003_create_wallets_table.php`
-4. `2024_11_15_000004_create_wallets_history_table.php`
-5. `2024_11_15_000005_create_transactions_table.php`
-6. `2024_11_15_000006_create_transaction_logs_table.php`
-7. `2024_11_15_000007_create_lgpd_audit_log_table.php`
+1. `2025_11_15_000001_create_users_table.php` (linha 34)
+2. `2025_11_15_000002_create_users_history_table.php`
+3. `2025_11_15_000003_create_wallets_table.php`
+4. `2025_11_15_000004_create_wallets_history_table.php`
+5. `2025_11_15_000005_create_transactions_table.php`
+6. `2025_11_15_000006_create_transaction_logs_table.php`
+7. `2025_11_15_000007_create_lgpd_audit_log_table.php`
 
 ## 🎯 Próximos Passos
 

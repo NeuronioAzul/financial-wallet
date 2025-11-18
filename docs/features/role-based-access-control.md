@@ -153,7 +153,7 @@ Response:
 
 **List all transactions**
 ```
-GET /api/v1/admin/transactions?type=transfer&status=completed&date_from=2024-01-01&user_id={uuid}
+GET /api/v1/admin/transactions?type=transfer&status=completed&date_from=2025-01-01&user_id={uuid}
 ```
 
 ## Test Users

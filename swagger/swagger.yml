@@ -105,15 +105,15 @@ components:
           type: string
           format: date-time
           nullable: true
-          example: "2024-11-15T14:30:00-03:00"
+          example: "2025-11-15T14:30:00-03:00"
         created_at:
           type: string
           format: date-time
-          example: "2024-11-15T14:30:00-03:00"
+          example: "2025-11-15T14:30:00-03:00"
         updated_at:
           type: string
           format: date-time
-          example: "2024-11-15T14:30:00-03:00"
+          example: "2025-11-15T14:30:00-03:00"
 
     Address:
       type: object
@@ -160,11 +160,11 @@ components:
         created_at:
           type: string
           format: date-time
-          example: "2024-11-15T14:30:00-03:00"
+          example: "2025-11-15T14:30:00-03:00"
         updated_at:
           type: string
           format: date-time
-          example: "2024-11-15T14:30:00-03:00"
+          example: "2025-11-15T14:30:00-03:00"
 
     Document:
       type: object
@@ -215,11 +215,11 @@ components:
         created_at:
           type: string
           format: date-time
-          example: "2024-11-15T14:30:00-03:00"
+          example: "2025-11-15T14:30:00-03:00"
         updated_at:
           type: string
           format: date-time
-          example: "2024-11-15T14:30:00-03:00"
+          example: "2025-11-15T14:30:00-03:00"
 
     Wallet:
       type: object
@@ -244,15 +244,15 @@ components:
           type: string
           format: date-time
           nullable: true
-          example: "2024-11-15T14:30:00-03:00"
+          example: "2025-11-15T14:30:00-03:00"
         created_at:
           type: string
           format: date-time
-          example: "2024-11-15T14:30:00-03:00"
+          example: "2025-11-15T14:30:00-03:00"
         updated_at:
           type: string
           format: date-time
-          example: "2024-11-15T14:30:00-03:00"
+          example: "2025-11-15T14:30:00-03:00"
 
     Transaction:
       type: object
@@ -295,15 +295,15 @@ components:
           type: string
           format: date-time
           nullable: true
-          example: "2024-11-15T14:30:00-03:00"
+          example: "2025-11-15T14:30:00-03:00"
         created_at:
           type: string
           format: date-time
-          example: "2024-11-15T14:30:00-03:00"
+          example: "2025-11-15T14:30:00-03:00"
         updated_at:
           type: string
           format: date-time
-          example: "2024-11-15T14:30:00-03:00"
+          example: "2025-11-15T14:30:00-03:00"
 
 paths:
   /health:
